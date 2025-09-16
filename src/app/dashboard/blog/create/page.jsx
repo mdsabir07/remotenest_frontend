@@ -4,6 +4,7 @@ import { useSession, signIn } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import BlogForm from "@/app/components/BlogForm";
+import Loading from "@/app/loading";
 
 export default function CreateBlogPage() {
     const { data: session, status } = useSession();
@@ -17,7 +18,7 @@ export default function CreateBlogPage() {
     }, [status]);
 
     if (status === "loading") {
-        return <p>Loading...</p>;
+        return <Loading />;
     }
 
     if (!session) {

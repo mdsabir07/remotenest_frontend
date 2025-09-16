@@ -8,8 +8,8 @@ export default function BlogListPage() {
   const searchParams = useSearchParams();
 
   // Extract query params with default values
-  const page = parseInt(searchParams.get("page") || "1", 9);
-  const limit = parseInt(searchParams.get("limit") || "9", 9);
+  const page = parseInt(searchParams.get("page") || "1", 10);
+  const limit = parseInt(searchParams.get("limit") || "9", 10);
   const sort = searchParams.get("sort") || "newest";
   const category = searchParams.get("category") || "";
   const search = searchParams.get("search") || "";
@@ -133,7 +133,7 @@ export default function BlogListPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {posts.map((post) => (
-            <div key={post._id} className="mb-8 border-b pb-4">
+            <div key={post._id} className="mb-8 shadow-md hover:shadow-lg pb-4">
               {post.coverImage && (
                 <img
                   src={post.coverImage}
@@ -141,28 +141,30 @@ export default function BlogListPage() {
                   className="w-full h-48 object-cover rounded mb-2 bg-no-repeat"
                 />
               )}
-              <Link
-                href={`/blog/${post.slug}`}
-                className="text-xl font-semibold text-primary hover:underline"
-              >
-                {post.title}
-              </Link>
-              <div className="text-sm flex items-center text-gray-500 gap-2 mt-1">
-                <img
-                  src={post.author?.avatar || "/default-avatar.png"}
-                  alt={post.author?.name || "Author"}
-                  className="w-6 h-6 rounded-full"
-                />
-                <span>{post.author?.name || "Unknown"}</span>
-                <span>• {new Date(post.createdAt).toLocaleDateString()}</span>
-                <span>• {post.category}</span>
+              <div className="p-3">
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className="text-xl font-semibold text-primary hover:underline"
+                >
+                  {post.title}
+                </Link>
+                <div className="text-sm flex items-center text-gray-500 gap-2 mt-1">
+                  <img
+                    src={post.author?.avatar || "/default-avatar.png"}
+                    alt={post.author?.name || "Author"}
+                    className="w-6 h-6 rounded-full"
+                  />
+                  <span>{post.author?.name || "Unknown"}</span>
+                  <span>• {new Date(post.createdAt).toLocaleDateString()}</span>
+                  <span>• {post.category}</span>
+                </div>
+                <p className="mt-2">
+                  {post.excerpt ||
+                    (post.content
+                      ? JSON.stringify(post.content).slice(0, 100) + "..."
+                      : "No excerpt available.")}
+                </p>
               </div>
-              <p className="mt-2">
-                {post.excerpt ||
-                  (post.content
-                    ? JSON.stringify(post.content).slice(0, 100) + "..."
-                    : "No excerpt available.")}
-              </p>
             </div>
           ))}
         </div>
