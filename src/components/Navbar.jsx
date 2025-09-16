@@ -8,11 +8,7 @@ import { useTheme } from "./ThemeContext";
 const Navbar = () => {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
-  const { theme, setTheme } = useTheme();
-
-  const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-  };
+  const { theme, toggleTheme } = useTheme();
 
   const commonLinks = [
     { name: "Home", path: "/" },

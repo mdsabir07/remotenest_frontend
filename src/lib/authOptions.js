@@ -1,6 +1,11 @@
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 
+// **imports needed for DB connection and password checking**
+import { connectToDB } from "@/lib/mongodb";
+import { User } from "@/models/User";
+import { compare } from "bcryptjs";
+
 export const authOptions = {
   providers: [
     GoogleProvider({
@@ -13,12 +18,25 @@ export const authOptions = {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
+      // **authorize function**
       async authorize(credentials) {
-        // Replace with your real DB/auth logic
-        const user = await yourDatabaseCheck(credentials.email, credentials.password);
+        // **Connect to the database**
+        await connectToDB();
 
-        if (user) return user;
-        return null;
+        // **Find the user by email in MongoDB**
+        const user = await User.findOne({ email: credentials.email });
+        if (!user) return null;
+
+        // **Compare hashed password stored in DB with the one provided**
+        const isPasswordCorrect = await compare(credentials.password, user.password);
+        if (!isPasswordCorrect) return null;
+
+        // **Return user info (without password)**
+        return {
+          id: user._id.toString(),
+          name: user.name,
+          email: user.email,
+        };
       },
     }),
   ],
