@@ -3,6 +3,7 @@ import Banner from "./components/Banner";
 import CommunityHighlight from "./components/CommunityHighlight";
 import FeaturedCities from "./components/FeaturedCities";
 import HowItWorks from "./components/HowItWorks";
+import Contact from "./components/Contact";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
     <CommunityHighlight></CommunityHighlight>
     <FeaturedCities></FeaturedCities>
     <HowItWorks></HowItWorks>
+    <Contact></Contact>
    </div>
   );
 }
