@@ -46,7 +46,7 @@ const HowItWorks = () => {
         {steps.map((s) => (
           <div
             key={s.id}
-            className="bg-white border rounded-2xl p-6 shadow hover:shadow-md transition"
+            className="bg-white  rounded-2xl p-6 shadow hover:shadow-lg transition"
           >
             <div className="flex items-start gap-4">
               <div className="flex-none w-12 h-12 rounded-xl bg-indigo-100 flex items-center justify-center">
