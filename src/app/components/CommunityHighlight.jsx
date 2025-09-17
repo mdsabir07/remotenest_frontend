@@ -73,13 +73,13 @@ const CommunityHighlight = () => {
                     768: { slidesPerView: 2 }, // tablet
                     1024: { slidesPerView: 3 }, // desktop
                 }}
-                className="max-w-6xl mx-auto"
+                className="max-w-[90%] mx-auto"
             >
                 {ReviewData.map((singleData) => (
                     <SwiperSlide key={singleData.id}>
                         {({ isActive }) => (
                             <div
-                                className={`max-w-sm w-full bg-white border border-gray-200 rounded-xl shadow-md p-6 text-center flex flex-col justify-between min-h-[320px]
+                                className={`max-w-sm w-full bg-white border border-gray-200 rounded-xl shadow-md py-6 text-center flex flex-col justify-between min-h-[320px]
             transform transition-transform duration-500
             ${isActive ? "scale-100 opacity-100" : "scale-90 opacity-50"}`}
                             >
