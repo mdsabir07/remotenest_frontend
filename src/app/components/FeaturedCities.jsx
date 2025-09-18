@@ -49,6 +49,22 @@ const FeaturedCitiesData = [
         "image": "https://images.unsplash.com/photo-1503220317375-aaad61436b1b",
         "monthlyCost": 600,
         "wifiSpeed": 55
+    },
+    {
+        "id": 7,
+        "city": "Tbilisi",
+        "country": "Georgia",
+        "image": "https://images.unsplash.com/photo-1618573622956-8e8c1f8f1d9d",
+        "monthlyCost": 700,
+        "wifiSpeed": 60
+    },
+    {
+        "id": 8,
+        "city": "Chiang Mai",
+        "country": "Thailand",
+        "image": "https://images.unsplash.com/photo-1503220317375-aaad61436b1b",
+        "monthlyCost": 600,
+        "wifiSpeed": 55
     }
 ];
 const FeaturedCities = () => {
@@ -60,7 +76,7 @@ const FeaturedCities = () => {
             </h2>
 
             {/* Cities Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[90%] mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {FeaturedCitiesData.map((featuredData) => (
                     <SingleFeaturedCities
                         key={featuredData.id}

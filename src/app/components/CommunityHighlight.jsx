@@ -73,7 +73,7 @@ const CommunityHighlight = () => {
                     768: { slidesPerView: 2 }, // tablet
                     1024: { slidesPerView: 3 }, // desktop
                 }}
-                className="max-w-[90%] mx-auto"
+                className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
             >
                 {ReviewData.map((singleData) => (
                     <SwiperSlide key={singleData.id}>
