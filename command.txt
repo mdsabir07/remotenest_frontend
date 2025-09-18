@@ -1,0 +1,21 @@
+# 1. Before starting work (Ensure you're on the latest code)
+git checkout main            # Switch to the main branch
+git pull origin main         # Pull the latest updates from GitHub
+
+# 2. Work on your task (edit the necessary files)
+
+# 3. After completing your task, stage and commit your changes:
+git add .                    # Stage all changed files
+git commit -m "Your commit message"  # Commit with a descriptive message
+
+# 4. Pull the latest changes before pushing (to avoid conflicts):
+git pull origin main         # Pull the latest updates from GitHub
+
+# 5. Resolve any conflicts (if necessary):
+# - Edit conflicting files
+# - Stage the resolved files
+git add <resolved-file>     # Stage resolved files
+git commit -m "Resolved merge conflicts"  # Commit conflict resolution
+
+# 6. Push your changes to GitHub (deploy to Vercel):
+git push origin main         # Push your changes to the main branch
