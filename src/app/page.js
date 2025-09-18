@@ -5,6 +5,7 @@ import FeaturedCities from "./components/FeaturedCities";
 import HowItWorks from "./components/HowItWorks";
 import Contact from "./components/Contact";
 import BlogPreview from "./components/BlogPreview";
+import StatsSection from "./components/StatsSection";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
     <FeaturedCities></FeaturedCities>
     <HowItWorks></HowItWorks>
     <BlogPreview></BlogPreview>
+    <StatsSection></StatsSection>
     <Contact></Contact>
    </div>
   );
