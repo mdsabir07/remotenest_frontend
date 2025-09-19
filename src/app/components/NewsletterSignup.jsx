@@ -9,6 +9,9 @@ const NewsletterSignup = () => {
       <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">
         Get remote work & travel tips directly in your inbox
       </h2>
+      <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">
+        Get remote work & travel tips directly in your inbox
+      </h2>
       <p className="text-gray-600 mb-6">
         Subscribe to stay updated with the best destinations, tips & guides.
       </p>
