@@ -2,6 +2,8 @@
 git checkout main            # Switch to the main branch
 git pull origin main         # Pull the latest updates from GitHub
 
+
+
 # 2. Work on your task (edit the necessary files)
 
 # 3. After completing your task, stage and commit your changes:
