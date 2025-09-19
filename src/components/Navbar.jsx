@@ -16,6 +16,7 @@ const Navbar = () => {
 
   const commonLinks = [
     { name: "Home", path: "/" },
+<<<<<<< HEAD
     { name: "Explore Cities", path: "/cities" },
     {
       name: "Resources",
@@ -24,6 +25,10 @@ const Navbar = () => {
         { name: "Blog", path: "/blog" },
       ],
     },
+=======
+    { name: "Explore Cities", path: "/ExploreCities" },
+    { name: "AI Recommender", path: "/recommender" },
+>>>>>>> f27a0fbd3ee4218a21ae1969be83e6ff066d80a0
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
     { name: "Login", path: "/login", guestOnly: true },
