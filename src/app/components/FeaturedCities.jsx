@@ -1,5 +1,6 @@
 import React from 'react';
 import SingleFeaturedCities from './SingleFeaturedCities';
+import Link from 'next/link';
 
 const FeaturedCitiesData = [
     {
@@ -87,10 +88,10 @@ const FeaturedCities = () => {
 
             {/* View All Button */}
             <div className="flex justify-center mt-10">
-                <button className="flex items-center gap-2 px-6 py-3 bg-white text-emerald-700 border border-emerald-500 rounded-lg shadow-sm hover:bg-emerald-600 hover:text-white hover:shadow-md transition-all duration-300">
+                < Link href="/cities" className="flex items-center gap-2 px-6 py-3 bg-white text-emerald-700 border border-emerald-500 rounded-lg shadow-sm hover:bg-emerald-600 hover:text-white hover:shadow-md transition-all duration-300">
                     View All Cities
                     <span className="text-lg">→</span>
-                </button>
+                </Link>
             </div>
         </div>
 
