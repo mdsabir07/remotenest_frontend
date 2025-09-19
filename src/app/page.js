@@ -8,6 +8,7 @@ import BlogPreview from "./components/BlogPreview";
 import Contact from "./components/Contact";
 import StatsSection from "./components/StatsSection";
 
+
 export default function Home() {
   return (
     <div>
@@ -19,6 +20,7 @@ export default function Home() {
     <Contact></Contact>
     <StatsSection></StatsSection>
     <NewsletterSignup></NewsletterSignup>
+    
     
    </div>
   );

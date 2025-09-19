@@ -1,34 +1,83 @@
-export default function ContactPage() {
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-4"> 
-    <div className="max-w-7xl w-full bg-white dark:bg-gray-800 shadow-md rounded-lg p-8">
-      <h1 className="text-4xl font-bold mb-6 text-center">Contact Us</h1>
-      <p className="mb-4 text-lg text-center">
-        We'd love to hear from you! Whether you have questions, feedback, or need assistance, feel free to reach out.
-      </p>
-      <div className="space-y-4">   
-        <div>
-          <h2 className="text-2xl font-semibold">Email</h2>
-          <p className="text-blue-500 hover:underline">
-            <a href="mailto:email@name.com">
-                email@name.com
-            </a>
-          </p>
-        </div>
-        <div>
-          <h2 className="text-2xl font-semibold">Phone</h2>
-          <p>
-            <a href="tel:+1234567890" className="text-blue-500 hover:underline">
-                +1 (234) 567-890
-            </a>    
-            </p>
-        </div>
-        <div>
-          <h2 className="text-2xl font-semibold">Address</h2>
-            <p>1234 Remote St, Worktown, WT 56789</p>
-        </div>
-          </div>
-        </div>
-      </div>
-  );
-}
+import React from 'react';
+import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaFacebook, FaGithub, FaLinkedin } from "react-icons/fa";
+
+const NavContact = () => {
+    return (
+        <section id='contact' className="bg-gray-100 dark:bg-[#1F2937] text-gray-900 dark:text-white py-12 px-4 transition-colors duration-300">
+            <div>
+                <h1 className='text-4xl text-center font-bold mb-6'>Contact Me</h1>
+            </div>
+            <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
+
+                {/* Left Side */}
+                <div data-aos="zoom-out-right">
+                    <h2 className="text-2xl font-bold mb-2">Find Your Perfect Remote Work Destination</h2>
+                    <p className="text-gray-700 dark:text-gray-300 mb-6">
+                        Discover the best places around the world to work remotely. Get in touch to learn more
+                        about destinations, living costs, and opportunities that fit your lifestyle.
+                    </p>
+
+                    <div className="space-y-4">
+                        <div className="flex items-center space-x-3">
+                            <FaMapMarkerAlt className="text-pink-500" />
+                            <span>Dhaka, Bangladesh</span>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                            <FaPhoneAlt className="text-pink-500" />
+                            <span>+8801887248726</span>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                            <FaEnvelope className="text-pink-500" />
+                            <span>shimuldevnath330@gmail.com</span>
+                        </div>
+                    </div>
+
+                    <div className="flex space-x-4 mt-6 text-xl">
+                        <a target='_blank' href="https://www.facebook.com/YourProfile/" className="hover:text-pink-500"><FaFacebook /></a>
+                        <a target='_blank' href="https://github.com/shimul330" className="hover:text-pink-500"><FaGithub /></a>
+                        <a target='_blank' href="https://www.linkedin.com/in/shimul-kumar-nath-445519354/" className="hover:text-pink-500"><FaLinkedin /></a>
+                    </div>
+                </div>
+
+                {/* Right Side */}
+                <div data-aos="zoom-out-down" className="bg-white dark:bg-[#111827] p-6 rounded-lg transition-colors duration-300">
+                    <form className="space-y-4">
+                        <div>
+                            <label className="block mb-1">Full name</label>
+                            <input
+                                type="text"
+                                placeholder="Name"
+                                className="w-full p-2 rounded border border-gray-400 dark:border-gray-500 bg-transparent dark:text-white focus:outline-none"
+                            />
+                        </div>
+                        <div>
+                            <label className="block mb-1">Email address</label>
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                className="w-full p-2 rounded border border-gray-400 dark:border-gray-500 bg-transparent dark:text-white focus:outline-none"
+                            />
+                        </div>
+                        <div>
+                            <label className="block mb-1">Message</label>
+                            <textarea
+                                placeholder="Message"
+                                rows="4"
+                                className="w-full p-2 rounded border border-gray-400 dark:border-gray-500 bg-transparent dark:text-white focus:outline-none"
+                            ></textarea>
+                        </div>
+                        <button
+                            type="submit"
+                            className="bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded font-medium text-white"
+                        >
+                            Send
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </section>
+    );
+};
+
+export default NavContact;
