@@ -75,6 +75,9 @@ const FeaturedCities = () => {
             <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
                 🌆 Featured Cities
             </h2>
+            <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
+                🌆 Featured Cities
+            </h2>
 
             {/* Cities Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
