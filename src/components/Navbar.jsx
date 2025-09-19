@@ -12,7 +12,7 @@ const Navbar = () => {
 
   const commonLinks = [
     { name: "Home", path: "/" },
-    { name: "Explore Cities", path: "/cities" },
+    { name: "Explore Cities", path: "/ExploreCities" },
     { name: "AI Recommender", path: "/recommender" },
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
