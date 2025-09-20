@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Lottie from 'lottie-react';
 import loginAnimation from '@/assets/lottie/signin.json';
+import Swal from 'sweetalert2';
 
 
 export default function LoginPage() {
@@ -20,9 +21,19 @@ export default function LoginPage() {
         });
 
         if (res.ok) {
+            await Swal.fire({
+                icon: 'success',
+                title: 'Login successful',
+                text: 'Redirecting to dashboard...',
+                confirmButtonText: 'OK',
+            });
             router.push("/dashboard");
         } else {
-            alert("Login failed");
+            await Swal.fire({
+                icon: 'error',
+                title: 'Login failed',
+                text: res?.error || 'Invalid credentials',
+            });
         }
     };
 
@@ -67,7 +78,7 @@ export default function LoginPage() {
                         </button>
 
                         <p className="text-sm text-gray-600 dark:text-gray-400 text-center mt-4">
-                            Don't have an account? <a href="/register" className="text-blue-600 dark:text-blue-400 hover:underline">Register</a>
+                            Don't have an account? <a href="/auth/register" className="text-blue-600 dark:text-blue-400 hover:underline">Register</a>
                         </p>
                     </form>
                 </div>

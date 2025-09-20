@@ -26,8 +26,8 @@ const Navbar = () => {
     },
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
-    { name: "Login", path: "/login", guestOnly: true },
-    { name: "Register", path: "/register", guestOnly: true },
+    { name: "Login", path: "/auth/login", guestOnly: true },
+    { name: "Register", path: "/auth/register", guestOnly: true },
   ];
 
   // user links: top-level "User" and a "Dashboard" menu that contains Admin
@@ -39,6 +39,9 @@ const Navbar = () => {
       children: [
         { name: "Admin", path: "/dashboard/admin" },
         { name: "User", path: "/dashboard/user" },
+        { name: "Add city", path: "/dashboard/add-city" },
+        { name: "City submissions", path: "/dashboard/admin/submissions" },
+        { name: "Users", path: "/dashboard/admin/users" },
       ],
     },
   ];

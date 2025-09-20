@@ -8,10 +8,24 @@ import Swal from 'sweetalert2';
 
 export default function RegisterPage() {
     const router = useRouter();
-    const [form, setForm] = useState({ name: '', email: '', password: '' });
+    const [form, setForm] = useState({ name: '', email: '', password: '', avatar: '' });
+    const [uploading, setUploading] = useState(false);
+    const [preview, setPreview] = useState('');
+
+    const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+    const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 
     const handleRegister = async (e) => {
         e.preventDefault();
+
+        if (uploading) {
+            await Swal.fire({
+                icon: 'warning',
+                title: 'Please wait',
+                text: 'Avatar is still uploading — please wait a moment and try again.',
+            });
+            return;
+        }
 
         const res = await fetch('/api/register', {
             method: 'POST',
@@ -26,7 +40,7 @@ export default function RegisterPage() {
                 text: 'You can now login.',
                 confirmButtonText: 'OK',
             });
-            router.push('/login');
+            router.push('/auth/login');
         } else {
             let data;
             try {
@@ -87,15 +101,69 @@ export default function RegisterPage() {
                             />
                         </div>
 
+                        <div>
+                            <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Avatar (file or URL)</label>
+                            <div className="flex items-center gap-2">
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={async (e) => {
+                                        const file = e.target.files?.[0];
+                                        if (!file) return;
+                                        setPreview(URL.createObjectURL(file));
+                                        // if env vars are set, upload to Cloudinary unsigned
+                                        if (CLOUD_NAME && UPLOAD_PRESET) {
+                                            setUploading(true);
+                                            const data = new FormData();
+                                            data.append('file', file);
+                                            data.append('upload_preset', UPLOAD_PRESET);
+                                            try {
+                                                const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`, {
+                                                    method: 'POST',
+                                                    body: data,
+                                                });
+                                                const json = await res.json();
+                                                if (json.secure_url) {
+                                                    setForm((f) => ({ ...f, avatar: json.secure_url }));
+                                                }
+                                            } catch (err) {
+                                                console.error('Upload failed', err);
+                                            } finally { setUploading(false); }
+                                        } else {
+                                            // no env -> ask user to paste URL instead; keep preview
+                                            setForm((f) => ({ ...f, avatar: '' }));
+                                        }
+                                    }}
+                                    className="block"
+                                />
+
+                                <input
+                                    type="text"
+                                    placeholder="Or paste image URL"
+                                    value={form.avatar}
+                                    onChange={(e) => setForm({ ...form, avatar: e.target.value })}
+                                    className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+
+                            {uploading && <p className="text-sm text-gray-500 mt-2">Uploading avatar...</p>}
+                            {preview || form.avatar ? (
+                                <div className="mt-2">
+                                    <img src={form.avatar || preview} alt="preview" className="w-24 h-24 rounded-full object-cover" />
+                                </div>
+                            ) : null}
+                        </div>
+
                         <button
                             type="submit"
-                            className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-semibold transition duration-300"
+                            disabled={uploading}
+                            className={`w-full cursor-pointer ${uploading ? 'bg-gray-400 hover:bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'} text-white py-2 rounded-md font-semibold transition duration-300`}
                         >
-                            Register
+                            {uploading ? 'Uploading avatar...' : 'Register'}
                         </button>
 
                         <p className="text-sm text-gray-600 dark:text-gray-400 text-center mt-4">
-                            Already have an account? <a href="/login" className="text-blue-600 dark:text-blue-400 hover:underline">Login</a>
+                            Already have an account? <a href="/auth/login" className="text-blue-600 dark:text-blue-400 hover:underline">Login</a>
                         </p>
                     </form>
                 </div>

@@ -5,7 +5,7 @@ import { hash, compare } from "bcryptjs";
 
 
 export async function POST(req) {
-  const { name, email, password } = await req.json();
+  const { name, email, password, avatar } = await req.json();
   await connectToDB();
 
   const existing = await User.findOne({ email });
@@ -14,7 +14,10 @@ export async function POST(req) {
   }
 
   const hashedPassword = await hash(password, 10);
-  const newUser = await User.create({ name, email, password: hashedPassword });
+  const newUser = await User.create({ name, email, password: hashedPassword, avatar: avatar || "", role: "user" });
 
-  return new Response(JSON.stringify({ user: newUser }), { status: 201 });
+  // don't return password in response
+  const obj = newUser.toObject();
+  delete obj.password;
+  return new Response(JSON.stringify({ user: obj }), { status: 201 });
 }

@@ -47,11 +47,27 @@ export const authOptions = {
   session: { strategy: "jwt" },
   callbacks: {
     async jwt({ token, user }) {
-      if (user) token.id = user.id;
+      // On initial sign in, set id and role from user object (authorize) or fetch from DB if needed
+      if (user) {
+        token.id = user.id;
+        // try to include role if present on user
+        if (user.role) token.role = user.role;
+      }
+      // If token has an id but not role, try to fetch role from DB
+      if (token?.id && !token?.role) {
+        try {
+          await connectToDB();
+          const u = await User.findById(token.id).select("role").lean();
+          if (u?.role) token.role = u.role;
+        } catch (e) {
+          // ignore
+        }
+      }
       return token;
     },
     async session({ session, token }) {
       if (token?.id) session.user.id = token.id;
+      if (token?.role) session.user.role = token.role;
       return session;
     },
   },
