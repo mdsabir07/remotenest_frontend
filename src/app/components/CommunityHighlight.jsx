@@ -61,7 +61,7 @@ const CommunityHighlight = () => {
                 community. Stay connected, get motivated, and explore how others are making
                 the most of remote work and travel.
             </p>
-            <div className="h-[500px] pt-16" style={{ backgroundImage: `url(https://i.ibb.co.com/N6WVsRHN/end-game-1-1.jpg)`, backgroundPosition: 'center', backgroundSize: 'cover' }}>
+            <div className="h-[500px] pt-16" style={{ backgroundImage: `url(https://i.ibb.co.com/rfmBYhWd/end-game-1-4.jpg)`, backgroundPosition: 'center', backgroundSize: 'cover' }}>
                 <Swiper
                     modules={[Autoplay]}
                     spaceBetween={30}
