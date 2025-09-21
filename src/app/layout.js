@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeContext";
 import AuthProvider from "@/components/AuthProvider";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +28,14 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning={true}
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Script id="init-theme" strategy="beforeInteractive">
+          {`(function() {
+              try {
+                var t = localStorage.getItem('theme');
+                if (t) document.documentElement.classList.add(t);
+              } catch (e) {}
+          })();`}
+        </Script>
         <ThemeProvider>
           <AuthProvider>
             <Navbar />
