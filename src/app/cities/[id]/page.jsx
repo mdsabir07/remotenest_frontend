@@ -1,17 +1,17 @@
-import SingleCitiesData from "../SingleCitiesData";
+// import SingleCitiesData from "../SingleCitiesData";
 
-async function getCities() {
-  const res = await fetch('/api/cities', {
-    cache: 'no-store'
-  });
-  return res.json();
-}
-export default async function CitiesDetails({ params }) {
-  const cities = await getCities();
-  const Data = cities?.cities;
-  const { id } = await params;
+// async function getCities() {
+//   const res = await fetch('/api/cities', {
+//     cache: 'no-store'
+//   });
+//   return res.json();
+// }
+export default async function CitiesDetails() {
+  // const cities = await getCities();
+  // const Data = cities?.cities;
+  // const { id } = await params;
 
-  const singleData = Data.find(d => d._id === id);
+  // const singleData = Data.find(d => d._id === id);
 
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4">
@@ -29,7 +29,7 @@ export default async function CitiesDetails({ params }) {
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition">
           {/* Single Data Component */}
-          <SingleCitiesData singleData={singleData} />
+          {/* <SingleCitiesData singleData={singleData} /> */}
         </div>
       </div>
     </div>
