@@ -20,8 +20,6 @@ export default function Home() {
     <Contact></Contact>
     <StatsSection></StatsSection>
     <NewsletterSignup></NewsletterSignup>
-    
-    
    </div>
   );
 }
