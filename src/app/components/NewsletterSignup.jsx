@@ -37,6 +37,7 @@ const NewsletterSignup = () => {
       <h2 className="text-4xl font-bold text-gray-800 mb-3">
         Join Our Newsle<span className="text-blue-400">tt</span>er
       </h2>
+     
       <p className="text-gray-600 mb-6 text-lg max-w-lg">
         Get the best destinations, travel tips & insider guides delivered to your inbox.
       </p>
