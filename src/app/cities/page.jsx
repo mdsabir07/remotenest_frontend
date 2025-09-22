@@ -1,15 +1,28 @@
-// import SingleFeaturedCities from "../components/SingleFeaturedCities";
+"use client"
+import { useEffect, useState } from "react";
+import SingleFeaturedCities from "../components/SingleFeaturedCities";
 
-// async function getCities() {
-//   const res = await fetch('/api/cities', {
-//     cache:'no-store'
-//   });
-//   return res.json();
-// }
 
-export default async function CitiesPage() {
-  // const cities = await getCities();
-  // const Data = cities?.cities;
+export default  function CitiesPage() {
+   const [cities, setCities] = useState([]);
+  
+    useEffect(() => {
+      const fetchCities = async () => {
+        try {
+          const res = await fetch("/api/cities");
+          const citiesData = await res.json();
+          const data = citiesData.cities;
+          if (Array.isArray(data)) {
+            setCities(data);
+          } else {
+            console.error("Cities is not an array:", data);
+          }
+        } catch (err) {
+          console.error("Error fetching cities:", err);
+        }
+      };
+      fetchCities();
+    }, []);
   
    return (
 
@@ -51,13 +64,13 @@ export default async function CitiesPage() {
 
         {/* Cities Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* {Data.map((singleData) => (
+          {cities.map((singleData) => (
             <div
               key={singleData._id}
             >
               <SingleFeaturedCities singleData={singleData} />
             </div>
-          ))} */}
+          ))}
         </div>
       </div>
 

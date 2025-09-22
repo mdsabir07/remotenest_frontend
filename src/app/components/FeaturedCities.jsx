@@ -1,17 +1,29 @@
-import React from 'react';
+"use client"
+import React, { useEffect, useState } from 'react';
 import SingleFeaturedCities from './SingleFeaturedCities';
 import Link from 'next/link';
 
-async function getCities() {
-    const res = await fetch('/api/cities', {
-        cache: 'no-store'
-    });
-    return res.json();
-}
-const  FeaturedCities = async () => {
-    const cities = await getCities();
-   const Data = cities?.cities;
-   console.log(Data)
+
+const  FeaturedCities = () => {
+     const [cities, setCities] = useState([]);
+
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const res = await fetch("/api/cities");
+        const citiesData = await res.json();
+        const data = citiesData.cities;
+        if (Array.isArray(data)) {
+          setCities(data);
+        } else {
+          console.error("Cities is not an array:", data);
+        }
+      } catch (err) {
+        console.error("Error fetching cities:", err);
+      }
+    };
+    fetchCities();
+  }, []);
     return (
         
         <div className="py-12 bg-gray-50">
@@ -21,7 +33,7 @@ const  FeaturedCities = async () => {
             </h2>
             {/* Cities Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {Data.map((singleData) => (
+                {cities.map((singleData) => (
                     <SingleFeaturedCities
                         key={singleData._id}
                         singleData={singleData}

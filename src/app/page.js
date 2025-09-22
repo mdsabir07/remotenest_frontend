@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Banner from "./components/Banner";
 import CommunityHighlight from "./components/CommunityHighlight";
-// import FeaturedCities from "./components/FeaturedCities";
+import FeaturedCities from "./components/FeaturedCities";
 import NewsletterSignup from "./components/NewsletterSignup";
 import HowItWorks from "./components/HowItWorks";
 import BlogPreview from "./components/BlogPreview";
@@ -14,7 +14,7 @@ export default function Home() {
     <div>
     <Banner></Banner>
     <CommunityHighlight></CommunityHighlight>
-    {/* <FeaturedCities></FeaturedCities> */}
+    <FeaturedCities></FeaturedCities>
     <HowItWorks></HowItWorks>
     <BlogPreview></BlogPreview>
     <Contact></Contact>
