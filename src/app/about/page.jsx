@@ -4,6 +4,7 @@ import Image from "next/image";
 import React from "react";
 import aboutImg from "@/assets/hello.png"; 
 import TeamCards from "../components/TeamCards";
+import NewsletterSignup from "../components/NewsletterSignup";
 
 
 
@@ -52,8 +53,10 @@ export default function AboutPage() {
           
         </div>
 
-        
-       
+      {/* news latter section */}
+      <div className="mt-16">
+        <NewsletterSignup></NewsletterSignup>
+      </div>
         
       </section>
     </main>
