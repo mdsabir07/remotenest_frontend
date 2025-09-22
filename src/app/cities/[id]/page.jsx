@@ -1,7 +1,7 @@
 import SingleCitiesData from "../SingleCitiesData";
 
 async function getCities() {
-  const res = await fetch('http://localhost:3000/api/cities', {
+  const res = await fetch('/api/cities', {
     cache: 'no-store'
   });
   return res.json();
