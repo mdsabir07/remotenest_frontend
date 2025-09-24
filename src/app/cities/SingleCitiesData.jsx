@@ -1,7 +1,18 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import CityShareButton from "./CityShareButton";
+import { FaStar } from "react-icons/fa";
+import { useSession } from "next-auth/react";
 
-const SingleCitiesData = ({ singleData }) => {
+const SingleCitiesData = ({ singleData,  }) => {
+  const {data} = useSession();
+  const user = data.user.name;
+  const userEmail = data.user.email;
+  const userId = data.user.id;
+  console.log(data.user)
+  const [rating, setRating] = useState(0);
+  const [hover, setHover] = useState(null);
+  const [review, setReview] = useState(' ')
   const { 
     _id,
     name,
@@ -16,7 +27,23 @@ const SingleCitiesData = ({ singleData }) => {
     reviewCount,
     status,
     createdAt,
-    approvedAt, } = singleData;
+    approvedAt, 
+  } = singleData;
+
+  // handleReviewSubmit
+  const handleReviewSubmit = (e) => {
+    e.preventDefault();
+    const userReview = {
+      userId,
+      user,
+      userEmail,
+      review,
+      rating,
+      cityId:  _id,
+
+    }
+  console.log(userReview)
+  }
 
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300">
@@ -31,7 +58,7 @@ const SingleCitiesData = ({ singleData }) => {
           <h2 className="text-3xl font-bold text-white">
             {name}, <span className="text-gray-300">{country}</span>
           </h2>
-          <div className="flex gap-2 mt-2">
+          <div className="flex gap-2 mt-2 flex-wrap">
             {tags?.map((tag, idx) => (
               <span
                 key={idx}
@@ -45,7 +72,7 @@ const SingleCitiesData = ({ singleData }) => {
       </div>
 
       {/* City Info */}
-      <div className="p-6 space-y-4">
+      <div className="p-6 space-y-6">
         {/* Description */}
         <p className="text-gray-700 text-base leading-relaxed whitespace-pre-line">
           {description}
@@ -107,9 +134,76 @@ const SingleCitiesData = ({ singleData }) => {
           <p>Approved At: {new Date(approvedAt).toLocaleDateString()}</p>
           <p>Created: {new Date(createdAt).toLocaleDateString()}</p>
         </div>
-        {/* share */}
+
+        {/* Share */}
         <div className="justify-end flex">
-         <CityShareButton id={_id}></CityShareButton>
+          <CityShareButton id={_id} />
+        </div>
+
+        {/* 🔥 User Review Section */}
+        <div className="mt-10 border-t pt-6">
+          <h3 className="text-xl font-bold text-gray-800 mb-4">💬 User Reviews</h3>
+
+          {/* Review Form */}
+          <form onSubmit={handleReviewSubmit} className="bg-gray-50 p-4 rounded-lg shadow-sm">
+            <p className="text-sm text-gray-600 mb-2">Leave a review</p>
+            <div className="flex items-center gap-1 mb-3">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <FaStar
+                  key={star}
+                  onClick={() => setRating(star)}
+                  onMouseEnter={() => setHover(star)}
+                  onMouseLeave={() => setHover(null)}
+                  className={`cursor-pointer transition-colors ${
+                (hover || rating) >= star ? "text-yellow-400" : "text-gray-300"
+              }`}
+                  size={22}
+                />
+              ))}
+            </div>
+            <textarea
+              rows="3"
+              type="text"
+              value={review}
+              onChange={(e) => setReview(e.target.value)}
+              placeholder="Write your experience..."
+              className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+            ></textarea>
+            <button type="submit" className="mt-3 px-5 py-2 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition">
+              Submit Review
+            </button>
+          </form>
+
+          {/* Example Review List */}
+          {/* <div className="mt-6 space-y-4">
+            <div className="p-4 border rounded-lg shadow-sm">
+              <div className="flex items-center justify-between">
+                <p className="font-semibold text-gray-800">John Doe</p>
+                <span className="flex text-yellow-400">
+                  {[...Array(4)].map((_, i) => (
+                    <FaStar key={i} />
+                  ))}
+                </span>
+              </div>
+              <p className="mt-2 text-sm text-gray-600">
+                Really peaceful city! Loved the affordable lifestyle.
+              </p>
+            </div>
+
+            <div className="p-4 border rounded-lg shadow-sm">
+              <div className="flex items-center justify-between">
+                <p className="font-semibold text-gray-800">Sarah Lee</p>
+                <span className="flex text-yellow-400">
+                  {[...Array(5)].map((_, i) => (
+                    <FaStar key={i} />
+                  ))}
+                </span>
+              </div>
+              <p className="mt-2 text-sm text-gray-600">
+                Great place to work remotely, though internet can be patchy.
+              </p>
+            </div>
+          </div> */}
         </div>
       </div>
     </div>

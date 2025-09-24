@@ -2,6 +2,7 @@ import Link from 'next/link';
 import React from 'react';
 
 const SingleFeaturedCities = ({ singleData }) => {
+
   const {  _id,
     name,
     country,
@@ -12,6 +13,7 @@ const SingleFeaturedCities = ({ singleData }) => {
     averageRating,
     connectivity,
     description, } = singleData;
+    console.log(_id)
   return (
    <div className="max-w-sm bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow duration-300        ">
       {/* Image Section */}

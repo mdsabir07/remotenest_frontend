@@ -15,7 +15,7 @@ const FeaturedCities = () => {
       try {
         const res = await fetch("/api/cities");
         const citiesData = await res.json();
-        const data = citiesData.cities;
+        const data = citiesData?.cities;
         if (Array.isArray(data)) {
           setCities(data);
         } else {
@@ -29,7 +29,7 @@ const FeaturedCities = () => {
     };
     fetchCities();
   }, []);
-
+console.log(cities)
   if (loading) return <Loading />;
   if (error) return <p className="text-red-500 text-center">{error}</p>;
 
@@ -41,7 +41,7 @@ const FeaturedCities = () => {
         🌆 Featured Cities
       </h2>
       {/* Cities Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {cities.map((singleData) => (
           <SingleFeaturedCities
             key={singleData._id}
