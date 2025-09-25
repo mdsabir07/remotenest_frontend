@@ -37,10 +37,11 @@ export default function RegisterPage() {
             await Swal.fire({
                 icon: 'success',
                 title: 'Registration successful!',
-                text: 'You can now login.',
+                text: 'Please check your email to verify your account.',
                 confirmButtonText: 'OK',
             });
-            router.push('/auth/login');
+
+            router.push('/auth/check-email'); // ✅ Redirect to "check your email" page
         } else {
             let data;
             try {
@@ -48,6 +49,7 @@ export default function RegisterPage() {
             } catch {
                 data = { message: 'Registration failed' };
             }
+
             await Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -111,7 +113,7 @@ export default function RegisterPage() {
                                         const file = e.target.files?.[0];
                                         if (!file) return;
                                         setPreview(URL.createObjectURL(file));
-                                        // if env vars are set, upload to Cloudinary unsigned
+
                                         if (CLOUD_NAME && UPLOAD_PRESET) {
                                             setUploading(true);
                                             const data = new FormData();
@@ -128,9 +130,10 @@ export default function RegisterPage() {
                                                 }
                                             } catch (err) {
                                                 console.error('Upload failed', err);
-                                            } finally { setUploading(false); }
+                                            } finally {
+                                                setUploading(false);
+                                            }
                                         } else {
-                                            // no env -> ask user to paste URL instead; keep preview
                                             setForm((f) => ({ ...f, avatar: '' }));
                                         }
                                     }}
@@ -168,7 +171,7 @@ export default function RegisterPage() {
                     </form>
                 </div>
 
-                {/* Right: Image */}
+                {/* Right: Animation */}
                 <div className="w-full md:w-1/2 hidden md:block p-8">
                     <Lottie
                         animationData={registerAnimation}

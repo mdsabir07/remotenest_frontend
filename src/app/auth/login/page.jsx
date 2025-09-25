@@ -1,40 +1,61 @@
 'use client';
 
 import { useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import Lottie from 'lottie-react';
 import loginAnimation from '@/assets/lottie/signin.json';
 import Swal from 'sweetalert2';
-
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 
 export default function LoginPage() {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+
     const [form, setForm] = useState({ email: "", password: "" });
+    const [loading, setLoading] = useState(false);
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
         const res = await signIn("credentials", {
             redirect: false,
+            callbackUrl,
             ...form,
         });
 
         if (res.ok) {
+            // If the login is successful
             await Swal.fire({
                 icon: 'success',
                 title: 'Login successful',
-                text: 'Redirecting to dashboard...',
+                text: 'Redirecting...',
                 confirmButtonText: 'OK',
             });
-            router.push("/dashboard");
+            router.push(res.url || callbackUrl);
         } else {
-            await Swal.fire({
-                icon: 'error',
-                title: 'Login failed',
-                text: res?.error || 'Invalid credentials',
-            });
+            // If login fails, check if the user is unverified
+            if (res.error === 'Email not verified') {
+                await Swal.fire({
+                    icon: 'warning',
+                    title: 'Email Not Verified',
+                    text: 'Please check your inbox for the verification email.',
+                    confirmButtonText: 'OK',
+                });
+            } else {
+                // For other login errors
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Login failed',
+                    text: res.error || 'Invalid credentials',
+                });
+            }
         }
+
+        setLoading(false);
     };
 
     return (
@@ -70,12 +91,52 @@ export default function LoginPage() {
                             />
                         </div>
 
+                        <div className="text-right">
+                            <a
+                                href="/auth/forgot-password"
+                                className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                            >
+                                Forgot password?
+                            </a>
+                        </div>
+
                         <button
                             type="submit"
                             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-semibold transition duration-300 cursor-pointer"
+                            disabled={loading}
                         >
-                            Login
+                            {loading ? 'Logging in...' : 'Login'}
                         </button>
+
+                        {/* Social login */}
+                        <div className="relative flex items-center justify-center py-4">
+                            <div className="absolute inset-0 flex items-center">
+                                <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
+                            </div>
+                            <div className="relative px-4 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-sm">
+                                Or continue with
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col gap-3">
+                            <button
+                                type="button"
+                                onClick={() => signIn("google", { callbackUrl })}
+                                className="cursor-pointer flex items-center justify-center gap-3 w-full border border-gray-300 dark:border-gray-600 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                            >
+                                <span className="text-xl"><FcGoogle /></span>
+                                <span className="text-sm font-medium text-gray-700 dark:text-gray-200">Continue with Google</span>
+                            </button>
+
+                            <button
+                                type="button"
+                                onClick={() => signIn("github", { callbackUrl })}
+                                className="cursor-pointer flex items-center justify-center gap-3 w-full border border-gray-300 dark:border-gray-600 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                            >
+                                <span className="text-xl text-gray-700 dark:text-white"><FaGithub /></span>
+                                <span className="text-sm font-medium text-gray-700 dark:text-gray-200">Continue with GitHub</span>
+                            </button>
+                        </div>
 
                         <p className="text-sm text-gray-600 dark:text-gray-400 text-center mt-4">
                             Don't have an account? <a href="/auth/register" className="text-blue-600 dark:text-blue-400 hover:underline">Register</a>

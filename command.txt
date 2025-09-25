@@ -21,3 +21,69 @@ git commit -m "Resolved merge conflicts"  # Commit conflict resolution
 
 # 6. Push your changes to GitHub (deploy to Vercel):
 git push origin main         # Push your changes to the main branch
+
+============================
+
+✅ 1. Google OAuth Setup
+🔗 Go to:
+https://console.cloud.google.com/apis/credentials
+
+Step-by-Step:
+1. Create a New Project (if needed)
+Click the project dropdown at the top
+Click "New Project"
+Name it something like: Remotenest Auth
+Click "Create", then select it
+
+2. Enable APIs
+Go to APIs & Services > Library
+Search for "Google+ API" or "Google People API"
+Click it and click Enable
+
+3. Create OAuth Credentials
+Go to APIs & Services > Credentials
+Click "Create Credentials" > "OAuth client ID"
+Select "Web Application"
+Set a name (e.g. NextAuth Google Login)
+Add Authorized redirect URI:
+
+For local dev:
+http://localhost:3000/api/auth/callback/google
+For product dev:
+https://remotenest.vercel.app/api/auth/callback/google
+
+
+4. Save Your Keys
+After creating, you’ll see:
+✅ Client ID
+✅ Client Secret
+
+=====================
+
+✅ 2. GitHub OAuth Setup
+🔗 Go to:
+https://github.com/settings/developers
+
+Step-by-Step:
+1. Click “OAuth Apps”
+Under Developer settings > OAuth Apps
+Click "New OAuth App"
+
+2. Fill Out the Form:
+Application Name: Remotenest
+Homepage URL:
+http://localhost:3000
+Authorization callback URL:
+http://localhost:3000/api/auth/callback/github
+https://remotenest.vercel.app/api/auth/callback/github
+
+
+3. Click Register Application
+4. Get Your Keys
+You’ll get:
+✅ Client ID
+✅ Client Secret (click "Generate new client secret")
+
+5. Add to .env.local
+GITHUB_CLIENT_ID=your_github_client_id_here
+GITHUB_CLIENT_SECRET=your_github_client_secret_here

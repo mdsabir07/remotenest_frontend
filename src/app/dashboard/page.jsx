@@ -1,17 +1,22 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
+import { redirect } from 'next/navigation';
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
 
-  if (!session)
-    return (
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <p className="text-red-600">Unauthorized. Please <a className="text-blue-600 underline" href="/login">login</a>.</p>
-      </div>
-    );
+  // Redirect unauthenticated users to login with callback
+  if (!session) {
+    const callbackUrl = encodeURIComponent('/dashboard');
+    redirect(`/auth/login?callbackUrl=${callbackUrl}`);
+  }
 
-  // derive initials for avatar
+  // Redirect unverified users to verify page
+  if (!session.user.isVerified) {
+    redirect('/auth/verify-email'); // Adjust path if you have a different verify page
+  }
+
+  // Authenticated & verified content below
   const name = session.user?.name || "User";
   const initials = name
     .split(" ")
