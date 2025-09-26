@@ -2,14 +2,14 @@
 import React, { useState } from "react";
 import CityShareButton from "./CityShareButton";
 import { FaStar } from "react-icons/fa";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 
 const SingleCitiesData = ({ singleData,  }) => {
-  const {data} = useSession();
+  // const {data} = useSession();
   // const user = data.user.name;
   // const userEmail = data.user.email;
   // const userId = data.user.id;
-  console.log(data.user)
+  // console.log(data.user)
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(null);
   const [review, setReview] = useState(' ')
