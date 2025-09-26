@@ -6,9 +6,9 @@ import { useSession } from "next-auth/react";
 
 const SingleCitiesData = ({ singleData,  }) => {
   const {data} = useSession();
-  const user = data.user.name;
-  const userEmail = data.user.email;
-  const userId = data.user.id;
+  // const user = data.user.name;
+  // const userEmail = data.user.email;
+  // const userId = data.user.id;
   console.log(data.user)
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(null);
@@ -33,16 +33,16 @@ const SingleCitiesData = ({ singleData,  }) => {
   // handleReviewSubmit
   const handleReviewSubmit = (e) => {
     e.preventDefault();
-    const userReview = {
-      userId,
-      user,
-      userEmail,
-      review,
-      rating,
-      cityId:  _id,
+    // const userReview = {
+    //   userId,
+    //   user,
+    //   userEmail,
+    //   review,
+    //   rating,
+    //   cityId:  _id,
 
-    }
-  console.log(userReview)
+    // }
+  
   }
 
   return (
