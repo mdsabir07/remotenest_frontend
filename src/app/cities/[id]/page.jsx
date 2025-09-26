@@ -12,7 +12,7 @@ export default function CitiesDetails({ params }) {
       try {
         const res = await fetch("/api/cities");
         const citiesData = await res.json();
-        const data = citiesData.cities;
+        const data = citiesData?.cities;
 
         if (Array.isArray(data)) {
           setCities(data);
