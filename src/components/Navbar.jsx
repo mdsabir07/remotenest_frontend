@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { useTheme } from "./ThemeContext";
-import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -52,9 +51,7 @@ const Navbar = () => {
   const [expandedMobile, setExpandedMobile] = useState({});
   const closeTimerRef = useRef(null);
 
-  const pathname = usePathname();
-  if(!pathname.includes('dashboard')){
- return (
+  return (
     <nav className="bg-white dark:bg-gray-900 shadow-md sticky top-0 z-50 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
@@ -251,8 +248,6 @@ const Navbar = () => {
       )}
     </nav>
   );
-  }
-  else{<></>}
  
 };
 

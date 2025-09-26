@@ -1,14 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { usePathname } from "next/navigation";
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
 export default function Footer() {
-  const pathname = usePathname();
-  if(!pathname.includes('dashboard')){
-return (
+  
+  return (
     <motion.footer
       className="bg-white dark:bg-gray-900"
       initial={{ opacity: 0, y: 50 }}
@@ -175,7 +173,5 @@ return (
       </div>
     </motion.footer>
   );
-  }
-  else{<></>}
   
 }
