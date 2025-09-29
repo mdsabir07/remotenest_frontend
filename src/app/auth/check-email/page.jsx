@@ -1,21 +1,18 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "../../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 
 export default async function CheckEmailPage() {
     const session = await getServerSession(authOptions);
 
-    // If not logged in, redirect to login page
     if (!session) {
         redirect("/auth/login");
     }
 
-    // If logged in and verified, redirect to dashboard
     if (session.user.isVerified) {
         redirect("/dashboard");
     }
 
-    // Otherwise, user is logged in but NOT verified — show message
     return (
         <div className="min-h-screen flex items-center justify-center p-4">
             <div className="max-w-md bg-white p-8 rounded shadow text-center">
