@@ -15,7 +15,9 @@ export async function GET(req) {
 
         await connectToDB();
 
+        console.log("Verify email token received:", token);
         const user = await User.findOne({ emailVerificationToken: token });
+        console.log("User found:", user);
 
         if (!user) {
             return new Response(
