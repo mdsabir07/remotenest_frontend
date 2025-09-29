@@ -2,7 +2,7 @@ import { connectToDB } from "@/lib/mongodb";
 import { User } from "@/models/User";
 import { hash } from "bcryptjs";
 import crypto from "crypto";
-import nodemailer from "nodemailer";
+import { sendVerificationEmail } from "@/lib/email"; // ✅ import central function
 
 export async function POST(req) {
   try {
@@ -11,7 +11,9 @@ export async function POST(req) {
 
     const existing = await User.findOne({ email });
     if (existing) {
-      return new Response(JSON.stringify({ message: "User already exists" }), { status: 400 });
+      return new Response(JSON.stringify({ message: "User already exists" }), {
+        status: 400,
+      });
     }
 
     const hashedPassword = await hash(password, 10);
@@ -20,7 +22,7 @@ export async function POST(req) {
     const emailVerificationToken = crypto.randomBytes(32).toString("hex");
     const emailVerificationExpires = Date.now() + 1000 * 60 * 60 * 24; // 24 hours
 
-    // Create user
+    // ✅ Create new user
     const newUser = await User.create({
       name,
       email,
@@ -34,52 +36,29 @@ export async function POST(req) {
 
     console.log("✅ New user created:", newUser.email);
 
-    // Send verification email
+    // ✅ Send verification email
     try {
-      console.log("📤 Preparing to send verification email to:", newUser.email);
-
-      const transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: Number(process.env.SMTP_PORT),
-        secure: false,
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASS,
-        },
-      });
-
-      const verificationUrl = `${process.env.NEXTAUTH_URL}/auth/verify-email?token=${emailVerificationToken}`;
-
-      const mailOptions = {
-        from: `"Remotenest" <${process.env.SMTP_USER}>`,
-        to: newUser.email,
-        subject: "Please verify your email address",
-        html: `
-          <p>Hello ${newUser.name},</p>
-          <p>Thank you for registering. Please verify your email by clicking the link below:</p>
-          <a href="${verificationUrl}">${verificationUrl}</a>
-          <p>This link expires in 24 hours.</p>
-        `,
-      };
-
-      const info = await transporter.sendMail(mailOptions);
-      console.log("✅ Verification email sent:", info.messageId);
-
+      await sendVerificationEmail(newUser.email, emailVerificationToken);
+      console.log("✅ Verification email sent to:", newUser.email);
     } catch (emailError) {
-      console.error("❌ Failed to send verification email:", emailError.message || emailError);
-      // Optionally handle retry logic or alert admin
+      console.error("❌ Failed to send verification email:", emailError);
+
+      // Optional: Delete user if email fails
+      // await User.findByIdAndDelete(newUser._id);
+      // return new Response(JSON.stringify({ message: "Failed to send verification email. Please try again later." }), { status: 500 });
     }
 
-    // Return sanitized user data
-    const obj = newUser.toObject();
-    delete obj.password;
-    delete obj.emailVerificationToken;
-    delete obj.emailVerificationExpires;
+    // Remove sensitive fields before sending response
+    const userObj = newUser.toObject();
+    delete userObj.password;
+    delete userObj.emailVerificationToken;
+    delete userObj.emailVerificationExpires;
 
-    return new Response(JSON.stringify({ user: obj }), { status: 201 });
-
+    return new Response(JSON.stringify({ user: userObj }), { status: 201 });
   } catch (err) {
-    console.error("❌ Registration error:", err.message || err);
-    return new Response(JSON.stringify({ message: "Internal Server Error" }), { status: 500 });
+    console.error("❌ Registration error:", err);
+    return new Response(JSON.stringify({ message: "Internal Server Error" }), {
+      status: 500,
+    });
   }
 }
