@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
-import { redirect } from 'next/navigation';
+import { redirect } from "next/navigation";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
@@ -11,33 +11,12 @@ export default async function DashboardPage() {
     redirect(`/auth/login?callbackUrl=${callbackUrl}`);
   }
 
-  
-  // ✅ Instead of redirecting, show a notice if not verified
+  // Redirect unverified users to verify-email page
   if (!session.user.isVerified) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="bg-white dark:bg-gray-800 p-6 rounded shadow text-center">
-          <h2 className="text-xl font-bold mb-4 text-red-500">Email Not Verified</h2>
-          <p className="mb-4">
-            Please check your inbox and verify your email before accessing the dashboard.
-          </p>
-          <a
-            href="/auth/login"
-            className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
-            Go to Login
-          </a>
-        </div>
-      </div>
-    );
+    redirect('/auth/verify-email');
   }
 
-  // Redirect unverified users to verify page
-  if (!session.user.isVerified) {
-    redirect('/auth/verify-email'); // Adjust path if you have a different verify page
-  }
-
-  // Authenticated & verified content below
+  // User is authenticated and verified - show dashboard content below
   const name = session.user?.name || "User";
   const initials = name
     .split(" ")
@@ -68,7 +47,7 @@ export default async function DashboardPage() {
         </div>
       </header>
 
-      {/* Stats */}
+      {/* Stats Section */}
       <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm rounded-lg p-4 border border-gray-100 dark:border-gray-700">
           <div className="text-sm text-gray-200">Active Projects</div>
@@ -89,11 +68,10 @@ export default async function DashboardPage() {
         </div>
       </section>
 
-      {/* Charts */}
+      {/* Charts Section */}
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <div className="bg-white/80 dark:bg-gray-800/80 shadow-sm rounded-lg p-4 border border-gray-100 dark:border-gray-700">
           <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Monthly Active Users</h3>
-          {/* Simple bar chart (static SVG) - uses currentColor for theme-aware color */}
           <div className="w-full h-40 text-sky-500 dark:text-sky-400">
             <svg viewBox="0 0 100 40" className="w-full h-full text-current">
               <g fill="currentColor">
@@ -111,7 +89,6 @@ export default async function DashboardPage() {
 
         <div className="bg-white/80 dark:bg-gray-800/80 shadow-sm rounded-lg p-4 border border-gray-100 dark:border-gray-700">
           <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Engagement Overview</h3>
-          {/* Simple area chart (static SVG) */}
           <div className="w-full h-40 text-emerald-500 dark:text-emerald-300">
             <svg viewBox="0 0 100 40" className="w-full h-full text-current">
               <path d="M0 30 C 20 10, 40 10, 60 20 C 80 30, 100 10, 120 20" fill="none" stroke="currentColor" strokeWidth="2" />
@@ -121,7 +98,7 @@ export default async function DashboardPage() {
         </div>
       </section>
 
-      {/* Recent activity / table */}
+      {/* Recent Activity Section */}
       <section className="bg-white/80 dark:bg-gray-800/80 shadow-sm rounded-lg p-4 border border-gray-100 dark:border-gray-700">
         <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Recent Activity</h3>
         <div className="overflow-x-auto">
