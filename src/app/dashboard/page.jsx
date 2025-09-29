@@ -13,7 +13,7 @@ export default async function DashboardPage() {
 
   // Redirect unverified users to verify-email page
   if (!session.user.isVerified) {
-    redirect('/auth/verify-email');
+    redirect('/auth/verify-email?fromDashboard=true');
   }
 
   // User is authenticated and verified - show dashboard content below
