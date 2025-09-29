@@ -40,7 +40,7 @@ export default function ForgotPasswordPage() {
                 text: 'Please check your email to reset your password.',
             });
 
-            router.push('/login');
+            router.push('/auth/login');
         } catch (err) {
             Swal.fire({
                 icon: 'error',
@@ -70,7 +70,7 @@ export default function ForgotPasswordPage() {
                     <button
                         type="submit"
                         disabled={submitting}
-                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition duration-300"
+                        className="cursor-pointer w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition duration-300"
                     >
                         {submitting ? 'Sending...' : 'Send Reset Link'}
                     </button>

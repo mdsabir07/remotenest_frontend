@@ -89,7 +89,7 @@ export default function ResetPasswordPage() {
                     <button
                         type="submit"
                         disabled={submitting}
-                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition duration-300"
+                        className="cursor-pointer w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition duration-300"
                     >
                         {submitting ? 'Resetting...' : 'Reset Password'}
                     </button>
