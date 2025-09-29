@@ -1,9 +1,9 @@
 import NextAuth from "next-auth";
+import { connectToDB } from "@/lib/mongodb";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import { compare } from "bcryptjs";
-import { connectToDB } from "@/lib/mongodb";
 import { User } from "@/models/User";
 import nodemailer from "nodemailer";
 
@@ -47,7 +47,7 @@ export const authOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
-    
+
     GitHubProvider({
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
@@ -172,13 +172,17 @@ export const authOptions = {
 
     async jwt({ token, user }) {
       if (user) {
-        console.log('User on sign-in:', user);
-        token.id = user.id || user._id?.toString() || token.id;
-        token.role = user.role || token.role;
-        token.email = user.email || token.email;
-        token.name = user.name || token.name;
-        token.isVerified = typeof user.isVerified !== 'undefined' ? Boolean(user.isVerified) : token.isVerified;
-        console.log('Token after sign-in:', token);
+        // Connect to DB to fetch fresh user info (for social login especially)
+        await connectToDB();
+        // Fetch latest user info by email
+        const dbUser = await User.findOne({ email: user.email }).lean();
+        
+        token.id = dbUser?._id?.toString() || token.id;
+        token.role = dbUser?.role || user.role || token.role;
+        token.email = dbUser?.email || user.email || token.email;
+        token.name = dbUser?.name || user.name || token.name;
+        token.isVerified = dbUser ? Boolean(dbUser.isVerified) : Boolean(user.isVerified) || Boolean(token.isVerified);
+        console.log('Token after sign-in (updated with DB):', token);
       }
       return token;
     },
