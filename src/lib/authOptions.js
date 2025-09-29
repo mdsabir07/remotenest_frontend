@@ -137,27 +137,31 @@ export const authOptions = {
 
   callbacks: {
     // Sync social users with DB
-    async signIn({ user, account }) {
-      if (account.provider === "google" || account.provider === "github") {
-        await connectToDB();
-
-        const existingUser = await User.findOne({ email: user.email });
-        if (!existingUser) {
-          // Create new user for social login
-          const newUser = new User({
-            name: user.name,
-            email: user.email,
-            role: "user",
-            isVerified: true,
-            password: "", // no password for social accounts
-          });
-          await newUser.save();
+    async signIn({ user, account, profile }) {
+      try {
+        if (account.provider === "google" || account.provider === "github") {
+          await connectToDB();
+          const existingUser = await User.findOne({ email: user.email });
+          if (!existingUser) {
+            const newUser = new User({
+              name: user.name,
+              email: user.email,
+              role: "user",
+              isVerified: true,
+              password: "", // no password for social login
+            });
+            await newUser.save();
+          }
         }
+        return true;
+      } catch (error) {
+        console.error("OAuth sign-in error:", error);
+        return false; // Prevent login if there's an error
       }
-      return true;
     },
 
     async redirect({ url, baseUrl }) {
+      console.log("Redirect URL:", url);
       // Prevent redirecting social users to verify-email page
       return baseUrl + "/dashboard"; // or your preferred page
     },
