@@ -19,6 +19,42 @@ export async function POST(req) {
   const emailVerificationToken = crypto.randomBytes(32).toString("hex");
   const emailVerificationExpires = Date.now() + 1000 * 60 * 60 * 24; // 24 hours from now
 
+
+  // After user is created
+  console.log("✅ New user created:", newUser.email);
+
+  try {
+    console.log("📤 Preparing to send verification email to:", newUser.email);
+
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT),
+      secure: false,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+
+    const verificationUrl = `${process.env.NEXTAUTH_URL}/auth/verify-email?token=${newUser.emailVerificationToken}`;
+
+    const mailOptions = {
+      from: `"Remotenest" <${process.env.SMTP_USER}>`,
+      to: newUser.email,
+      subject: "Please verify your email address",
+      html: `<p>Hello ${newUser.name},</p>
+           <p>Please verify your email by clicking below:</p>
+           <a href="${verificationUrl}">${verificationUrl}</a>`,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log("✅ Verification email sent successfully:", info.messageId);
+
+  } catch (error) {
+    console.error("❌ Error while sending verification email:", error.message || error);
+  }
+
+
   // Create user with verification token & expiry
   const newUser = await User.create({
     name,
@@ -60,7 +96,7 @@ export async function POST(req) {
     console.error("Error sending verification email:", error);
     // Optionally handle failure, e.g., delete user or mark for retry
   }
-  
+
   // don't return password or verification token/expiry in response
   const obj = newUser.toObject();
   delete obj.password;
