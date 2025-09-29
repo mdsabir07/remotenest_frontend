@@ -3,17 +3,17 @@ import nodemailer from 'nodemailer';
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
     },
 });
 
 // ✅ Send email verification
 export async function sendVerificationEmail(to, token) {
-    const verificationUrl = `${process.env.NEXTAUTH_URL}/api/auth/verify-email?token=${token}`;
+    const verificationUrl = `${process.env.NEXTAUTH_URL}/auth/verify-email?token=${token}`;
 
     const mailOptions = {
-        from: process.env.EMAIL_USER,
+        from: `"Remotenest" <${process.env.SMTP_USER}>`,
         to,
         subject: 'Verify your email for Remotenest',
         html: `
@@ -29,10 +29,12 @@ export async function sendVerificationEmail(to, token) {
 
 // ✅ Send password reset email
 export async function sendResetPasswordEmail(to, token, name = 'User') {
+    name = name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
     const resetUrl = `${process.env.NEXTAUTH_URL}/auth/reset-password?token=${token}`;
 
     const mailOptions = {
-        from: process.env.EMAIL_USER,
+        from: `"Remotenest" <${process.env.SMTP_USER}>`,
         to,
         subject: 'Password Reset Request - Remotenest',
         html: `
@@ -47,10 +49,12 @@ export async function sendResetPasswordEmail(to, token, name = 'User') {
     await transporter.sendMail(mailOptions);
 }
 
-// ✅ NEW: Send OTP email
+// ✅ Send OTP email
 export async function sendOtpEmail(to, name, otp) {
+    name = name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
     const mailOptions = {
-        from: process.env.EMAIL_USER,
+        from: `"Remotenest" <${process.env.SMTP_USER}>`,
         to,
         subject: 'Your OTP Code - Remotenest',
         html: `

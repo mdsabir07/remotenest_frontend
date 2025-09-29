@@ -3,7 +3,7 @@ import { User } from "@/models/User";
 import nodemailer from "nodemailer";
 
 function generateOTP() {
-    return Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit OTP
+    return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
 export async function POST(req) {
@@ -17,8 +17,8 @@ export async function POST(req) {
     }
 
     await connectToDB();
-    const user = await User.findOne({ email });
 
+    const user = await User.findOne({ email });
     if (!user) {
         return new Response(JSON.stringify({ message: "User not found" }), {
             status: 404,
@@ -26,28 +26,27 @@ export async function POST(req) {
         });
     }
 
-    // Optional: Rate limit if OTP still valid
+    // Rate limit: prevent multiple OTPs if one is still valid
     if (user.otpExpires && user.otpExpires > Date.now()) {
-        return new Response(JSON.stringify({ message: "OTP already sent. Please wait." }), {
-            status: 429,
-            headers: { "Content-Type": "application/json" },
-        });
+        return new Response(
+            JSON.stringify({ message: "OTP already sent. Please wait." }),
+            {
+                status: 429,
+                headers: { "Content-Type": "application/json" },
+            }
+        );
     }
 
     const otp = generateOTP();
-    const otpExpires = Date.now() + 1000 * 60 * 10; // 10 minutes
-
-    // Save OTP and expiration (plain or hashed)
-    user.otp = otp; // OR hash it
-    user.otpExpires = otpExpires;
+    user.otp = otp;
+    user.otpExpires = Date.now() + 10 * 60 * 1000; // expires in 10 minutes
     await user.save();
 
-    // Email setup
     try {
         const transporter = nodemailer.createTransport({
             host: process.env.SMTP_HOST,
-            port: process.env.SMTP_PORT,
-            secure: false,
+            port: Number(process.env.SMTP_PORT),  // ensure port is number
+            secure: Number(process.env.SMTP_PORT) === 465, // secure if port 465
             auth: {
                 user: process.env.SMTP_USER,
                 pass: process.env.SMTP_PASS,
@@ -74,7 +73,6 @@ export async function POST(req) {
             status: 200,
             headers: { "Content-Type": "application/json" },
         });
-
     } catch (error) {
         console.error("Error sending OTP email:", error);
 

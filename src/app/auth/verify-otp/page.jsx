@@ -5,21 +5,21 @@ import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 
 export default function VerifyOtpPage() {
-    const searchParams = useSearchParams();
-    const email = searchParams.get('email');
     const router = useRouter();
+    const searchParams = useSearchParams();
 
+    const email = searchParams.get('email');
     const [otp, setOtp] = useState('');
     const [submitting, setSubmitting] = useState(false);
 
-    // ✅ Redirect if email is missing
+    // Redirect if email is missing
     useEffect(() => {
         if (!email) {
             Swal.fire({
                 icon: 'error',
                 title: 'Invalid Access',
                 text: 'Missing email in URL. Redirecting...',
-            }).then(() => router.push('/login'));
+            }).then(() => router.push('/auth/login'));
         }
     }, [email, router]);
 
@@ -30,7 +30,7 @@ export default function VerifyOtpPage() {
             Swal.fire({
                 icon: 'error',
                 title: 'Invalid OTP',
-                text: 'Please enter the 6-digit OTP code.',
+                text: 'Please enter a valid 6-digit OTP.',
             });
             return;
         }
@@ -51,15 +51,16 @@ export default function VerifyOtpPage() {
             await Swal.fire({
                 icon: 'success',
                 title: 'OTP Verified!',
-                text: 'Your email has been verified successfully.',
+                text: 'Your email has been verified.',
             });
 
             router.push('/auth/login');
         } catch (err) {
+            console.error('OTP Verification Error:', err);
             Swal.fire({
                 icon: 'error',
-                title: 'Error',
-                text: err.message || 'Something went wrong. Try again.',
+                title: 'Verification Failed',
+                text: err.message || 'Something went wrong. Please try again.',
             });
         } finally {
             setSubmitting(false);
@@ -78,25 +79,24 @@ export default function VerifyOtpPage() {
                     </label>
                     <input
                         type="text"
+                        inputMode="numeric"
+                        pattern="\d{6}"
+                        maxLength={6}
                         required
                         value={otp}
-                        maxLength={6}
-                        pattern="\d{6}"
-                        inputMode="numeric"
                         onChange={(e) => {
                             const val = e.target.value;
-                            if (/^\d*$/.test(val)) setOtp(val); // Allow only numbers
+                            if (/^\d*$/.test(val)) setOtp(val);
                         }}
                         className="w-full px-4 py-2 mb-4 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none"
                     />
-
                     <button
                         type="submit"
                         disabled={submitting}
                         className={`w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition duration-300 ${submitting ? 'opacity-70 cursor-not-allowed' : ''
                             }`}
                     >
-                        {submitting ? 'Verifying...' : 'Verify'}
+                        {submitting ? 'Verifying...' : 'Verify OTP'}
                     </button>
                 </form>
             </div>

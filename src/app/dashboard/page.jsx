@@ -11,6 +11,27 @@ export default async function DashboardPage() {
     redirect(`/auth/login?callbackUrl=${callbackUrl}`);
   }
 
+  
+  // ✅ Instead of redirecting, show a notice if not verified
+  if (!session.user.isVerified) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded shadow text-center">
+          <h2 className="text-xl font-bold mb-4 text-red-500">Email Not Verified</h2>
+          <p className="mb-4">
+            Please check your inbox and verify your email before accessing the dashboard.
+          </p>
+          <a
+            href="/auth/login"
+            className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            Go to Login
+          </a>
+        </div>
+      </div>
+    );
+  }
+
   // Redirect unverified users to verify page
   if (!session.user.isVerified) {
     redirect('/auth/verify-email'); // Adjust path if you have a different verify page

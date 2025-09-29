@@ -1,5 +1,3 @@
-// app/api/auth/verify-email/route.js
-
 import { connectToDB } from "@/lib/mongodb";
 import { User } from "@/models/User";
 
@@ -17,20 +15,22 @@ export async function GET(req) {
 
         await connectToDB();
 
-        // Find user by token and check expiration
-        const user = await User.findOne({
-            emailVerificationToken: token,
-            emailVerificationExpires: { $gt: Date.now() },
-        });
+        const user = await User.findOne({ emailVerificationToken: token });
 
         if (!user) {
             return new Response(
-                JSON.stringify({ message: "Invalid or expired token" }),
+                JSON.stringify({ message: "Invalid token" }),
                 { status: 400, headers: { "Content-Type": "application/json" } }
             );
         }
 
-        // Mark user as verified and clear token fields
+        if (user.emailVerificationExpires < Date.now()) {
+            return new Response(
+                JSON.stringify({ message: "Token expired" }),
+                { status: 400, headers: { "Content-Type": "application/json" } }
+            );
+        }
+
         user.isVerified = true;
         user.emailVerificationToken = undefined;
         user.emailVerificationExpires = undefined;

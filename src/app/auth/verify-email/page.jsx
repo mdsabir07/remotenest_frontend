@@ -12,14 +12,14 @@ export default function VerifyEmailPage() {
 
     useEffect(() => {
         if (!token) {
-            Swal.fire('Error', 'Verification token missing', 'error');
-            setLoading(false);
-            return;
+            Swal.fire('Error', 'Verification token missing', 'error').then(() => {
+                router.push('/dashboard');  // Redirect after modal
+            });
+            return; // no need to set loading false here since we redirect
         }
 
         const verifyEmail = async () => {
             try {
-                // Use GET request with token in query string
                 const res = await fetch(`/api/auth/verify-email?token=${encodeURIComponent(token)}`);
                 const data = await res.json();
 
@@ -28,16 +28,17 @@ export default function VerifyEmailPage() {
                 }
 
                 await Swal.fire('Success', 'Email verified successfully!', 'success');
+                setLoading(false); // show UI update before redirect
                 router.push('/auth/login');
             } catch (err) {
-                Swal.fire('Error', err.message, 'error');
-            } finally {
+                await Swal.fire('Error', err.message, 'error');
                 setLoading(false);
             }
         };
 
         verifyEmail();
     }, [token, router]);
+
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 px-4">

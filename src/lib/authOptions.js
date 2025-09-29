@@ -1,12 +1,45 @@
-// src/lib/authOptions.js
-
+import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
-import CredentialsProvider from "next-auth/providers/credentials";
-
+import { compare } from "bcryptjs";
 import { connectToDB } from "@/lib/mongodb";
 import { User } from "@/models/User";
-import { compare } from "bcryptjs";
+import nodemailer from "nodemailer";
+
+// Helper to send OTP email
+async function sendOTPEmail(user, otp) {
+  try {
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT),
+      secure: false,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: `"Remotenest" <${process.env.SMTP_USER}>`,
+      to: user.email,
+      subject: "Your OTP Code",
+      html: `
+        <p>Hello ${user.name},</p>
+        <p>Your OTP code is <strong>${otp}</strong>. It expires in 10 minutes.</p>
+      `,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+
+    if (process.env.NODE_ENV !== "production") {
+      console.log("✅ OTP email sent:", info.messageId);
+    }
+  } catch (error) {
+    console.error("❌ Error sending OTP email:", error);
+    throw new Error("Failed to send OTP email");
+  }
+}
 
 export const authOptions = {
   providers: [
@@ -14,114 +47,150 @@ export const authOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
-
     GitHubProvider({
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
     }),
-
     CredentialsProvider({
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
+        otp: { label: "OTP", type: "text", placeholder: "6-digit OTP (if required)" },
       },
       async authorize(credentials) {
         await connectToDB();
 
+        // Fetch user by email
         const user = await User.findOne({ email: credentials.email });
-
-        // 🆕 Reject if user doesn't exist
         if (!user) {
-          throw new Error("User not found");
+          throw new Error("Invalid email or password");
         }
 
-        const isPasswordCorrect = await compare(credentials.password, user.password);
-
-        // 🆕 Reject if password is wrong
-        if (!isPasswordCorrect) {
-          throw new Error("Invalid password");
-        }
-
-        // 🆕 Block login if email not verified
         if (!user.isVerified) {
-          throw new Error("Email not verified. Please check your inbox.");
+          throw new Error("Email not verified");
         }
 
-        return {
-          id: user._id.toString(),
-          name: user.name,
-          email: user.email,
-          role: user.role || "user",
-          isVerified: true,
-        };
+        // Verify password
+        const isValidPassword = await compare(credentials.password, user.password);
+        if (!isValidPassword) {
+          throw new Error("Invalid email or password");
+        }
+
+        const now = Date.now();
+
+        // Check if user has a valid OTP active
+        if (user.otp && user.otpExpires && user.otpExpires > now) {
+          if (!credentials.otp) {
+            // OTP required but not provided
+            throw new Error("OTP required");
+          }
+
+          if (credentials.otp !== user.otp) {
+            // OTP does not match
+            throw new Error("Invalid OTP");
+          }
+
+          // OTP matched, clear OTP fields
+          await User.updateOne(
+            { _id: user._id },
+            { $unset: { otp: 1, otpExpires: 1 } }
+          );
+
+          // Successful login
+          console.log("✅ OTP matched. Returning user:", user.email);
+          return {
+            id: user._id.toString(),
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            isVerified: user.isVerified,
+          };
+        } else if (user.otp || user.otpExpires) {
+          // OTP expired or invalid, clear OTP fields for fresh OTP next time
+          await User.updateOne(
+            { _id: user._id },
+            { $unset: { otp: 1, otpExpires: 1 } }
+          );
+        }
+
+        // No valid OTP — generate and send new OTP email
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        user.otp = otp;
+        user.otpExpires = now + 10 * 60 * 1000; // expires in 10 minutes
+        await user.save();
+
+        await sendOTPEmail(user, otp);
+
+        throw new Error("OTP required");
       },
     }),
   ],
 
   pages: {
     signIn: "/auth/login",
-    error: "/auth/error",
   },
-
-  secret: process.env.NEXTAUTH_SECRET,
 
   session: {
     strategy: "jwt",
   },
 
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-        if (user.role) token.role = user.role;
-        if (user.isVerified !== undefined) token.isVerified = user.isVerified;  // ✅ Keeps verification status
-      }
+    // Sync social users with DB
+    async signIn({ user, account }) {
+      if (account.provider === "google" || account.provider === "github") {
+        await connectToDB();
 
-      if (token?.id && !token?.role) {
-        try {
-          await connectToDB();
-          const dbUser = await User.findById(token.id).select("role isVerified").lean();
-          if (dbUser?.role) token.role = dbUser.role;
-          if (dbUser?.isVerified !== undefined) token.isVerified = dbUser.isVerified;
-        } catch (err) {
-          console.error("JWT callback error:", err);
+        const existingUser = await User.findOne({ email: user.email });
+        if (!existingUser) {
+          // Create new user for social login
+          const newUser = new User({
+            name: user.name,
+            email: user.email,
+            role: "user",
+            isVerified: true,
+            password: "", // no password for social accounts
+          });
+          await newUser.save();
         }
       }
+      return true;
+    },
 
+    async redirect({ url, baseUrl }) {
+      // Prevent redirecting social users to verify-email page
+      return baseUrl + "/dashboard"; // or your preferred page
+    },
+
+
+    async jwt({ token, user }) {
+      if (user) {
+        console.log('User on sign-in:', user);
+        token.id = user.id || user._id?.toString() || token.id;
+        token.role = user.role || token.role;
+        token.email = user.email || token.email;
+        token.name = user.name || token.name;
+        token.isVerified = typeof user.isVerified !== 'undefined' ? Boolean(user.isVerified) : token.isVerified;
+        console.log('Token after sign-in:', token);
+      }
       return token;
     },
 
     async session({ session, token }) {
-      if (token?.id) session.user.id = token.id;
-      if (token?.role) session.user.role = token.role;
-      if (token?.isVerified !== undefined) session.user.isVerified = token.isVerified;
+      session.user = session.user || {};
+      session.user.id = token.id;
+      session.user.role = token.role;
+      session.user.email = token.email;
+      session.user.name = token.name;
+      // Pass isVerified from token to session.user
+      session.user.isVerified = Boolean(token.isVerified);
+      console.log('Session user:', session.user);
       return session;
     },
 
-    async signIn({ user, account, profile }) {
-      if (account?.provider === "google" || account?.provider === "github") {
-        try {
-          await connectToDB();
-
-          const existingUser = await User.findOne({ email: user.email });
-
-          if (!existingUser) {
-            await User.create({
-              name: user.name || profile?.name || profile?.login,
-              email: user.email,
-              avatar: user.image || profile?.picture || profile?.avatar_url,
-              role: "user",
-              isVerified: true, // ✅ Trust social login users
-            });
-          }
-        } catch (err) {
-          console.error("Error during social login user creation:", err);
-          return false;
-        }
-      }
-
-      return true;
-    },
   },
+
+  secret: process.env.NEXTAUTH_SECRET,
 };
+
+export default NextAuth(authOptions);
