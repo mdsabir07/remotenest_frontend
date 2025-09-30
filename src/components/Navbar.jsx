@@ -22,6 +22,7 @@ const Navbar = () => {
       children: [
         { name: "AI Recommender", path: "/recommender" },
         { name: "Blog", path: "/blog" },
+        { name: "FAQs", path: "/faq" },
       ],
     },
     { name: "About", path: "/about" },
