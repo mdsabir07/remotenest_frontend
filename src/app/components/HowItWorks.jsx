@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import { Search, Sliders, Sparkles, Heart } from "lucide-react";
 
@@ -9,59 +7,70 @@ const HowItWorks = () => {
       id: 1,
       title: "Search cities",
       desc: "Type a city name and quickly find details, attractions and costs.",
-      icon: <Search className="w-6 h-6 text-indigo-600" aria-hidden="true"  />,
+      icon: <Search className="w-6 h-6 text-white" aria-hidden="true" />,
       example: true,
+      color: "from-indigo-500 to-purple-500",
     },
     {
       id: 2,
       title: "Compare & filter",
       desc: "Filter by price, climate, safety and compare multiple cities side-by-side.",
-      icon: <Sliders className="w-6 h-6 text-indigo-600" />,
-      
+      icon: <Sliders className="w-6 h-6 text-white" />,
+      color: "from-green-400 to-teal-500",
     },
     {
       id: 3,
       title: "Get AI recommendations",
       desc: "Personalized city suggestions based on your preferences.",
-      icon: <Sparkles className="w-6 h-6 text-indigo-600" />,
+      icon: <Sparkles className="w-6 h-6 text-white" />,
+      color: "from-yellow-400 to-orange-500",
     },
     {
       id: 4,
       title: "Save your favorite cities",
       desc: "Bookmark cities to a favorites list for later planning and sharing.",
-      icon: <Heart className="w-6 h-6 text-indigo-600" />,
+      icon: <Heart className="w-6 h-6 text-white" />,
+      color: "from-pink-400 to-red-500",
     },
   ];
 
   return (
-    <section className="max-w-7xl mx-auto px-6 py-12">
-      <div className="text-center mb-10">
+    <section className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+      <div className="text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-bold">How it works</h2>
-        <p className="text-gray-600 mt-2">
-           find the perfect city for you
+        <p className=" mt-2 text-lg">
+          Find the perfect city for you in just a few steps
         </p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-4 sm:grid-cols-2">
-        {steps.map((s) => (
+        {steps.map((s, idx) => (
           <div
             key={s.id}
-            className="bg-white  rounded-2xl p-6 shadow hover:shadow-lg transition"
+            className="relative bg-white rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-transform transform hover:scale-105 duration-300"
           >
-            <div className="flex items-start gap-4">
-              <div className="flex-none w-12 h-12 rounded-xl bg-indigo-100 flex items-center justify-center">
-                {s.icon}
-              </div>
-              <div>
-                <h3 className="font-semibold text-lg">{s.title}</h3>
-                <p className="text-sm text-gray-500 mt-1">{s.desc}</p>
-              </div>
+            {/* Step Number */}
+            <div className="absolute -top-4 -left-4 w-10 h-10 bg-indigo-500 text-white font-bold flex items-center justify-center rounded-full shadow-md">
+              {idx + 1}
             </div>
 
-            {/* input  */}
+            {/* Icon */}
+            <div
+              className={`flex-none w-14 h-14 rounded-xl flex items-center justify-center mb-4 bg-gradient-to-br ${s.color}`}
+            >
+              {s.icon}
+            </div>
+
+            {/* Title & Description */}
+            <div>
+              <h3 className="font-semibold text-lg">{s.title}</h3>
+              <p className="text-sm text-gray-500 mt-1">{s.desc}</p>
+            </div>
+
+            {/* Input */}
             {s.example && (
               <div className="mt-4">
-                <div className="flex items-center border rounded-lg px-2 py-1.5 bg-gray-50">
+                <div className="flex items-center border rounded-xl px-3 py-2 bg-gray-50 focus-within:ring-2 focus-within:ring-indigo-400 transition">
                   <Search className="w-5 h-5 text-gray-400" />
                   <input
                     type="text"

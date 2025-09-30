@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+// import React, { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 
@@ -51,15 +51,27 @@ const ReviewData = [
 ];
 
 const CommunityHighlight = () => {
+
+//    useEffect(() => {
+//     const fetchReview = async () => {
+//         try{
+//             const res = await fetch('/api/cities/reviews');
+//             console.log(res)
+//         }
+    
+//     catch{
+//         console.log('review loading fild')
+//     }
+//     }
+//    }, [])
+      
     return (
         <div className="py-10" >
             <h2 className="text-4xl md:font-5xl mb-4 font-bold text-center">
                 Community <span className="text-blue-600">Highlights</span>
             </h2>
-            <p className="text-gray-700 max-w-2xl mx-auto text-center mb-10 text-lg">
-                Discover inspiring stories, experiences, and insights shared by our vibrant
-                community. Stay connected, get motivated, and explore how others are making
-                the most of remote work and travel.
+            <p className=" dark:text-gray-500 max-w-2xl mx-auto text-center mb-10 text-lg">
+                Discover inspiring stories and insights from our vibrant community—stay connected, motivated, and explore remote work and travel.
             </p>
             <div className="h-[500px] pt-16" style={{ backgroundImage: `url(https://i.ibb.co.com/rfmBYhWd/end-game-1-4.jpg)`, backgroundPosition: 'center', backgroundSize: 'cover' }}>
                 <Swiper

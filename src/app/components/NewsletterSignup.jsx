@@ -25,7 +25,7 @@ const NewsletterSignup = () => {
   };
 
   return (
-   <div className="border-blue-400 relative border rounded-2xl shadow-2xl py-16 max-w-7xl mx-auto px-6 bg-white flex flex-col items-center justify-center text-center">
+   <div className="border-blue-400 relative border rounded-2xl shadow-2xl py-16 max-w-[90%] mx-auto px-6 bg-white flex flex-col items-center justify-center text-center my-16">
       {/* Top Icon */}
       <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
         <div className="flex h-16 w-16 items-center justify-center border border-blue-400 rounded-full bg-white shadow-lg">
@@ -37,11 +37,6 @@ const NewsletterSignup = () => {
       <h2 className="text-4xl font-bold text-gray-800 mb-3">
         Join Our Newsle<span className="text-blue-400">tt</span>er
       </h2>
-      <h2 className="text-4xl font-bold text-gray-800 mb-3">
-        Join Our Newsle<span className="text-blue-400">tt</span>er
-        Test
-      </h2>
-     
       <p className="text-gray-600 mb-6 text-lg max-w-lg">
         Get the best destinations, travel tips & insider guides delivered to your inbox.
       </p>
@@ -61,7 +56,7 @@ const NewsletterSignup = () => {
           />
           <button
             type="submit"
-            className="absolute right-1 top-1 bottom-1 px-4 rounded-lg bg-emerald-500 text-white font-medium hover:bg-emerald-600 transition-all duration-300"
+            className="absolute right-1 top-1 bottom-1 px-4 rounded-lg duration-300         bg-emerald-500 text-white  rounded-r-md hover:bg-emerald-600 transition"
           >
             Subscribe
           </button>

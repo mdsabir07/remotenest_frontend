@@ -17,7 +17,7 @@ const FeaturedCities = () => {
         const citiesData = await res.json();
         const data = citiesData?.cities;
         if (Array.isArray(data)) {
-          setCities(data);
+          setCities(data.slice(0,6));
         } else {
           console.error("Cities is not an array:", data);
         }
