@@ -6,7 +6,7 @@ const ReviewSchema = new mongoose.Schema({
     rating: { type: Number, min: 1, max: 5 },
     title: String,
     body: String,
-    helpful: { type: Date, default: Date.now },
+    createdAt: { type: Date, default: Date.now }, // ✅ renamed from "helpful"
 });
 
 const CostSchema = new mongoose.Schema(

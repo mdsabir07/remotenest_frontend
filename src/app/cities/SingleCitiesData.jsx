@@ -1,19 +1,27 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CityShareButton from "./CityShareButton";
 import { FaStar } from "react-icons/fa";
-// import { useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
-const SingleCitiesData = ({ singleData,  }) => {
-  // const {data} = useSession();
-  // const user = data.user.name;
+const SingleCitiesData = ({ singleData, }) => {
+  const { data: session } = useSession();
+  const user = session?.user?.name;
+  const userId = session?.user?.id;
   // const userEmail = data.user.email;
-  // const userId = data.user.id;
-  // console.log(data.user)
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(null);
-  const [review, setReview] = useState(' ')
-  const { 
+  const [review, setReview] = useState('')
+
+  const [cityReviews, setCityReviews] = useState([]);
+  const [loadingReviews, setLoadingReviews] = useState(true);
+  const [error, setError] = useState(null);
+
+  if (!singleData) {
+    return <p className="text-center text-gray-500 py-10">No city data available.</p>;
+  }
+
+  const {
     _id,
     name,
     country,
@@ -27,23 +35,73 @@ const SingleCitiesData = ({ singleData,  }) => {
     reviewCount,
     status,
     createdAt,
-    approvedAt, 
+    approvedAt,
   } = singleData;
 
-  // handleReviewSubmit
-  const handleReviewSubmit = (e) => {
-    e.preventDefault();
-    // const userReview = {
-    //   userId,
-    //   user,
-    //   userEmail,
-    //   review,
-    //   rating,
-    //   cityId:  _id,
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const res = await fetch(`/api/cities/${singleData._id}/reviews`);
+        const data = await res.json();
+        setCityReviews(data.reviews || []);
+      } catch (err) {
+        setError("Failed to load reviews.");
+        console.error("Error fetching reviews:", err);
+      } finally {
+        setLoadingReviews(false);
+      }
+    };
+    fetchReviews();
+  }, [singleData._id]);
 
-    // }
-  
-  }
+  // handleReviewSubmit
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!session) {
+      alert("Please log in to submit a review.");
+      return;
+    }
+
+    if (!rating || !review.trim()) {
+      alert("Rating and review text are required.");
+      return;
+    }
+
+    const payload = {
+      rating,
+      title: `Review by ${user}`,
+      body: review,
+    };
+
+    try {
+      const res = await fetch(`/api/cities/${_id}/reviews`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error("Failed to post review");
+
+      const data = await res.json();
+
+      // Update UI
+      setCityReviews((prev) => [...prev, {
+        userName: user,
+        rating,
+        body: review,
+      }]);
+
+      setReview("");
+      setRating(0);
+    } catch (err) {
+      console.error("Review submit error:", err);
+      alert("Failed to submit review.");
+    }
+  };
+
 
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300">
@@ -154,9 +212,8 @@ const SingleCitiesData = ({ singleData,  }) => {
                   onClick={() => setRating(star)}
                   onMouseEnter={() => setHover(star)}
                   onMouseLeave={() => setHover(null)}
-                  className={`cursor-pointer transition-colors ${
-                (hover || rating) >= star ? "text-yellow-400" : "text-gray-300"
-              }`}
+                  className={`cursor-pointer transition-colors ${(hover || rating) >= star ? "text-yellow-400" : "text-gray-300"
+                    }`}
                   size={22}
                 />
               ))}
@@ -169,41 +226,49 @@ const SingleCitiesData = ({ singleData,  }) => {
               placeholder="Write your experience..."
               className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
             ></textarea>
-            <button type="submit" className="mt-3 px-5 py-2 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition">
+            <button
+              type="submit"
+              disabled={loadingReviews || !rating}
+              className={`mt-3 px-5 py-2 rounded-lg cursor-pointer shadow transition ${loadingReviews || !rating
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-emerald-600 hover:bg-emerald-700 text-white"
+                }`}
+            >
               Submit Review
             </button>
+
           </form>
+          {error && <p className="text-red-500">{error}</p>}
 
-          {/* Example Review List */}
-          {/* <div className="mt-6 space-y-4">
-            <div className="p-4 border rounded-lg shadow-sm">
-              <div className="flex items-center justify-between">
-                <p className="font-semibold text-gray-800">John Doe</p>
-                <span className="flex text-yellow-400">
-                  {[...Array(4)].map((_, i) => (
-                    <FaStar key={i} />
-                  ))}
-                </span>
-              </div>
-              <p className="mt-2 text-sm text-gray-600">
-                Really peaceful city! Loved the affordable lifestyle.
-              </p>
-            </div>
+          <div className="mt-6 space-y-4">
+            {loadingReviews ? (
+              <p>Loading reviews...</p>
+            ) : cityReviews.length === 0 ? (
+              <p className="text-gray-500">No reviews yet.</p>
+            ) : (
+              cityReviews.map((rev, idx) => (
+                <div key={idx} className="p-4 border rounded-lg shadow-sm">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={rev.avatarUrl || '/default-avatar.png'}
+                        alt={`${rev.userName || 'Anonymous'}'s avatar`}
+                        className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                      />
+                      <p className="font-semibold text-gray-800">{rev.userName || "Anonymous"}</p>
+                    </div>
+                    <span className="flex text-yellow-400">
+                      {[...Array(rev.rating)].map((_, i) => (
+                        <FaStar key={i} />
+                      ))}
+                    </span>
+                  </div>
+                  <p className="mt-2 text-sm text-gray-600">{rev.body}</p>
+                </div>
+              ))
+            )}
+          </div>
 
-            <div className="p-4 border rounded-lg shadow-sm">
-              <div className="flex items-center justify-between">
-                <p className="font-semibold text-gray-800">Sarah Lee</p>
-                <span className="flex text-yellow-400">
-                  {[...Array(5)].map((_, i) => (
-                    <FaStar key={i} />
-                  ))}
-                </span>
-              </div>
-              <p className="mt-2 text-sm text-gray-600">
-                Great place to work remotely, though internet can be patchy.
-              </p>
-            </div>
-          </div> */}
         </div>
       </div>
     </div>
