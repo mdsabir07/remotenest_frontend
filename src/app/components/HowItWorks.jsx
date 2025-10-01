@@ -1,5 +1,7 @@
 import React from "react";
-import { Search, Sliders, Sparkles, Heart } from "lucide-react";
+import { FaHeart, FaSearch } from "react-icons/fa";
+import { FaSliders } from "react-icons/fa6";
+import { IoSparkles } from "react-icons/io5";
 
 const HowItWorks = () => {
   const steps = [
@@ -7,7 +9,7 @@ const HowItWorks = () => {
       id: 1,
       title: "Search cities",
       desc: "Type a city name and quickly find details, attractions and costs.",
-      icon: <Search className="w-6 h-6 text-white" aria-hidden="true" />,
+      icon: <FaSearch className="w-6 h-6 text-white" aria-hidden="true" />,
       example: true,
       color: "from-indigo-500 to-purple-500",
     },
@@ -15,21 +17,21 @@ const HowItWorks = () => {
       id: 2,
       title: "Compare & filter",
       desc: "Filter by price, climate, safety and compare multiple cities side-by-side.",
-      icon: <Sliders className="w-6 h-6 text-white" />,
+      icon: <FaSliders className="w-6 h-6 text-white" />,
       color: "from-green-400 to-teal-500",
     },
     {
       id: 3,
       title: "Get AI recommendations",
       desc: "Personalized city suggestions based on your preferences.",
-      icon: <Sparkles className="w-6 h-6 text-white" />,
+      icon: <IoSparkles className="w-6 h-6 text-white" />,
       color: "from-yellow-400 to-orange-500",
     },
     {
       id: 4,
       title: "Save your favorite cities",
       desc: "Bookmark cities to a favorites list for later planning and sharing.",
-      icon: <Heart className="w-6 h-6 text-white" />,
+      icon: <FaHeart className="w-6 h-6 text-white" />,
       color: "from-pink-400 to-red-500",
     },
   ];
@@ -71,7 +73,7 @@ const HowItWorks = () => {
             {s.example && (
               <div className="mt-4">
                 <div className="flex items-center border rounded-xl px-3 py-2 bg-gray-50 focus-within:ring-2 focus-within:ring-indigo-400 transition">
-                  <Search className="w-5 h-5 text-gray-400" />
+                  <FaSearch className="w-5 h-5 text-gray-400" />
                   <input
                     type="text"
                     placeholder="Search city..."

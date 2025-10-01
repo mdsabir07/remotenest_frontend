@@ -12,9 +12,9 @@ export default async function DashboardPage() {
   }
 
   // Redirect unverified users to verify-email page
-  if (!session.user.isVerified) {
-    redirect('/auth/verify-email-notice');
-  }
+  // if (!session.user.isVerified) {
+  //   redirect('/auth/verify-email-notice');
+  // }
 
   // User is authenticated and verified - show dashboard content below
   const name = session.user?.name || "User";

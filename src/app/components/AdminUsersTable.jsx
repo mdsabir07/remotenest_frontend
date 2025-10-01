@@ -70,12 +70,12 @@ export default function AdminUsersTable() {
               </td>
               <td className="px-4 py-3 text-sm">
                 {u.role !== 'admin' ? (
-                  <button onClick={() => changeRole(u._id, 'admin')} className="mr-2 inline-flex items-center px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">Make admin</button>
+                  <button onClick={() => changeRole(u._id, 'admin')} className="mr-2 cursor-pointer inline-flex items-center px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">Make admin</button>
                 ) : (
-                  <button onClick={() => changeRole(u._id, 'user')} className="mr-2 inline-flex items-center px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">Remove admin</button>
+                  <button onClick={() => changeRole(u._id, 'user')} className="mr-2 cursor-pointer inline-flex items-center px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">Remove admin</button>
                 )}
 
-                <button onClick={() => deleteUser(u._id)} className="inline-flex items-center px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">Delete</button>
+                <button onClick={() => deleteUser(u._id)} className="cursor-pointer inline-flex items-center px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">Delete</button>
               </td>
             </tr>
           ))}

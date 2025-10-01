@@ -1,10 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeContext";
 import AuthProvider from "@/components/AuthProvider";
 import Script from "next/script";
+import ClientLayoutWrapper from "@/components/ClientLayoutWrapper"; // ✅ NEW
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +27,7 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning={true}
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {/* Initialize theme before hydration */}
         <Script id="init-theme" strategy="beforeInteractive">
           {`(function() {
               try {
@@ -36,11 +36,12 @@ export default function RootLayout({ children }) {
               } catch (e) {}
           })();`}
         </Script>
+
         <ThemeProvider>
           <AuthProvider>
-            <Navbar />
-            <div className="min-h-screen">{children}</div>
-            <Footer></Footer>
+            <ClientLayoutWrapper>
+              {children}
+            </ClientLayoutWrapper>
           </AuthProvider>
         </ThemeProvider>
       </body>

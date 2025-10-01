@@ -79,8 +79,8 @@ export default function AdminCityTable() {
               </td>
               <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">{c.createdBy?.name || c.createdBy?.email || '-'}</td>
               <td className="px-4 py-3 text-sm">
-                <button onClick={() => approveCity(c._id)} className="mr-2 inline-flex items-center px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700">Approve</button>
-                <button onClick={() => deleteCity(c._id)} className="inline-flex items-center px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">Delete</button>
+                <button onClick={() => approveCity(c._id)} className="mr-2 cursor-pointer inline-flex items-center px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700">Approve</button>
+                <button onClick={() => deleteCity(c._id)} className="cursor-pointer inline-flex items-center px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">Delete</button>
               </td>
             </tr>
           ))}
