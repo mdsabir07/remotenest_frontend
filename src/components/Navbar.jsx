@@ -34,17 +34,7 @@ const Navbar = () => {
   // user links: top-level "User" and a "Dashboard" menu that contains Admin
   const userLinks = [
     { name: "Community", path: "/community" },
-    {
-      name: "Dashboard",
-      path: "/dashboard",
-      children: [
-        { name: "Admin", path: "/dashboard/admin" },
-        { name: "User", path: "/dashboard/user" },
-        { name: "Add city", path: "/dashboard/add-city" },
-        { name: "City submissions", path: "/dashboard/admin/submissions" },
-        { name: "Users", path: "/dashboard/admin/users" },
-      ],
-    },
+    { name: "Dashboard", path: "/dashboard"},
   ];
 
   // track open dropdown on desktop and expanded items on mobile
