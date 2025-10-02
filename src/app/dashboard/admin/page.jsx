@@ -1,24 +1,102 @@
+"use client";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { useSession } from "next-auth/react";
+import { Bar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+} from 'chart.js';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
 export default function AdminDashboardPage() {
-    return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-4">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">    
-                <h1 className="text-4xl font-bold mb-6">Admin Dashboard</h1>
-                <p className="text-lg mb-4 text-center max-w-2xl">
-                    Welcome to the Admin Dashboard! Here you can manage users, oversee platform activities, and access administrative tools to ensure a smooth experience for all remote workers and digital nomads.
-                </p>
-                <div className="w-full max-w-3xl bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-                    <h2 className="text-2xl font-semibold mb-4">Admin Overview</h2> 
-                    <p className="mb-4">
-                        This section provides a quick overview of platform statistics, user management options, and important notifications. Stay informed and efficiently manage the RemoteNest community!
-                    </p>    
-                    <a
-                        href="/dashboard/admin/users"
-                        className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-                    >
-                        Manage Users
-                    </a>
-                </div>
-            </div>
+  // session
+  const { data: sessionData } = useSession();
+  const user = sessionData?.user;
+
+  // total cities
+  const { data: totalCities = 0 } = useQuery({
+    queryKey: ['totalCities'],
+    queryFn: async () => {
+      const res = await axios.get('/api/cities');
+      return res.data?.cities?.length || 0;
+    }
+  });
+
+  // total users
+  const { data: totalUsers = 0 } = useQuery({
+    queryKey: ['totalUsers'],
+    queryFn: async () => {
+      const res = await axios.get('/api/users');
+      return res.data?.users?.length || 0;
+    }
+  });
+
+  // chart data
+  const chartData = {
+    labels: ['Total Users', 'Total Cities'],
+    datasets: [
+      {
+        label: 'Counts',
+        data: [totalUsers, totalCities],
+        backgroundColor: ['#4f46e5', '#10b981'],
+      },
+    ],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'System Metrics Overview',
+      },
+    },
+  };
+
+  return (
+    <div className="p-6 space-y-6">
+      {/* User Info */}
+      <div className="bg-white shadow-md rounded-lg p-6 flex flex-col md:flex-row items-start md:items-center justify-between">
+        <div>
+          <h2 className="text-xl font-bold mb-1">Welcome, {user?.name || 'Admin'}</h2>
+          <p className="text-gray-600">{user?.email}</p>
+          <p className="text-gray-500 mt-1">Role: {user?.role || 'Admin'}</p>
         </div>
-    );
+      </div>
+
+      {/* Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-indigo-50 rounded-lg p-4 shadow">
+          <h3 className="text-lg font-semibold text-indigo-700">Total Users</h3>
+          <p className="text-3xl font-bold">{totalUsers}</p>
+        </div>
+        <div className="bg-green-50 rounded-lg p-4 shadow">
+          <h3 className="text-lg font-semibold text-green-700">Total Cities</h3>
+          <p className="text-3xl font-bold">{totalCities}</p>
+        </div>
+      </div>
+
+      {/* Bar Chart */}
+      <div className="bg-white rounded-lg p-6 shadow">
+        <Bar data={chartData} options={chartOptions} />
+      </div>
+    </div>
+  );
 }

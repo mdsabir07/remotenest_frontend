@@ -22,7 +22,7 @@ export default function DashboardLayout({ children }) {
             <DashboardSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
             {/* Main Content */}
-            <div className="flex-1 flex flex-col ml-0 md:ml-14 transition-all duration-300">
+            <div className="flex-1 flex flex-col ml-0 md:ml-14 transition-all duration-300 bg-gray-100">
                 {/* Mobile Navbar */}
                 <header className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 shadow-md md:hidden">
                     <button 

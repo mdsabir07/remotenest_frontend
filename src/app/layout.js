@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/ThemeContext";
 import AuthProvider from "@/components/AuthProvider";
 import Script from "next/script";
 import ClientLayoutWrapper from "@/components/ClientLayoutWrapper"; // ✅ NEW
+import ReactQueryProvider from "@/components/ReactQueryProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,13 +38,15 @@ export default function RootLayout({ children }) {
           })();`}
         </Script>
 
-        <ThemeProvider>
+       <ReactQueryProvider>
+         <ThemeProvider>
           <AuthProvider>
             <ClientLayoutWrapper>
               {children}
             </ClientLayoutWrapper>
           </AuthProvider>
         </ThemeProvider>
+       </ReactQueryProvider>
       </body>
     </html>
   );
