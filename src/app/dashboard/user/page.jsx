@@ -1,24 +1,37 @@
+"use client";
+
+import { useSession } from "next-auth/react";
+
 export default function UserDashboardPage() {
-    return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-4">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">    
-                <h1 className="text-4xl font-bold mb-6">User Dashboard</h1>
-                <p className="text-lg mb-4 text-center max-w-2xl">
-                    Welcome to your dashboard! Here you can manage your profile, view your activity, and access exclusive resources tailored for remote workers and digital nomads.
-                </p>
-                <div className="w-full max-w-3xl bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-                    <h2 className="text-2xl font-semibold mb-4">Dashboard Overview</h2>
-                    <p className="mb-4">
-                        This section provides a quick overview of your recent activities, upcoming events, and important notifications. Stay updated and make the most out of your RemoteNest experience!
-                    </p>    
-                    <a
-                        href="/dashboard/user/profile"
-                        className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-                    >
-                        Go to Profile
-                    </a>
-                </div>
-            </div>
-        </div>
-    );
+  const { data } = useSession();
+  const userInfo = data?.user;
+
+  return (
+    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+      <h1 className="text-2xl font-bold mb-6 text-center">User Profile</h1>
+
+      {/* Profile Picture */}
+      <div className="flex flex-col items-center mb-6">
+        {userInfo?.image && (
+          <img
+            src={userInfo.image}
+            alt={userInfo.name}
+            className="w-24 h-24 rounded-full mb-3"
+          />
+        )}
+        <h2 className="text-xl font-semibold">{userInfo?.name}</h2>
+        <p className="text-gray-500">{userInfo?.email}</p>
+        {userInfo?.country && (
+          <p className="text-gray-500">Country: {userInfo.country}</p>
+        )}
+      </div>
+
+      {/* Additional Info or Actions */}
+      <div className="space-y-3">
+        <button className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition">
+          Update Profile
+        </button>
+      </div>
+    </div>
+  );
 }
