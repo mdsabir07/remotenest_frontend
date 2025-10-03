@@ -2,29 +2,30 @@
 
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Link from "next/link";
 
 const Banner = () => {
   const slides = [
     {
       id: 1,
       title: "Welcome to RemoteNest Tracker",
-      desc: "Track the best remote work destinations, Swimming, Best Places",
-      btnText: "Get Started",
-      img: "https://i.ibb.co.com/fzdDZH74/end-game-citi-10.jpg",
+      desc: "Track the Best Remote Work Destinations, Explore Stunning Swimming Spots, and Discover the Most Beautiful Places Around the World ",
+      btnText: "Explore Cities",
+      img: "https://i.ibb.co.com/5hrfsKQC/end-game-citi-9.jpg",
     },
     {
       id: 2,
-      title: "Relax & Recharge",
-      desc: "Enjoy your time swimming and exploring.",
-      btnText: "Explore Now",
+      title: "Relax & Recharge – Unwind & Reenergize",
+      desc: "Enjoy Your Time Swimming and Exploring – Dive into Crystal-Clear Waters, Discover Hidden Gems, and Make Every Moment of Your Adventure Memorable and Exciting",
+      btnText: "Explore Cities",
       img: "https://i.ibb.co.com/dJ6g414f/end-game-citi-5.jpg",
     },
     {
       id: 3,
-      title: "Best Places Awaits",
-      desc: "Discover top destinations for work and life.",
-      btnText: "Discover More",
-      img: "https://i.ibb.co.com/v4B5tHWq/end-game-citi-4.jpg",
+      title: "Best Places Await – Explore & Enjoy",
+      desc: "Discover Top Destinations for Work and Life – Find the Perfect Places to Live, Work Remotely, and Enjoy an Ideal Balance Between Productivity and Leisure",
+      btnText: "Explore Cities",
+      img: "https://i.ibb.co.com/QjjyjP1k/end-game-citi-1.jpg",
     },
   ];
 
@@ -40,16 +41,16 @@ const Banner = () => {
 
   return (
     <div className="w-full max-w-7xl mx-auto mt-8 relative">
-      <div className="flex flex-col md:flex-row items-center overflow-hidden h-64 md:h-[400px] rounded-2xl">
+      <div className="flex flex-col md:flex-row items-center overflow-hidden h-64 md:h-[400px] ">
         {/* Left Side */}
-        <div className="md:w-1/2 p-6 md:p-12 flex flex-col justify-center h-full">
-          <h2 className="text-2xl md:text-4xl font-bold text-gray-800 mb-4">
+        <div className="md:w-1/2 p-6 md:p-12 flex flex-col justify-center h-full space-y-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-emerald-500">
             {slides[currentIndex].title}
           </h2>
-          <p className="text-gray-600 mb-6">{slides[currentIndex].desc}</p>
-          <button className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition w-max">
+          <p className=" mb-6 text-xl">{slides[currentIndex].desc}</p>
+          <Link href="/cities"className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition w-max">
             {slides[currentIndex].btnText}
-          </button>
+          </Link>
         </div>
 
         {/* Right Side */}
