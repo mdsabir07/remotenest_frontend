@@ -40,7 +40,7 @@ export default async function DashboardPage() {
             <img src={session.user?.image} alt={initials} />
           </div>
           <div className="col-span-6 border border-blue-400 text-center py-2 space-y-2">
-            <h1 className="text-4xl md:text-5xl">{name}</h1>
+            <h1 className="text-3xl md:text-4xl">{name}</h1>
             <p>{session.user?.email}</p>
           </div>
         </div>
