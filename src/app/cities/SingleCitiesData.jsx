@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { FaFacebook, FaTwitter, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 const SingleCitiesData = ({ singleData, }) => {
   const { data: session } = useSession();
@@ -107,9 +108,11 @@ const SingleCitiesData = ({ singleData, }) => {
     <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300">
       {/* City Image */}
       <div className="relative">
-        <img
+        <Image
           src={featuredImage}
           alt={name}
+          width={600}
+          height={600}
           className="w-full h-72 object-cover"
         />
         <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/70 to-transparent p-4">

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
@@ -13,15 +14,17 @@ const SingleFeaturedCities = ({ singleData }) => {
     averageRating,
     connectivity,
     description, } = singleData;
-    console.log(_id)
+    const fallbackImage = "https://i.ibb.co.com/5hrfsKQC/end-game-citi-9.jpg";
   return (
-   <div className="max-w-sm bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow duration-300        ">
+   <div className="group max-w-sm bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200 transition-all duration-500 hover:shadow-xl hover:-translate-y-3">
       {/* Image Section */}
       <div className="relative h-48 w-full overflow-hidden">
-        <img
-          src={featuredImage}
-          alt={name}
-          className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
+        <Image
+          src={featuredImage || fallbackImage}
+          alt={name || 'city image'}
+          height={300}
+          width={400}
+          className="w-full h-full object-cover transform transition-transform duration-[2000ms] ease-in-out group-hover:-translate-y-4"
         />
 
         {/* Tags Overlay */}

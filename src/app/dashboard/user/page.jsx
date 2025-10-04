@@ -9,7 +9,7 @@ export default function UserDashboardPage() {
   const { data } = useSession();
   const userInfo = data?.user;
   const {register, handleSubmit} = useForm();
-
+console.log(userInfo)
   // onsubmit
   const onSubmit = async (data) => {
     console.log(data);
