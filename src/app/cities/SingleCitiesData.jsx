@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import CityShareButton from "./CityShareButton";
+import { FaFacebook, FaTwitter, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import { useSession } from "next-auth/react";
 
@@ -193,11 +193,6 @@ const SingleCitiesData = ({ singleData, }) => {
           <p>Created: {new Date(createdAt).toLocaleDateString()}</p>
         </div>
 
-        {/* Share */}
-        <div className="justify-end flex">
-          <CityShareButton id={_id} />
-        </div>
-
         {/* 🔥 User Review Section */}
         <div className="mt-10 border-t pt-6">
           <h3 className="text-xl font-bold text-gray-800 mb-4">💬 User Reviews</h3>
@@ -269,6 +264,50 @@ const SingleCitiesData = ({ singleData, }) => {
             )}
           </div>
 
+        </div>
+        {/* share post */}
+        <div className="my-8 p-4 bg-gray-300 rounded-lg shadow-md flex flex-wrap items-center justify-center gap-4">
+          <span className="font-semibold text-gray-700">Share this post:</span>
+
+          {/* Facebook */}
+          <a
+            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 text-2xl hover:scale-110 transition-transform"
+          >
+            <FaFacebook />
+          </a>
+
+          {/* Twitter (X) */}
+          <a
+            href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sky-500 text-2xl hover:scale-110 transition-transform"
+          >
+            <FaTwitter />
+          </a>
+
+          {/* LinkedIn */}
+          <a
+            href={`https://www.linkedin.com/shareArticle?url=${encodeURIComponent(window.location.href)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-700 text-2xl hover:scale-110 transition-transform"
+          >
+            <FaLinkedin />
+          </a>
+
+          {/* WhatsApp */}
+          <a
+            href={`https://api.whatsapp.com/send?text=${encodeURIComponent(window.location.href)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-green-500 text-2xl hover:scale-110 transition-transform"
+          >
+            <FaWhatsapp />
+          </a>
         </div>
       </div>
     </div>
