@@ -1,4 +1,7 @@
+"use client"
+import { useState } from "react";
 import SingleBlog from "./SingleBlog";
+import { FaSort } from "react-icons/fa";
 
 const Blogs = [
   {
@@ -86,26 +89,60 @@ const Blogs = [
 
 
 export default function BlogPage() {
+  const [sortOpen, setSortOpen] = useState(false);
+  const [selectedSort, setSelectedSort] = useState("Sort By");
+
+  const handleSortSelect = (option) => {
+    setSelectedSort(option);
+    setSortOpen(false);
+    // এখানে তুমি চাইলে sort logic যোগ করতে পারো
+  };
     
     return (
-       <div className="max-w-7xl mx-auto lg:px-8">
-        {/* top div sort and text */}
-        <div className="flex items-center justify-between">
-            {/* left site */}
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
+      {/* Top Section */}
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
+        {/* Left */}
         <div>
-            <h1>blog</h1>
+          <h1 className="text-3xl font-semibold text-gray-800">Blogs</h1>
+          <p className="text-gray-500 text-lg">
+            Explore insights, guides & stories about remote living 🌍
+          </p>
         </div>
-        {/* right site */}
-        <div>
-            <button className="btn border-t-cyan-200 border p-2">sort by</button>
+
+        {/* Right (Sort Dropdown) */}
+        <div className="relative">
+          <button
+            onClick={() => setSortOpen(!sortOpen)}
+            className="flex items-center gap-2 border border-cyan-400 text-cyan-700 px-4 py-2 rounded-lg hover:bg-cyan-50 transition-all"
+          >
+            <FaSort />
+            {selectedSort}
+          </button>
+
+          {/* Dropdown Menu */}
+          {sortOpen && (
+            <div className="absolute right-0 mt-2 w-44 bg-white shadow-lg border border-gray-200 rounded-lg overflow-hidden z-10">
+              {["Cost of Living", "Budget", "Cities"].map((option) => (
+                <button
+                  key={option}
+                  onClick={() => handleSortSelect(option)}
+                  className="w-full text-left px-4 py-2 text-gray-700 hover:bg-cyan-100 transition"
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
-       </div>
-       {/* main context */}
-       <div className="grid grid-cols-3 gap-4 my-6">
-        {
-            Blogs.map(blog => <SingleBlog key={blog.id} blog={blog}></SingleBlog>)
-        }
-       </div>
-       </div>
+      </div>
+
+      {/* Main Blog Grid */}
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {Blogs.map((blog) => (
+          <SingleBlog key={blog.id} blog={blog} />
+        ))}
+      </div>
+    </div>
     );
 }
