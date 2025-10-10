@@ -87,3 +87,357 @@ You’ll get:
 5. Add to .env.local
 GITHUB_CLIENT_ID=your_github_client_id_here
 GITHUB_CLIENT_SECRET=your_github_client_secret_here
+
+
+
+
+I'm building a project (remotenest) using NextJS, Tailwind, Mongoose, MongoDB, NextAuth, etc.
+I already completed the authentication process (using mongoose and nextauth) successfully. Also, created citis using mongoose, mongodb, where implemented user information was implemented to add reviews, etc. Besides already created dashboard pages (user and admin) successfully.
+
+Now I want to implement a new feature to add a blog to the project. So, I need your help to create the necessary code for creating the blog post and blog post form. So, only register user (users and admins) can add a blog after login. But all post must need to be approve by the admin. So, the admin can approve or delete the created post. 
+Besides, only approved posts will display on the blog pages. But blog pages and posts can be read by anyone registered or unregisters.
+
+Now give guide step by step to complete the blog methods with code.
+I can show you some previous code for your better understanding.
+Here is mongodb.js file code:
+// lib/mongodb.js
+import mongoose from "mongoose";
+const MONGODB_URI = process.env.MONGODB_URI;
+
+export async function connectToDB() {
+  if (mongoose.connections[0].readyState) return;
+
+  try {
+    console.log("Connecting to MongoDB with URI:", MONGODB_URI);
+
+    await mongoose.connect(MONGODB_URI, {
+      dbName: "remotenest",
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
+    console.log("✅ MongoDB connected");
+  } catch (err) {
+    console.error("❌ MongoDB connection error:", err);
+    throw err;
+  }
+}
+
+This is authOptions.js:
+import NextAuth from "next-auth";
+import { connectToDB } from "@/lib/mongodb";
+import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import GitHubProvider from "next-auth/providers/github";
+import { compare } from "bcryptjs";
+import { User } from "@/models/User";
+import nodemailer from "nodemailer";
+
+// Helper to send OTP email
+async function sendOTPEmail(user, otp) {
+  try {
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT),
+      secure: false,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: `"Remotenest" <${process.env.SMTP_USER}>`,
+      to: user.email,
+      subject: "Your OTP Code",
+      html: `
+        <p>Hello ${user.name},</p>
+        <p>Your OTP code is <strong>${otp}</strong>. It expires in 10 minutes.</p>
+      `,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+
+    if (process.env.NODE_ENV !== "production") {
+      console.log("✅ OTP email sent:", info.messageId);
+    }
+  } catch (error) {
+    console.error("❌ Error sending OTP email:", error);
+    throw new Error("Failed to send OTP email");
+  }
+}
+
+export const authOptions = {
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+
+    GitHubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      authorization: { params: { scope: "read:user user:email" } },
+    }),
+
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+        otp: { label: "OTP", type: "text", placeholder: "6-digit OTP (if required)" },
+      },
+      async authorize(credentials) {
+        await connectToDB();
+
+        // Fetch user by email
+        const user = await User.findOne({ email: credentials.email });
+        if (!user) {
+          throw new Error("Invalid email or password");
+        }
+
+        if (!user.isVerified) {
+          throw new Error("Email not verified");
+        }
+
+        // Verify password
+        const isValidPassword = await compare(credentials.password, user.password);
+        if (!isValidPassword) {
+          throw new Error("Invalid email or password");
+        }
+
+        const now = Date.now();
+
+        // Check if user has a valid OTP active
+        if (user.otp && user.otpExpires && user.otpExpires > now) {
+          if (!credentials.otp) {
+            // OTP required but not provided
+            throw new Error("OTP required");
+          }
+
+          if (credentials.otp !== user.otp) {
+            // OTP does not match
+            throw new Error("Invalid OTP");
+          }
+
+          // OTP matched, clear OTP fields
+          await User.updateOne(
+            { _id: user._id },
+            { $unset: { otp: 1, otpExpires: 1 } }
+          );
+
+          // Successful login
+          console.log("✅ OTP matched. Returning user:", user.email);
+          return {
+            id: user._id.toString(),
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            isVerified: user.isVerified,
+          };
+        } else if (user.otp || user.otpExpires) {
+          // OTP expired or invalid, clear OTP fields for fresh OTP next time
+          await User.updateOne(
+            { _id: user._id },
+            { $unset: { otp: 1, otpExpires: 1 } }
+          );
+        }
+
+        // No valid OTP — generate and send new OTP email
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        user.otp = otp;
+        user.otpExpires = now + 10 * 60 * 1000; // expires in 10 minutes
+        await user.save();
+
+        await sendOTPEmail(user, otp);
+
+        throw new Error("OTP required");
+      },
+    }),
+  ],
+
+  pages: {
+    signIn: "/auth/login",
+  },
+
+  session: {
+    strategy: "jwt",
+  },
+
+  callbacks: {
+    // Sync social users with DB
+    async signIn({ user, account, profile }) {
+      try {
+        if (account.provider === "google" || account.provider === "github") {
+          await connectToDB();
+          const existingUser = await User.findOne({ email: user.email });
+          if (!existingUser) {
+            const newUser = new User({
+              name: user.name,
+              email: user.email,
+              role: "user",
+              isVerified: true,
+              password: "", // no password for social login
+            });
+            await newUser.save();
+          }
+        }
+        return true;
+      } catch (error) {
+        console.error("OAuth sign-in error:", error);
+        return false; // Prevent login if there's an error
+      }
+    },
+
+    async redirect({ url, baseUrl }) {
+      console.log("Redirect URL:", url);
+      // Prevent redirecting social users to verify-email page
+      return baseUrl + "/dashboard"; // or your preferred page
+    },
+
+
+    async jwt({ token, user }) {
+      if (user) {
+        // Connect to DB to fetch fresh user info (for social login especially)
+        await connectToDB();
+        // Fetch latest user info by email
+        const dbUser = await User.findOne({ email: user.email }).lean();
+        
+        token.id = dbUser?._id?.toString() || token.id;
+        token.role = dbUser?.role || user.role || token.role;
+        token.email = dbUser?.email || user.email || token.email;
+        token.name = dbUser?.name || user.name || token.name;
+        token.isVerified = dbUser ? Boolean(dbUser.isVerified) : Boolean(user.isVerified) || Boolean(token.isVerified);
+        console.log('Token after sign-in (updated with DB):', token);
+      }
+      return token;
+    },
+
+    async session({ session, token }) {
+      session.user = session.user || {};
+      session.user.id = token.id;
+      session.user.role = token.role;
+      session.user.email = token.email;
+      session.user.name = token.name;
+      // Pass isVerified from token to session.user
+      session.user.isVerified = Boolean(token.isVerified);
+      console.log('Session user:', session.user);
+      return session;
+    },
+
+  },
+
+  secret: process.env.NEXTAUTH_SECRET,
+};
+
+export default NextAuth(authOptions);
+
+Here is model (Cities):
+import mongoose from "mongoose";
+
+const ReviewSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    userName: String,
+    rating: { type: Number, min: 1, max: 5 },
+    title: String,
+    body: String,
+    createdAt: { type: Date, default: Date.now }, // ✅ renamed from "helpful"
+});
+
+const CostSchema = new mongoose.Schema(
+    {
+        rent: Number, // Monthly rent in USD
+        food: Number, // Monthly food cost in USD
+        transport: Number,
+        utilities: Number,
+        other: Number,
+    },
+    { _id: false }
+);
+
+const ConnectivitySchema = new mongoose.Schema(
+    {
+        avgDownloadMbps: Number,
+        avgUploadMbps: Number,
+        mobileCoverage: String, // e.g., "4G", "5G" or "Good", "Fair"
+        coworkingSpaces: Number,
+    },
+    { _id: false }
+);
+
+const VisaSchema = new mongoose.Schema(
+    {
+        visaNeeded: { type: Boolean, default: false },
+        visaTypes: [String], // e.g., ["Tourist", "Business", "Digital Nomad"]
+        notes: String,
+    },
+    { _id: false }
+);
+
+const CitySchema = new mongoose.Schema(
+    {
+        name: { type: String, required: true, index: true },
+        country: { type: String, index: true },
+        region: String,
+        slug: { type: String, index: true },
+        description: String,
+        featuredImage: String,
+        images: [String],
+        tags: [{ type: String, index: true }],
+        cost: CostSchema,
+        connectivity: ConnectivitySchema,
+        safetyRating: { type: Number, min: 0, max: 10 },
+        healthcareRating: { type: Number, min: 0, max: 10 },
+        weatherSummary: String,
+        visa: VisaSchema,
+        currency: String,
+        localSimInfo: String,
+        population: Number,
+        location: {
+            lat: Number,
+            lng: Number,
+        },
+        // community features
+        reviews: [ReviewSchema],
+        averageRating: { type: Number, min: 0, max: 5, default: 0 },
+        reviewCount: { type: Number, default: 0 },
+        bookmarks: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+
+        // Admin metadata
+        createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+
+        // approval workflow fields
+        status: {
+            type: String,
+            enum: ["pending", "approved", "rejected"],
+            default: "pending",
+        },
+        approvedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
+        approvedAt: { type: Date, default: null },
+    },
+    { timestamps: true }
+);
+
+// Text index for search across name, country, region, description, tags
+CitySchema.index({ name: "text", country: "text", description: "text", tags: "text" });
+
+// helper to recalc average rating
+CitySchema.methods.recalculateRating = function () {
+    if (!this.reviews || this.reviews.length === 0) {
+        this.averageRating = 0;
+        this.reviewCount = 0;
+        return;
+    }
+    // sum ratings correctly and compute average
+    const sum = this.reviews.reduce((s, r) => s + (r.rating || 0), 0);
+    this.averageRating = Math.round((sum / this.reviews.length) * 10) / 10;
+    this.reviewCount = this.reviews.length;
+};
+
+export default mongoose.models.City || mongoose.model("City", CitySchema);
+
+If needed, I can share more information for you.
+
+And yes, there will be some categories of blogs: remote work, tax/legal, travel tips, etc. So, users can sort by the categories, and we can display the blogs as per the categories on the pages.
+

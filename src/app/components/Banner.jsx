@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { FaChevronLeft } from "react-icons/fa";
+import { FaChevronRight } from "react-icons/fa6";
 
 const Banner = () => {
   const slides = [
@@ -67,13 +68,13 @@ const Banner = () => {
           onClick={prevSlide}
           className="absolute top-1/2 left-2 md:left-4 transform -translate-y-1/2 bg-white/70 hover:bg-white p-2 rounded-full shadow-md transition"
         >
-          <ChevronLeft className="w-6 h-6 text-gray-800" />
+          <FaChevronLeft className="w-6 h-6 text-gray-800" />
         </button>
         <button
           onClick={nextSlide}
           className="absolute top-1/2 right-2 md:right-4 transform -translate-y-1/2 bg-white/70 hover:bg-white p-2 rounded-full shadow-md transition"
         >
-          <ChevronRight className="w-6 h-6 text-gray-800" />
+          <FaChevronRight className="w-6 h-6 text-gray-800" />
         </button>
       </div>
 

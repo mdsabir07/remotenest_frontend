@@ -1,148 +1,188 @@
-"use client"
-import { useState } from "react";
-import SingleBlog from "./SingleBlog";
-import { FaSort } from "react-icons/fa";
+"use client";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 
-const Blogs = [
-  {
-    "id": "post-001",
-    "title": "Budget Smart: Which City Is Best for Remote Work on a Budget?",
-    "slug": "budget-friendly-remote-cities",
-    "excerpt": "Enjoy a better lifestyle at lower costs — discover 5 cities with affordable living expenses and great safety.",
-    "content": "In this blog, we explain how to calculate monthly costs (rent, food, transport) to choose the most budget-friendly city. Each city includes sample expenses, local SIM/internet costs, and coworking options.",
-    "author": "Omar Faruk",
-    "publishedAt": "2025-03-12T09:00:00.000Z",
-    "tags": ["budget", "cities", "cost-of-living"],
-    "coverImage": "https://i.ibb.co.com/v4B5tHWq/end-game-citi-4.jpg",
-    "readingTime": "6 min",
-    "featured": true
-  },
-  {
-    "id": "post-002",
-    "title": "Wi-Fi & Connectivity Guide: Which City Has the Fastest and Most Reliable Internet?",
-    "slug": "best-cities-for-wifi-connectivity",
-    "excerpt": "Compare download/upload speeds, mobile coverage, and coffee spaces across 7 cities ideal for remote workers.",
-    "content": "This article highlights average download/upload speeds, mobile network coverage, and the number of coworking spaces in each city. It also discusses key factors that often influence decision-making.",
-    "author": "Nadia Rahman",
-    "publishedAt": "2025-05-02T11:30:00.000Z",
-    "tags": ["connectivity", "wifi", "coworking"],
-    "coverImage": "https://i.ibb.co.com/dJ6g414f/end-game-citi-5.jpg",
-    "readingTime": "7 min",
-    "featured": false
-  },
-  {
-    "id": "post-003",
-    "title": "Visa & Legality: Essential Info for Digital Nomads",
-    "slug": "visa-guide-digital-nomads",
-    "excerpt": "Which countries offer digital nomad visas? How long can you stay and what documents do you need? A quick guide.",
-    "content": "This guide covers types of digital nomad visas, processing times, and general requirements. It includes examples of popular destinations, potential tax issues, and tips on preparing in advance.",
-    "author": "Maria Gomes",
-    "publishedAt": "2024-11-20T08:00:00.000Z",
-    "tags": ["visa", "legal", "nomad"],
-    "coverImage": "https://i.ibb.co.com/wZ8jjnYS/end-game-citi-6.jpg",
-    "readingTime": "8 min",
-    "featured": false
-  },
-  {
-    "id": "post-004",
-    "title": "How to Test a City with a 1-Month Trial Stay",
-    "slug": "one-month-trial-city-check",
-    "excerpt": "Which factors should you check during a 1-month trial — community, bills, healthcare, and lifestyle.",
-    "content": "Learn how to evaluate a city's lifestyle during a trial stay — where to live, where to work, how to manage logistics, and what to observe if you plan to stay long-term.",
-    "author": "Rafi Ahmed",
-    "publishedAt": "2025-01-05T10:15:00.000Z",
-    "tags": ["travel", "trial", "planning"],
-    "coverImage": "https://i.ibb.co.com/k60r8vc9/end-game-citi-7.jpg",
-    "readingTime": "5 min",
-    "featured": true
-  },
-  {
-    "id": "post-005",
-    "title": "Local Living: Food & Cultural Tips to Make Life Abroad Easier",
-    "slug": "local-living-food-culture-tips",
-    "excerpt": "10 practical tips for adapting to a new country — from local food markets to customs and etiquette.",
-    "content": "Discover how to enjoy local cuisine, shop at markets, follow social etiquette, and respect customs — essential advice for adapting quickly to a new environment.",
-    "author": "Sofia Khan",
-    "publishedAt": "2024-09-18T07:45:00.000Z",
-    "tags": ["local-living", "culture", "food"],
-    "coverImage": "https://i.ibb.co.com/k60r8vc9/end-game-citi-7.jpg",
-    "readingTime": "6 min",
-    "featured": false
-  },
-  {
-    "id": "post-006",
-    "title": "Safety & Health: Essential Guidelines for Remote Workers",
-    "slug": "safety-health-remote-workers",
-    "excerpt": "Safety in the city — how to identify safe zones, access health insurance, and use emergency services.",
-    "content": "This post discusses health insurance, required vaccinations, local emergency contacts, and safety guidelines for going out. It also highlights city safety indicators and benefits of living near health centers.",
-    "author": "Dr. Leila Noor",
-    "publishedAt": "2025-06-01T09:00:00.000Z",
-    "tags": ["safety", "health", "advice"],
-    "coverImage": "https://i.ibb.co.com/k60r8vc9/end-game-citi-7.jpg",
-    "readingTime": "7 min",
-    "featured": true
-  }
-];
+export default function BlogListPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
+  // Extract query params with default values
+  const page = parseInt(searchParams.get("page") || "1", 9);
+  const limit = parseInt(searchParams.get("limit") || "9", 9);
+  const sort = searchParams.get("sort") || "newest";
+  const category = searchParams.get("category") || "";
+  const search = searchParams.get("search") || "";
 
+  const [posts, setPosts] = useState([]);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 9,
+    totalPages: 1,
+    totalDocs: 0,
+  });
+  const [loading, setLoading] = useState(false);
 
+  // Fetch posts from API with params
+  const fetchPosts = async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+      params.append("page", String(page));
+      params.append("limit", String(limit));
+      params.append("sort", sort);
+      if (category) params.append("category", category);
+      if (search) params.append("search", search);
 
+      const res = await fetch(`/api/blog/list?${params.toString()}`);
+      if (!res.ok) throw new Error("Failed to fetch posts");
+      const json = await res.json();
 
-export default function BlogPage() {
-  const [sortOpen, setSortOpen] = useState(false);
-  const [selectedSort, setSelectedSort] = useState("Sort By");
-
-  const handleSortSelect = (option) => {
-    setSelectedSort(option);
-    setSortOpen(false);
-    // এখানে তুমি চাইলে sort logic যোগ করতে পারো
+      setPosts(json.posts || []);
+      setPagination(json.pagination || pagination);
+    } catch (err) {
+      console.error("Error fetching posts:", err);
+      setPosts([]);
+      setPagination({
+        page: 1,
+        limit: 9,
+        totalPages: 1,
+        totalDocs: 0,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
-    
-    return (
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
-      {/* Top Section */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
-        {/* Left */}
-        <div>
-          <h1 className="text-3xl font-semibold text-gray-800">Blogs</h1>
-          <p className="text-gray-500 text-lg">
-            Explore insights, guides & stories about remote living 🌍
-          </p>
-        </div>
 
-        {/* Right (Sort Dropdown) */}
-        <div className="relative">
+  useEffect(() => {
+    fetchPosts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, sort, category, search]);
+
+  // Update URL query params
+  const changeParam = (param, value, resetPage = true) => {
+    const newParams = new URLSearchParams(searchParams.toString());
+
+    if (value) newParams.set(param, value);
+    else newParams.delete(param);
+
+    if (resetPage) newParams.set("page", "1");
+
+    router.push(`/blog?${newParams.toString()}`);
+  };
+
+  // Handle search form submit
+  const doSearch = (ev) => {
+    ev.preventDefault();
+    const form = new FormData(ev.target);
+    const val = (form.get("search") || "").toString().trim();
+    changeParam("search", val);
+  };
+
+  return (
+    <div className="p-4 max-w-7xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Blog</h1>
+
+      {/* Filters */}
+      <div className="flex flex-wrap gap-4 mb-4">
+        <select
+          value={category}
+          onChange={(e) => changeParam("category", e.target.value)}
+          className="border p-2"
+        >
+          <option value="">All Categories</option>
+          <option value="remote work">Remote Work</option>
+          <option value="tax/legal">Tax / Legal</option>
+          <option value="travel tips">Travel Tips</option>
+          <option value="lifestyle">Lifestyle</option>
+          <option value="other">Other</option>
+        </select>
+
+        <select
+          value={sort}
+          onChange={(e) => changeParam("sort", e.target.value)}
+          className="border p-2"
+        >
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="title_asc">Title A → Z</option>
+          <option value="title_desc">Title Z → A</option>
+        </select>
+
+        <form onSubmit={doSearch} className="flex items-center">
+          <input
+            name="search"
+            defaultValue={search}
+            placeholder="Search..."
+            className="border p-2"
+          />
           <button
-            onClick={() => setSortOpen(!sortOpen)}
-            className="flex items-center gap-2 border border-cyan-400 text-cyan-700 px-4 py-2 rounded-lg hover:bg-cyan-50 transition-all"
+            type="submit"
+            className="bg-blue-600 text-white px-3 py-2 ml-2 hover:bg-blue-700 transition"
           >
-            <FaSort />
-            {selectedSort}
+            Go
           </button>
+        </form>
+      </div>
 
-          {/* Dropdown Menu */}
-          {sortOpen && (
-            <div className="absolute right-0 mt-2 w-44 bg-white shadow-lg border border-gray-200 rounded-lg overflow-hidden z-10">
-              {["Cost of Living", "Budget", "Cities"].map((option) => (
-                <button
-                  key={option}
-                  onClick={() => handleSortSelect(option)}
-                  className="w-full text-left px-4 py-2 text-gray-700 hover:bg-cyan-100 transition"
-                >
-                  {option}
-                </button>
-              ))}
+      {/* Post List */}
+      {loading ? (
+        <p>Loading...</p>
+      ) : posts.length === 0 ? (
+        <p>No posts found.</p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {posts.map((post) => (
+            <div key={post._id} className="mb-8 border-b pb-4">
+              {post.coverImage && (
+                <img
+                  src={post.coverImage}
+                  alt={post.title}
+                  className="w-full h-48 object-cover rounded mb-2 bg-no-repeat"
+                />
+              )}
+              <Link
+                href={`/blog/${post.slug}`}
+                className="text-xl font-semibold text-primary hover:underline"
+              >
+                {post.title}
+              </Link>
+              <div className="text-sm flex items-center text-gray-500 gap-2 mt-1">
+                <img
+                  src={post.author?.avatar || "/default-avatar.png"}
+                  alt={post.author?.name || "Author"}
+                  className="w-6 h-6 rounded-full"
+                />
+                <span>{post.author?.name || "Unknown"}</span>
+                <span>• {new Date(post.createdAt).toLocaleDateString()}</span>
+                <span>• {post.category}</span>
+              </div>
+              <p className="mt-2">
+                {post.excerpt ||
+                  (post.content
+                    ? JSON.stringify(post.content).slice(0, 100) + "..."
+                    : "No excerpt available.")}
+              </p>
             </div>
-          )}
+          ))}
         </div>
-      </div>
+      )}
 
-      {/* Main Blog Grid */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {Blogs.map((blog) => (
-          <SingleBlog key={blog.id} blog={blog} />
-        ))}
-      </div>
+      {/* Pagination */}
+      {pagination.totalDocs > 0 && pagination.totalPages > 1 && (
+        <div className="flex justify-center space-x-2 mt-6">
+          {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map((p) => (
+            <button
+              key={p}
+              onClick={() => changeParam("page", String(p), false)} // ✅ don't reset page
+              className={`px-3 py-1 border rounded ${p === pagination.page ? "bg-blue-600 text-white" : ""
+                }`}
+            >
+              {p}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
-    );
+  );
 }

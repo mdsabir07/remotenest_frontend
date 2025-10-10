@@ -44,8 +44,20 @@ export default function DashboardSidebar({ sidebarOpen, setSidebarOpen }) {
             roles: ['admin', 'user'],
         },
         {
+            name: 'Add blog',
+            path: '/dashboard/blog/create',
+            icon: <FiMapPin />,
+            roles: ['admin', 'user'],
+        },
+        {
             name: 'City submissions',
             path: '/dashboard/admin/submissions',
+            icon: <FiInbox />,
+            roles: ['admin'],
+        },
+        {
+            name: 'Blogs',
+            path: '/dashboard/admin/blogs',
             icon: <FiInbox />,
             roles: ['admin'],
         },

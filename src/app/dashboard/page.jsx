@@ -49,7 +49,7 @@ export default async function DashboardPage() {
         {/* dashboard button */}
 
         <div className="flex gap-2">
-          <a href="/dashboard" className="inline-flex items-center px-3 py-2 rounded-md bg-blue-600 text-white text-sm shadow hover:bg-blue-700">Dashboard</a>
+          <a href="/dashboard" className="inline-flex items-center px-3 py-2 rounded-md bg-blue-600 text-sm shadow hover:bg-blue-700">Dashboard</a>
           {session.user?.role === 'admin' && (
             <>
               <a href="/dashboard/admin" className="inline-flex items-center px-3 py-2 rounded-md border border-gray-200 dark:border-gray-700 text-sm hover:bg-gray-50 dark:hover:bg-gray-800">Admin</a>

@@ -17,14 +17,14 @@ export default function DashboardLayout({ children }) {
     }
 
     return (
-        <div className="flex min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors">
+        <div className="flex min-h-screen bg-white dark:bg-gray-900 transition-colors">
             {/* Sidebar */}
             <DashboardSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
             {/* Main Content */}
-            <div className="flex-1 flex flex-col ml-0 md:ml-14 transition-all duration-300 bg-gray-100">
+            <div className="flex-1 flex flex-col ml-0 md:ml-14 transition-all duration-300 bg-white dark:bg-gray-800">
                 {/* Mobile Navbar */}
-                <header className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 shadow-md md:hidden">
+                <header className="flex items-center justify-between p-4 shadow-md md:hidden">
                     <button 
                     onClick={() => setSidebarOpen(true)} className='cursor-pointer'>
                         <FiMenu className="h-6 w-6" />
