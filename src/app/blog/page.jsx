@@ -80,11 +80,11 @@ export default function BlogListPage() {
   };
 
   return (
-    <div className="p-4 max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto my-10">
       <h1 className="text-2xl font-bold mb-4">Blog</h1>
 
       {/* Filters */}
-      <div className="flex flex-wrap gap-4 mb-4">
+      <div className="flex flex-wrap gap-4 mb-8">
         <select
           value={category}
           onChange={(e) => changeParam("category", e.target.value)}
@@ -118,7 +118,7 @@ export default function BlogListPage() {
           />
           <button
             type="submit"
-            className="bg-blue-600 text-white px-3 py-2 ml-2 hover:bg-blue-700 transition"
+            className="bg-blue-600 cursor-pointer text-white px-3 py-2 ml-2 hover:bg-blue-700 transition"
           >
             Go
           </button>
@@ -148,7 +148,7 @@ export default function BlogListPage() {
                 >
                   {post.title}
                 </Link>
-                <div className="text-sm flex items-center text-gray-500 gap-2 mt-1">
+                <div className="text-sm flex items-center text-gray-500 gap-2 my-2">
                   <img
                     src={post.author?.avatar || "/default-avatar.png"}
                     alt={post.author?.name || "Author"}
@@ -177,7 +177,7 @@ export default function BlogListPage() {
             <button
               key={p}
               onClick={() => changeParam("page", String(p), false)} // ✅ don't reset page
-              className={`px-3 py-1 border rounded ${p === pagination.page ? "bg-blue-600 text-white" : ""
+              className={`px-3 py-1 border cursor-pointer rounded ${p === pagination.page ? "bg-blue-600 text-white" : ""
                 }`}
             >
               {p}

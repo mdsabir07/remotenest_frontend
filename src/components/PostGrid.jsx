@@ -27,7 +27,7 @@ export default function PostGrid({ posts = [], limit }) {
                         >
                             {post.title}
                         </Link>
-                        <div className="text-sm flex items-center text-gray-500 gap-2 mt-1">
+                        <div className="text-sm flex items-center text-gray-500 gap-2 my-2">
                             <img
                                 src={post.author?.avatar || "/default-avatar.png"}
                                 alt={post.author?.name || "Author"}

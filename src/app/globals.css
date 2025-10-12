@@ -27,16 +27,13 @@
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  /* background: var(--background);
+  color: var(--foreground); */
+  @apply bg-white text-black;
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
 /* Tailwind utility fallbacks */
-body {
-  @apply bg-white text-black;
-}
-
 .dark body {
   @apply bg-gray-900 text-white;
 }

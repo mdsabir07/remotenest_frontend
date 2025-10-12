@@ -32,7 +32,7 @@ export default function CreateBlogPage() {
     // }
 
     return (
-        <div className="p-4 max-w-3xl mx-auto">
+        <div className="">
             <h1 className="text-2xl font-bold mb-4">Create Blog Post</h1>
             <BlogForm />
         </div>

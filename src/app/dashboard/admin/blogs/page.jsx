@@ -59,7 +59,7 @@ export default function AdminBlogModeration() {
     if (session?.user?.role !== "admin") return <p>Redirecting...</p>;
 
     return (
-        <div className="p-4 max-w-3xl mx-auto">
+        <div className="">
             <h1 className="text-2xl font-bold mb-4">Pending Blog Posts</h1>
             {loading ? (
                 <p>Loading posts...</p>

@@ -72,11 +72,11 @@ const BarChart = () => {
         <div className="space-y-6">
             {/* Metrics */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="bg-indigo-50 rounded-lg p-4 shadow">
+                    <div className="rounded-lg p-4 shadow">
                       <h3 className="text-lg font-semibold text-indigo-700">Total Users</h3>
                       <p className="text-3xl font-bold">{totalUsers}</p>
                     </div>
-                    <div className="bg-green-50 rounded-lg p-4 shadow">
+                    <div className="rounded-lg p-4 shadow">
                       <h3 className="text-lg font-semibold text-green-700">Total Cities</h3>
                       <p className="text-3xl font-bold">{totalCities}</p>
                     </div>

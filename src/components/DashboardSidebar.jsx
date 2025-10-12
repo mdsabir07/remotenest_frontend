@@ -14,6 +14,8 @@ import {
     FiUsers,
     FiHome,
     FiX,
+    FiPlusSquare,
+    FiFileText,
 } from 'react-icons/fi';
 import { useTheme } from './ThemeContext';
 
@@ -44,21 +46,21 @@ export default function DashboardSidebar({ sidebarOpen, setSidebarOpen }) {
             roles: ['admin', 'user'],
         },
         {
-            name: 'Add blog',
-            path: '/dashboard/blog/create',
-            icon: <FiMapPin />,
-            roles: ['admin', 'user'],
-        },
-        {
             name: 'City submissions',
             path: '/dashboard/admin/submissions',
             icon: <FiInbox />,
             roles: ['admin'],
         },
         {
+            name: 'Add blog',
+            path: '/dashboard/blog/create',
+            icon: <FiPlusSquare />,
+            roles: ['admin', 'user'],
+        },
+        {
             name: 'Blogs',
             path: '/dashboard/admin/blogs',
-            icon: <FiInbox />,
+            icon: <FiFileText />,
             roles: ['admin'],
         },
         {
@@ -76,9 +78,9 @@ export default function DashboardSidebar({ sidebarOpen, setSidebarOpen }) {
     return (
         <div
             className={clsx(
-                'fixed inset-y-0 left-0 z-30 w-64 transform bg-white dark:bg-gray-800 p-5 space-y-6 transition-transform duration-300 ease-in-out',
+                'fixed top-0 left-0 z-30 w-64 h-full transform p-5 space-y-6 transition-transform duration-300 ease-in-out',
                 sidebarOpen ? 'translate-x-0' : '-translate-x-full',
-                'md:relative md:translate-x-0 md:flex md:flex-col'
+                'md:relative md:translate-x-0 md:flex md:flex-col md:h-full'
             )}
         >
             <div className="flex items-center justify-between md:justify-start md:space-x-2">
@@ -109,15 +111,14 @@ export default function DashboardSidebar({ sidebarOpen, setSidebarOpen }) {
 
             <div className="mt-auto space-y-2">
                 {/* dashboard to home */}
-                <Link href="/" className='w-full flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition'>
-                Go to Home
+                <Link href="/" className='flex items-center justify-center gap-2 px-4 py-2 rounded border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition'>
+                    Go to Home
                 </Link>
                 <button
                     onClick={toggleTheme}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition"
+                    className="w-full px-3 py-2 cursor-pointer rounded border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
-                    {theme === 'dark' ? <FiSun className="w-5 h-5" /> : <FiMoon className="w-5 h-5" />}
-                    {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+                    {theme === "light" ? "🌙 Dark" : "☀️ Light"}
                 </button>
 
                 {role && (
