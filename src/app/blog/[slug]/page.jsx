@@ -18,47 +18,52 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function BlogDetailPage({ params }) {
-    const { slug } = params;
-    await connectToDB();
+    try {
+        const { slug } = params;
+        await connectToDB();
 
-    const post = await BlogPost.findOne({ slug, status: "approved" })
-        .populate("author", "name avatar")
-        .lean();
+        const post = await BlogPost.findOne({ slug, status: "approved" })
+            .populate("author", "name avatar")
+            // .lean();
 
-    if (!post) {
-        return <div className="p-4">Post not found.</div>;
+        if (!post) {
+            return <div className="p-4">Post not found.</div>;
+        }
+
+        // Extract markdown content from TipTap JSON or fallback to string
+        // Adjust this according to how you store your content
+        const markdownContent =
+            typeof post.content === "string"
+                ? post.content
+                : post.content?.markdown || JSON.stringify(post.content);
+
+        return (
+            <div className="max-w-5xl mx-auto">
+
+                {post.coverImage && (
+                    <img src={post.coverImage} alt="" className="w-full h-auto mb-4" />
+                )}
+                <h1 className="text-3xl font-bold mb-2">{post.title}</h1>
+                <div className="text-sm text-gray-500 flex items-center gap-2 mb-4">
+                    <img
+                        src={post.author?.avatar || "/default-avatar.png"}
+                        alt={post.author?.name || "Author"}
+                        className="w-8 h-8 rounded-full"
+                    />
+                    <span>{post.author?.name || "Unknown"}</span>
+                    <span>• {new Date(post.createdAt).toLocaleDateString()}</span>
+                    <span>• {post.category}</span>
+                </div>
+
+                <div className="prose max-w-none">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {markdownContent}
+                    </ReactMarkdown>
+                </div>
+            </div>
+        );
+    } catch (error) {
+        console.error("Error fetching post:", error);
+        return <div className="text-red-500 p-4">An error occurred while loading the post.</div>;
     }
-
-    // Extract markdown content from TipTap JSON or fallback to string
-    // Adjust this according to how you store your content
-    const markdownContent =
-        typeof post.content === "string"
-            ? post.content
-            : post.content?.markdown || JSON.stringify(post.content);
-
-    return (
-        <div className="p-4 max-w-3xl mx-auto">
-            <h1 className="text-3xl font-bold mb-2">{post.title}</h1>
-            <div className="text-sm text-gray-600 flex items-center gap-2 mb-4">
-                <img
-                    src={post.author?.avatar || "/default-avatar.png"}
-                    alt={post.author?.name || "Author"}
-                    className="w-8 h-8 rounded-full"
-                />
-                <span>{post.author?.name || "Unknown"}</span>
-                <span>• {new Date(post.createdAt).toLocaleDateString()}</span>
-                <span>• {post.category}</span>
-            </div>
-
-            {post.coverImage && (
-                <img src={post.coverImage} alt="" className="w-full h-auto mb-4" />
-            )}
-
-            <div className="prose max-w-none">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                    {markdownContent}
-                </ReactMarkdown>
-            </div>
-        </div>
-    );
 }
