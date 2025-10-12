@@ -64,8 +64,10 @@ export default async function BlogDetailPage({ params }) {
         console.error("Error fetching post:", error);
         return (
             <div className="text-red-500 p-4">
-                An error occurred while loading the post.
-                <pre>{JSON.stringify(error, null, 2)}</pre>
+                <p>An error occurred while loading the post.</p>
+                <pre className="whitespace-pre-wrap text-sm bg-gray-100 p-2 mt-4 rounded text-red-600">
+                    {error?.message || "Unknown error"}
+                </pre>
             </div>
         );
     }
