@@ -1,5 +1,6 @@
 import { connectToDB } from "@/lib/mongodb";
 import BlogPost from "@/models/BlogPost";
+import User from "@/models/User"; 
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
