@@ -37,7 +37,7 @@ export default async function BlogDetailPage({ params }) {
                 : post.content?.markdown || JSON.stringify(post.content);
 
         return (
-            <div className="max-w-5xl mx-auto">
+            <div className="max-w-5xl mx-auto my-14">
                 {post.coverImage && (
                     <img src={post.coverImage} alt="" className="w-full h-auto mb-4" />
                 )}
