@@ -4,11 +4,14 @@ import { FaFacebook, FaTwitter, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const SingleCitiesData = ({ singleData, }) => {
   const { data: session } = useSession();
   const user = session?.user?.name;
   const userId = session?.user?.id;
+  const router = useRouter();
+  const [showForm, setShowForm] = useState(false);
   // const userEmail = data.user.email;
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(null);
@@ -54,6 +57,27 @@ const SingleCitiesData = ({ singleData, }) => {
     };
     fetchReviews();
   }, [singleData._id]);
+
+  // Handle Booking form
+  const handleBooking = async (e) => {
+    e.preventDefault();
+
+    const res = await fetch('/api/bookings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ cityId: city._id, dateFrom, dateTo }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      alert("Booking successful! Redirecting...");
+      router.push("/dashboard/bookings"); // Or a success page
+    } else {
+      alert(data.error || "Booking failed");
+    }
+  };
+
 
   // handleReviewSubmit
   const handleReviewSubmit = async (e) => {
@@ -182,12 +206,49 @@ const SingleCitiesData = ({ singleData, }) => {
         </div>
 
         {/* Location */}
-        <div className="mt-6 bg-orange-50 p-4 rounded-lg">
-          <h3 className="font-semibold text-gray-800 mb-2">📍 Location</h3>
-          <p className="text-sm text-gray-600">
-            Latitude: {location?.lat}, Longitude: {location?.lng}
-          </p>
+        <div className="mt-6 bg-orange-50 p-4 rounded-lg flex flex-col md:flex-row items-center justify-between gap-5">
+          <div className="">
+            <h3 className="font-semibold text-gray-800 mb-2">📍 Location</h3>
+            <p className="text-sm text-gray-600">
+              Latitude: {location?.lat}, Longitude: {location?.lng}
+            </p>
+          </div>
+          {/* Book Now button next to location */}
+          <button
+            onClick={() => {
+              if (!session) {
+                router.push('/auth/login');
+              } else {
+                setShowForm(true);
+              }
+            }}
+            className="cursor-pointer bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 transition"
+          >
+            Book Now
+          </button>
         </div>
+        {/* Booking form */}
+        {showForm && (
+          <form
+            onSubmit={handleBooking}
+            className="mt-4 bg-gray-50 p-4 rounded shadow"
+          >
+            <div className="mb-2">
+              <label className="block">From:</label>
+              <input type="date" required className="border px-2 py-1 w-full" />
+            </div>
+            <div className="mb-2">
+              <label className="block">To:</label>
+              <input type="date" required className="border px-2 py-1 w-full" />
+            </div>
+            <button
+              type="submit"
+              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+            >
+              Confirm Booking
+            </button>
+          </form>
+        )}
 
         {/* Meta Info */}
         <div className="flex flex-wrap items-center justify-between mt-6 text-sm text-gray-500">

@@ -16,6 +16,7 @@ import {
     FiX,
     FiPlusSquare,
     FiFileText,
+    FiCalendar,
 } from 'react-icons/fi';
 import { useTheme } from './ThemeContext';
 
@@ -68,6 +69,12 @@ export default function DashboardSidebar({ sidebarOpen, setSidebarOpen }) {
             path: '/dashboard/admin/users',
             icon: <FiUsers />,
             roles: ['admin'],
+        },
+        {
+            name: 'My bookings',
+            path: '/dashboard/bookings',
+            icon: <FiCalendar />,
+            roles: ['admin', 'user'],
         },
     ];
 
