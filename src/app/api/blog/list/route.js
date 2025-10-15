@@ -1,8 +1,11 @@
 import { connectToDB } from "@/lib/mongodb";
-import BlogPost from "@/models/BlogPost";
+import { getBlogPostModel } from "@/models/BlogPost";
 
 export async function GET(req) {
-    const url = new URL(req.url);
+    const BlogPost = getBlogPostModel();
+    // const url = new URL(req.url);
+    const url = new URL(req.url, `http://${req.headers.get("host")}`);
+
 
     const page = parseInt(url.searchParams.get("page") || "1", 10);
     const limit = parseInt(url.searchParams.get("limit") || "10", 10);
@@ -58,9 +61,13 @@ export async function GET(req) {
             { status: 200 }
         );
     } catch (err) {
-        console.error("Error fetching posts:", err);
+        console.error("🔥 Error fetching posts:", err);
         return new Response(
-            JSON.stringify({ message: "Server error fetching posts" }),
+            JSON.stringify({
+                message: "Server error fetching posts",
+                error: err.message,
+                stack: err.stack
+            }),
             { status: 500 }
         );
     }

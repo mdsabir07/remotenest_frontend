@@ -34,6 +34,7 @@ export default function BlogListPage() {
       if (category) params.append("category", category);
       if (search) params.append("search", search);
 
+      console.log(`/api/blog/list?${params.toString()}`);
       const res = await fetch(`/api/blog/list?${params.toString()}`);
       if (!res.ok) throw new Error("Failed to fetch posts");
       const json = await res.json();
