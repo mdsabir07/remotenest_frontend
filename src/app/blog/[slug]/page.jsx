@@ -1,11 +1,12 @@
 import { connectToDB } from "@/lib/mongodb";
-import BlogPost from "@/models/BlogPost";
-import User from "@/models/User"; 
+import { getBlogPostModel } from "@/models/BlogPost";
+import User from "@/models/User";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 export async function generateMetadata({ params }) {
-    const { slug } = params;
+    const { slug } = await params;
+    const BlogPost = getBlogPostModel();
     await connectToDB();
     const post = await BlogPost.findOne({ slug, status: "approved" }).lean();
 
@@ -23,6 +24,7 @@ export default async function BlogDetailPage({ params }) {
         const { slug } = params;
         await connectToDB();
 
+        const BlogPost = getBlogPostModel();
         const post = await BlogPost.findOne({ slug, status: "approved" })
             .populate("author", "name avatar");
         // .lean(); ← DO NOT use lean for now
