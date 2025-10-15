@@ -1,96 +1,116 @@
 "use client";
 
-import React, { useState } from "react";
-import Link from "next/link";
-import { FaChevronLeft } from "react-icons/fa";
-import { FaChevronRight } from "react-icons/fa6";
+import React, { useRef, useState } from 'react';
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+
+import banner1 from '../../assets/banner1.png';
+import banner2 from '../../assets/banner2.png';
+
+
+// import required modules
+import { Pagination, Navigation } from 'swiper/modules';
+import Image from 'next/image';
+import Link from 'next/link';
 
 const Banner = () => {
-  const slides = [
-    {
-      id: 1,
-      title: "Welcome to RemoteNest Tracker",
-      desc: "Track the Best Remote Work Destinations, Explore Stunning Swimming Spots, and Discover the Most Beautiful Places Around the World ",
-      btnText: "Explore Cities",
-      img: "https://i.ibb.co.com/5hrfsKQC/end-game-citi-9.jpg",
-    },
-    {
-      id: 2,
-      title: "Relax & Recharge – Unwind & Reenergize",
-      desc: "Enjoy Your Time Swimming and Exploring – Dive into Crystal-Clear Waters, Discover Hidden Gems, and Make Every Moment of Your Adventure Memorable and Exciting",
-      btnText: "Explore Cities",
-      img: "https://i.ibb.co.com/dJ6g414f/end-game-citi-5.jpg",
-    },
-    {
-      id: 3,
-      title: "Best Places Await – Explore & Enjoy",
-      desc: "Discover Top Destinations for Work and Life – Find the Perfect Places to Live, Work Remotely, and Enjoy an Ideal Balance Between Productivity and Leisure",
-      btnText: "Explore Cities",
-      img: "https://i.ibb.co.com/QjjyjP1k/end-game-citi-1.jpg",
-    },
-  ];
-
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-  };
-
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-  };
 
   return (
-    <div className="w-full max-w-7xl mx-auto mt-8 relative">
-      <div className="flex flex-col md:flex-row items-center overflow-hidden h-64 md:h-[400px] ">
-        {/* Left Side */}
-        <div className="md:w-1/2 p-6 md:p-12 flex flex-col justify-center h-full space-y-6">
-          <h2 className="text-4xl md:text-5xl font-bold text-emerald-500">
-            {slides[currentIndex].title}
-          </h2>
-          <p className=" mb-6 text-xl">{slides[currentIndex].desc}</p>
-          <Link href="/cities"className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition w-max">
-            {slides[currentIndex].btnText}
-          </Link>
-        </div>
+    <>
+      <Swiper
+        slidesPerView={1}
+        spaceBetween={30}
+        loop={true}
+        autoplay={true}
+        pagination={{
+          clickable: true,
+        }}
+        navigation={false}
+        modules={[Pagination, Navigation]}
+        className="mySwiper"
+      >
+        <SwiperSlide>
+          <section className="lg:grid lg:h-screen lg:place-content-center">
+            <div
+              className="mx-auto w-screen max-w-screen-xl px-4 sm:px-0 md:grid md:grid-cols-2 md:items-center md:gap-4"
+            >
+              <div className="max-w-prose text-left space-y-4">
+                <h1 className="text-4xl font-bold sm:text-5xl">
+                  Welcome to <strong className="text-blue-500"> RemoteNest </strong>
+                  Tracker
+                </h1>
 
-        {/* Right Side */}
-        <div className="md:w-1/2 h-full">
-          <img
-            src={slides[currentIndex].img}
-            alt={slides[currentIndex].title}
-            className="w-full h-full object-cover"
-          />
-        </div>
+                <p className="mt-4 text-base text-pretty sm:text-lg/relaxed">
+                  Track the Best Remote Work Destinations, Explore Stunning Swimming Spots, and Discover the Most Beautiful Places Around the World
+                </p>
 
-        {/* Navigation Buttons */}
-        <button
-          onClick={prevSlide}
-          className="absolute top-1/2 left-2 md:left-4 transform -translate-y-1/2 bg-white/70 hover:bg-white p-2 rounded-full shadow-md transition"
-        >
-          <FaChevronLeft className="w-6 h-6 text-gray-800" />
-        </button>
-        <button
-          onClick={nextSlide}
-          className="absolute top-1/2 right-2 md:right-4 transform -translate-y-1/2 bg-white/70 hover:bg-white p-2 rounded-full shadow-md transition"
-        >
-          <FaChevronRight className="w-6 h-6 text-gray-800" />
-        </button>
-      </div>
+                <div className="mt-4 flex gap-4 sm:mt-6">
+                  <Link
+                    className="inline-block rounded border border-blue-500 text-white bg-blue-500 px-5 py-3 font-medium shadow-sm transition-colors hover:bg-blue-600"
+                    href="/"
+                  >
+                    Explore Cities
+                  </Link>
+                </div>
+              </div>
 
-      {/* Dots */}
-      <div className="flex justify-center mt-4 gap-2">
-        {slides.map((_, idx) => (
-          <span
-            key={idx}
-            onClick={() => setCurrentIndex(idx)}
-            className={`w-3 h-3 rounded-full cursor-pointer transition ${
-              currentIndex === idx ? "bg-indigo-600" : "bg-gray-300"
-            }`}
-          ></span>
-        ))}
-      </div>
-    </div>
+              <div className="flex items-center justify-center p-6 mt-8 lg:mt-0">
+                <Image
+                  src={banner1}
+                  alt="Banner"
+                  className="h-full w-full object-cover"
+                  placeholder="blur" // optional, adds blur-up effect
+                  quality={90}
+                />
+
+              </div>
+            </div>
+          </section>
+        </SwiperSlide>
+        <SwiperSlide>
+          <section className="lg:grid lg:h-screen lg:place-content-center">
+            <div
+              className="mx-auto w-screen max-w-screen-xl px-4 sm:px-0 md:grid md:grid-cols-2 md:items-center md:gap-4"
+            >
+              <div className="max-w-prose text-left space-y-4">
+                <h1 className="text-4xl font-bold sm:text-5xl">
+                  Best Places Await –<strong className="text-blue-500"> Explore & Enjoy </strong>
+                </h1>
+
+                <p className="mt-4 text-base text-pretty sm:text-lg/relaxed">
+                  Discover Top Destinations for Work and Life – Find the Perfect Places to Live, Work Remotely, and Enjoy an Ideal Balance Between Productivity and Leisure
+                </p>
+
+                <div className="mt-4 flex gap-4 sm:mt-6">
+                  <Link
+                    className="inline-block rounded border border-blue-500 text-white bg-blue-500 px-5 py-3 font-medium shadow-sm transition-colors hover:bg-blue-600"
+                    href="/"
+                  >
+                    Explore Cities
+                  </Link>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-center p-6 mt-8 lg:mt-0">
+                <Image
+                  src={banner2}
+                  alt="Banner"
+                  className="h-full w-full object-cover"
+                  placeholder="blur" // optional, adds blur-up effect
+                  quality={90}
+                />
+
+              </div>
+            </div>
+          </section>
+        </SwiperSlide>
+      </Swiper>
+    </>
   );
 };
 

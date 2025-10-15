@@ -1,22 +1,31 @@
 // lib/mongodb.js
 import mongoose from "mongoose";
+
 const MONGODB_URI = process.env.MONGODB_URI;
 
+if (!MONGODB_URI) {
+  throw new Error("MONGODB_URI not set");
+}
+
+mongoose.set("bufferCommands", false);
+mongoose.set("strictQuery", true);
+
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
 export async function connectToDB() {
-  if (mongoose.connections[0].readyState) return;
+  if (cached.conn) return cached.conn;
 
-  try {
-    console.log("Connecting to MongoDB with URI:", MONGODB_URI);
-
-    await mongoose.connect(MONGODB_URI, {
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(MONGODB_URI, {
       dbName: "remotenest",
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-
-    console.log("✅ MongoDB connected");
-  } catch (err) {
-    console.error("❌ MongoDB connection error:", err);
-    throw err;
+      serverSelectionTimeoutMS: 20000,
+    }).then((mongoose) => mongoose);
   }
+
+  cached.conn = await cached.promise;
+  return cached.conn;
 }

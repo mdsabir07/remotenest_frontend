@@ -17,7 +17,7 @@ const FeaturedCities = () => {
         const citiesData = await res.json();
         const data = citiesData?.cities;
         if (Array.isArray(data)) {
-          setCities(data.slice(0,6));
+          setCities(data.slice(0, 6));
         } else {
           console.error("Cities is not an array:", data);
         }
@@ -29,19 +29,19 @@ const FeaturedCities = () => {
     };
     fetchCities();
   }, []);
-console.log(cities)
+  console.log(cities)
   if (loading) return <Loading />;
   if (error) return <p className="text-red-500 text-center">{error}</p>;
 
   return (
 
-    <div className="py-12 bg-gray-50">
+    <div className="py-12">
       {/* Title */}
-      <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
-        🌆 Featured Cities
+      <h2 className="text-3xl sm:text-5xl font-bold text-center mb-14">
+        🌆 Featured <span className="text-blue-500">Cities</span>
       </h2>
       {/* Cities Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-7xl mx-auto px-4 sm:px-0">
         {cities.map((singleData) => (
           <SingleFeaturedCities
             key={singleData._id}

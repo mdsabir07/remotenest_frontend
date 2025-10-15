@@ -16,7 +16,7 @@ const SingleFeaturedCities = ({ singleData }) => {
     description, } = singleData;
     const fallbackImage = "https://i.ibb.co.com/5hrfsKQC/end-game-citi-9.jpg";
   return (
-   <div className="group max-w-sm bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200 transition-all duration-500 hover:shadow-xl hover:-translate-y-3">
+   <div className="group bg-white rounded shadow-md overflow-hidden border border-gray-200 transition-all duration-500 hover:shadow-xl hover:-translate-y-3">
       {/* Image Section */}
       <div className="relative h-48 w-full overflow-hidden">
         <Image

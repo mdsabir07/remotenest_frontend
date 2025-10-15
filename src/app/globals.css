@@ -5,11 +5,14 @@
   --foreground: #171717;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-primary: #3B82F6;
+  --color-primary-dark: #1E3A8A;
 }
 
 .dark {
   --background: #0a0a0a;
   --foreground: #ededed;
+  --color-primary: #1E3A8A; 
 }
 
 @theme inline {
@@ -37,3 +40,40 @@ body {
 .dark body {
   @apply bg-gray-900 text-white;
 }
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-10%);
+  }
+}
+
+.marquee-wrapper {
+  overflow: hidden;
+  position: relative;
+}
+
+.marquee-track {
+  display: flex;
+  width: fit-content;
+  animation: marquee 10s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@layer components {
+  .myTestimonialSwiper .swiper-pagination {
+    bottom: -30px; /* or whatever spacing you prefer */
+  }
+}
+
+.swiper.myTestimonialSwiper {
+  padding-bottom: 70px; /* Adjust this value as needed */
+}
+
+
+

@@ -1,13 +1,14 @@
 import { connectToDB } from "@/lib/mongodb";
-import BlogPost from "@/models/BlogPost";
-import User from "@/models/User";
+import { getBlogPostModel } from "@/models/BlogPost";
+
 
 export async function fetchLatestPosts(limit = 3) {
-    await connectToDB();
+  await connectToDB(); // ensure DB is ready
+  const BlogPost = getBlogPostModel(); // register model only after connect
 
-    return BlogPost.find({ status: "approved" })
-        .sort({ createdAt: -1 })
-        .limit(limit)
-        .populate("author", "name avatar")
-        .lean();
+  return BlogPost.find({ status: "approved" })
+    .sort({ createdAt: -1 })
+    .limit(limit)
+    .populate("author", "name avatar")
+    .lean();
 }

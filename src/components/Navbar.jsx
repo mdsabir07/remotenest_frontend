@@ -43,10 +43,10 @@ const Navbar = () => {
   const closeTimerRef = useRef(null);
 
   return (
-    <nav className="bg-white dark:bg-gray-900 shadow-md sticky top-0 z-50 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="shadow dark:shadow-md sticky top-0 z-50 transition-colors duration-300 backdrop-blur">
+      <div className="max-w-7xl mx-auto px-4 sm:px-0">
         <div className="flex justify-between h-16 items-center">
-          <div className="text-xl font-bold text-blue-600 dark:text-blue-400">
+          <div className="text-2xl font-bold text-blue-500">
             <Link href="/">RemoteNest</Link>
           </div>
 
@@ -75,12 +75,12 @@ const Navbar = () => {
                       {link.path ? (
                         <Link
                           href={link.path}
-                          className="text-gray-700 dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium"
+                          className="hover:text-blue-500 dark:hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium"
                         >
                           {link.name}
                         </Link>
                       ) : (
-                        <button className="text-gray-700 dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium">
+                        <button className="hover:text-blue-500 dark:hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">
                           {link.name}
                         </button>
                       )}
@@ -101,7 +101,7 @@ const Navbar = () => {
                             <Link
                               key={child.name}
                               href={child.path}
-                              className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                              className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 text-white"
                             >
                               {child.name}
                             </Link>
@@ -116,7 +116,7 @@ const Navbar = () => {
                   <Link
                     key={link.name}
                     href={link.path}
-                    className="text-gray-700 dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium"
+                    className="hover:text-blue-500 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium"
                   >
                     {link.name}
                   </Link>
@@ -136,7 +136,7 @@ const Navbar = () => {
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="ml-4 px-3 py-2 text-sm rounded border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="ml-4 px-3 py-2 text-sm rounded border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-blue-500 hover:text-white transition-colors"
             >
               {theme === "light" ? "🌙 Dark" : "☀️ Light"}
             </button>
@@ -146,7 +146,7 @@ const Navbar = () => {
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-800 dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-400 focus:outline-none text-2xl"
+              className="hover:text-blue-500 dark:hover:text-blue-400 focus:outline-none text-2xl"
             >
               ☰
             </button>
@@ -169,12 +169,12 @@ const Navbar = () => {
                         <Link
                           href={link.path}
                           onClick={() => setIsOpen(false)}
-                          className="block text-gray-700 dark:text-gray-200 px-3 py-2 rounded-md text-base font-medium"
+                          className="block px-3 py-2 rounded-md text-base font-medium"
                         >
                           {link.name}
                         </Link>
                       ) : (
-                        <span className="block text-gray-700 dark:text-gray-200 px-3 py-2 rounded-md text-base font-medium">{link.name}</span>
+                        <span className="block px-3 py-2 rounded-md text-base font-medium">{link.name}</span>
                       )}
 
                       <button
@@ -193,7 +193,7 @@ const Navbar = () => {
                             key={child.name}
                             href={child.path}
                             onClick={() => setIsOpen(false)}
-                            className="block text-gray-700 dark:text-gray-200 px-3 py-2 rounded-md text-base font-medium"
+                            className="block px-3 py-2 rounded-md text-base font-medium"
                           >
                             {child.name}
                           </Link>
@@ -209,7 +209,7 @@ const Navbar = () => {
                   key={link.name}
                   href={link.path}
                   onClick={() => setIsOpen(false)}
-                  className="block text-gray-700 dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-400 px-3 py-2 rounded-md text-base font-medium"
+                  className="block hover:text-blue-500 dark:hover:text-blue-400 px-3 py-2 rounded-md text-base font-medium"
                 >
                   {link.name}
                 </Link>
@@ -231,7 +231,7 @@ const Navbar = () => {
           {/* Theme toggle (mobile) */}
           <button
             onClick={toggleTheme}
-            className="w-full px-3 py-2 mt-2 border text-sm border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-md"
+            className="w-full px-3 py-2 mt-2 border text-sm border-gray-300 dark:border-gray-600 rounded-md"
           >
             {theme === "light" ? "🌙 Dark" : "☀️ Light"}
           </button>
