@@ -90,13 +90,6 @@ GITHUB_CLIENT_SECRET=your_github_client_secret_here
 
 
 
-
-I'm building a project (remotenest) using NextJS, Tailwind, Mongoose, MongoDB, NextAuth, etc.
-I already completed the authentication process (using mongoose and nextauth) successfully. Also, created citis using mongoose, mongodb, where implemented user information was implemented to add reviews, etc. Besides already created dashboard pages (user and admin) successfully.
-
-Now I want to implement a new feature to add a blog to the project. So, I need your help to create the necessary code for creating the blog post and blog post form. So, only register user (users and admins) can add a blog after login. But all post must need to be approve by the admin. So, the admin can approve or delete the created post. 
-Besides, only approved posts will display on the blog pages. But blog pages and posts can be read by anyone registered or unregisters.
-
 Now give guide step by step to complete the blog methods with code.
 I can show you some previous code for your better understanding.
 Here is mongodb.js file code:

@@ -1,7 +1,7 @@
 // test-mongo.js (CommonJS version)
 const mongoose = require("mongoose");
 
-const uri = "mongodb+srv://remotenest:sazidi66@cluster0.xilbtqj.mongodb.net/remotenest?retryWrites=true&w=majority&appName=Cluster0";
+const uri = process.env.MONGODB_URI;
 
 (async () => {
   try {
