@@ -10,7 +10,6 @@ const HowItWorks = () => {
       title: "Search cities",
       desc: "Type a city name and quickly find details, attractions and costs.",
       icon: <FaSearch className="w-6 h-6 text-white" aria-hidden="true" />,
-      example: true,
       color: "from-indigo-500 to-purple-500",
     },
     {
@@ -37,9 +36,9 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold">How it works</h2>
+    <section className="max-w-7xl mx-auto py-12">
+      <div className="text-center mb-14">
+        <h2 className="text-3xl md:text-5xl font-bold">How it works</h2>
         <p className=" mt-2 text-lg">
           Find the perfect city for you in just a few steps
         </p>
@@ -49,10 +48,10 @@ const HowItWorks = () => {
         {steps.map((s, idx) => (
           <div
             key={s.id}
-            className="relative bg-white rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-transform transform hover:scale-105 duration-300"
+            className="relative rounded p-6 shadow-lg hover:shadow-2xl transition-transform transform hover:scale-105 duration-300"
           >
             {/* Step Number */}
-            <div className="absolute -top-4 -left-4 w-10 h-10 bg-indigo-500 text-white font-bold flex items-center justify-center rounded-full shadow-md">
+            <div className="absolute -top-4 -left-4 w-10 h-10 bg-blue-500 text-white font-bold flex items-center justify-center rounded-full shadow-md">
               {idx + 1}
             </div>
 
@@ -66,22 +65,8 @@ const HowItWorks = () => {
             {/* Title & Description */}
             <div>
               <h3 className="font-semibold text-lg">{s.title}</h3>
-              <p className="text-sm text-gray-500 mt-1">{s.desc}</p>
+              <p className="text-sm mt-1">{s.desc}</p>
             </div>
-
-            {/* Input */}
-            {s.example && (
-              <div className="mt-4">
-                <div className="flex items-center border rounded-xl px-3 py-2 bg-gray-50 focus-within:ring-2 focus-within:ring-indigo-400 transition">
-                  <FaSearch className="w-5 h-5 text-gray-400" />
-                  <input
-                    type="text"
-                    placeholder="Search city..."
-                    className="flex-1 px-2 text-sm bg-transparent outline-none"
-                  />
-                </div>
-              </div>
-            )}
           </div>
         ))}
       </div>

@@ -4,19 +4,19 @@ import React from 'react';
 
 const SingleFeaturedCities = ({ singleData }) => {
 
-  const {  _id,
+  const { _id,
     name,
     country,
     tags,
     featuredImage,
     cost,
-    reviewCount, 
+    reviewCount,
     averageRating,
     connectivity,
     description, } = singleData;
-    const fallbackImage = "https://i.ibb.co.com/5hrfsKQC/end-game-citi-9.jpg";
+  const fallbackImage = "https://i.ibb.co.com/5hrfsKQC/end-game-citi-9.jpg";
   return (
-   <div className="group bg-white rounded shadow-md overflow-hidden border border-gray-200 transition-all duration-500 hover:shadow-xl hover:-translate-y-3">
+    <div className="group bg-white rounded shadow-md overflow-hidden border border-gray-200 transition-all duration-500 hover:shadow-xl hover:-translate-y-3">
       {/* Image Section */}
       <div className="relative h-48 w-full overflow-hidden">
         <Image
@@ -41,7 +41,7 @@ const SingleFeaturedCities = ({ singleData }) => {
       </div>
 
       {/* Content */}
-      <div className="p-5 flex flex-col justify-between h-full">
+      <div className="p-5 flex flex-col space-y-6 h-full">
         <div>
           <div className="flex items-start justify-between">
             <h3 className="text-xl font-bold text-gray-900">{name}</h3>
@@ -54,7 +54,7 @@ const SingleFeaturedCities = ({ singleData }) => {
             {description}
           </p>
 
-        
+
 
           <div className="mt-4 space-y-2 text-sm text-gray-700">
             <div className="flex items-center">
@@ -62,7 +62,7 @@ const SingleFeaturedCities = ({ singleData }) => {
               <span className="font-semibold">Average Rating:</span>&nbsp;
               <span className='font-semibold text-yellow-500'>{averageRating}/5 ({reviewCount} reviews)</span>
             </div>
-            
+
 
             <div className="flex items-center">
               <span className="mr-2 text-orange-500">💰</span>
