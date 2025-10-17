@@ -30,25 +30,15 @@ export default function CitiesDetails({ params }) {
   const singleData = cities.find((d) => d._id === id);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4">
-      {/* Header */}
-      <div className="text-center mb-10">
-        <h1 className="text-3xl md:text-4xl font-extrabold text-emerald-600">
-          🌆 City Details
-        </h1>
-        <p className="mt-2 text-gray-600">
-          Explore everything you need to know about this city.
-        </p>
-      </div>
-
+    <div className="min-h-screen py-10 px-4 sm:px-0">
       {/* Content Section */}
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition">
+        <div className="rounded shadow-lg overflow-hidden hover:shadow-xl transition">
           {/* Single Data Component */}
           {singleData ? (
             <SingleCitiesData singleData={singleData} />
           ) : (
-            <p className="text-center text-gray-500 py-10">Loading city data...</p>
+            <p className="text-center py-10">Loading city data...</p>
           )}
         </div>
       </div>

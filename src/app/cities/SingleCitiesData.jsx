@@ -22,7 +22,7 @@ const SingleCitiesData = ({ singleData, }) => {
   const [error, setError] = useState(null);
 
   if (!singleData) {
-    return <p className="text-center text-gray-500 py-10">No city data available.</p>;
+    return <p className="text-center py-10">No city data available.</p>;
   }
 
   const {
@@ -129,7 +129,7 @@ const SingleCitiesData = ({ singleData, }) => {
 
 
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+    <div className="rounded shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300">
       {/* City Image */}
       <div className="relative">
         <Image
@@ -137,7 +137,7 @@ const SingleCitiesData = ({ singleData, }) => {
           alt={name}
           width={600}
           height={600}
-          className="w-full h-72 object-cover"
+          className="w-full h-60 md:h-100 object-cover"
         />
         <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/70 to-transparent p-4">
           <h2 className="text-3xl font-bold text-white">
@@ -159,57 +159,57 @@ const SingleCitiesData = ({ singleData, }) => {
       {/* City Info */}
       <div className="p-6 space-y-6">
         {/* Description */}
-        <p className="text-gray-700 text-base leading-relaxed whitespace-pre-line">
+        <p className="text-base leading-relaxed whitespace-pre-line">
           {description}
         </p>
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-500">💵 Monthly Rent</p>
-            <p className="font-semibold text-emerald-600">
+          <div className="p-4 border border-gray-100 rounded shadow">
+            <p className="text-sm">💵 Monthly Rent</p>
+            <p className="font-semibold text-blue-500">
               {cost?.rent ? `$${cost.rent}` : "150–450$ (avg)"}
             </p>
           </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-500">🍛 Food Cost</p>
-            <p className="font-semibold text-emerald-600">
+          <div className="p-4 border border-gray-100 rounded shadow">
+            <p className="text-sm">🍛 Food Cost</p>
+            <p className="font-semibold text-blue-500">
               {cost?.food ? `$${cost.food}` : "100–200$"}
             </p>
           </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-500">🚕 Transport</p>
-            <p className="font-semibold text-emerald-600">
+          <div className="p-4 border border-gray-100 rounded shadow">
+            <p className="text-sm">🚕 Transport</p>
+            <p className="font-semibold text-blue-500">
               {cost?.transport ? `$${cost.transport}` : "20–50$"}
             </p>
           </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-500">🌐 Avg Internet</p>
-            <p className="font-semibold text-emerald-600">
+          <div className="p-4 border border-gray-100 rounded shadow">
+            <p className="text-sm">🌐 Avg Internet</p>
+            <p className="font-semibold text-blue-500">
               {connectivity?.avgDownloadMbps
                 ? `${connectivity.avgDownloadMbps} Mbps`
                 : "30–60 Mbps"}
             </p>
           </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-500">📶 Mobile Coverage</p>
-            <p className="font-semibold text-emerald-600">
+          <div className="p-4 border border-gray-100 rounded shadow">
+            <p className="text-sm">📶 Mobile Coverage</p>
+            <p className="font-semibold text-blue-500">
               {connectivity?.mobileCoverage}
             </p>
           </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-500">⭐ Average Rating</p>
-            <p className="font-semibold text-yellow-500">
+          <div className="p-4 border border-gray-100 rounded shadow">
+            <p className="text-sm">⭐ Average Rating</p>
+            <p className="font-semibold text-blue-500">
               {averageRating}/5 ({reviewCount} reviews)
             </p>
           </div>
         </div>
 
         {/* Location */}
-        <div className="mt-6 bg-orange-50 p-4 rounded-lg flex flex-col md:flex-row items-center justify-between gap-5">
+        <div className="mt-6 bg-orange-100/15 p-4 rounded flex flex-col md:flex-row items-center justify-between gap-5">
           <div className="">
-            <h3 className="font-semibold text-gray-800 mb-2">📍 Location</h3>
-            <p className="text-sm text-gray-600">
+            <h3 className="font-semibold mb-2">📍 Location</h3>
+            <p className="text-sm">
               Latitude: {location?.lat}, Longitude: {location?.lng}
             </p>
           </div>
@@ -243,7 +243,7 @@ const SingleCitiesData = ({ singleData, }) => {
             </div>
             <button
               type="submit"
-              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
             >
               Confirm Booking
             </button>
@@ -251,19 +251,19 @@ const SingleCitiesData = ({ singleData, }) => {
         )}
 
         {/* Meta Info */}
-        <div className="flex flex-wrap items-center justify-between mt-6 text-sm text-gray-500">
-          <p>Status: <span className="font-medium text-green-600">{status}</span></p>
+        <div className="flex flex-wrap items-center justify-between mt-6 text-sm">
+          <p>Status: <span className="font-medium text-blue-500">{status}</span></p>
           <p>Approved At: {new Date(approvedAt).toLocaleDateString()}</p>
           <p>Created: {new Date(createdAt).toLocaleDateString()}</p>
         </div>
 
         {/* 🔥 User Review Section */}
         <div className="mt-10 border-t pt-6">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">💬 User Reviews</h3>
+          <h3 className="text-xl font-bold mb-4">💬 User Reviews</h3>
 
           {/* Review Form */}
           <form onSubmit={handleReviewSubmit} className="bg-gray-50 p-4 rounded-lg shadow-sm">
-            <p className="text-sm text-gray-600 mb-2">Leave a review</p>
+            <p className="text-sm mb-2">Leave a review</p>
             <div className="flex items-center gap-1 mb-3">
               {[1, 2, 3, 4, 5].map((star) => (
                 <FaStar
@@ -283,14 +283,14 @@ const SingleCitiesData = ({ singleData, }) => {
               value={review}
               onChange={(e) => setReview(e.target.value)}
               placeholder="Write your experience..."
-              className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+              className="w-full border border-gray-300 rounded p-3 text-sm focus:ring-1 focus:ring-blue-500 focus:outline-none"
             ></textarea>
             <button
               type="submit"
               disabled={loadingReviews || !rating}
               className={`mt-3 px-5 py-2 rounded-lg cursor-pointer shadow transition ${loadingReviews || !rating
                 ? "bg-gray-400 cursor-not-allowed"
-                : "bg-emerald-600 hover:bg-emerald-700 text-white"
+                : "bg-blue-500 hover:bg-blue-600 text-white"
                 }`}
             >
               Submit Review
@@ -306,7 +306,7 @@ const SingleCitiesData = ({ singleData, }) => {
               <p className="text-gray-500">No reviews yet.</p>
             ) : (
               cityReviews.map((rev, idx) => (
-                <div key={idx} className="p-4 border rounded-lg shadow-sm">
+                <div key={idx} className="p-4 border border-gray-300 rounded shadow-sm">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <img
@@ -314,7 +314,7 @@ const SingleCitiesData = ({ singleData, }) => {
                         alt={`${rev.userName || 'Anonymous'}'s avatar`}
                         className="w-10 h-10 rounded-full object-cover border border-gray-300"
                       />
-                      <p className="font-semibold text-gray-800">{rev.userName || "Anonymous"}</p>
+                      <p className="font-semibold capitalize text-blue-500">{rev.userName || "Anonymous"}</p>
                     </div>
                     <span className="flex text-yellow-400">
                       {[...Array(rev.rating)].map((_, i) => (
@@ -322,7 +322,7 @@ const SingleCitiesData = ({ singleData, }) => {
                       ))}
                     </span>
                   </div>
-                  <p className="mt-2 text-sm text-gray-600">{rev.body}</p>
+                  <p className="mt-2 text-sm">{rev.body}</p>
                 </div>
               ))
             )}
@@ -330,7 +330,7 @@ const SingleCitiesData = ({ singleData, }) => {
 
         </div>
         {/* share post */}
-        <div className="my-8 p-4 bg-gray-300 rounded-lg shadow-md flex flex-wrap items-center justify-center gap-4">
+        <div className="mt-8 p-4 flex flex-wrap items-center justify-center gap-4">
           <span className="font-semibold text-gray-700">Share this post:</span>
 
           {/* Facebook */}

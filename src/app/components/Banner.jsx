@@ -37,7 +37,7 @@ const Banner = () => {
         <SwiperSlide>
           <section className="lg:grid lg:h-screen lg:place-content-center">
             <div
-              className="mx-auto w-screen max-w-screen-xl px-4 sm:px-0 md:grid md:grid-cols-2 md:items-center md:gap-4"
+              className="mx-auto w-screen max-w-screen-xl p-4 sm:p-0 md:grid md:grid-cols-2 md:items-center space-y-8 md:space-y-0 gap-5"
             >
               <div className="max-w-prose text-left space-y-4">
                 <h1 className="text-4xl font-bold sm:text-5xl">
@@ -59,11 +59,11 @@ const Banner = () => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-center p-6 mt-8 lg:mt-0">
+              <div className="max-h-full">
                 <Image
                   src={banner1}
                   alt="Banner"
-                  className="h-full w-full object-cover"
+                  className="h-[250px] md:h-[400px] lg:h-[500px] w-full object-contain"
                   placeholder="blur" // optional, adds blur-up effect
                   quality={90}
                 />
@@ -75,7 +75,7 @@ const Banner = () => {
         <SwiperSlide>
           <section className="lg:grid lg:h-screen lg:place-content-center">
             <div
-              className="mx-auto w-screen max-w-screen-xl px-4 sm:px-0 md:grid md:grid-cols-2 md:items-center md:gap-4"
+              className="mx-auto w-screen max-w-screen-xl p-4 sm:p-0 md:grid md:grid-cols-2 md:items-center space-y-8 md:space-y-0 gap-5"
             >
               <div className="max-w-prose text-left space-y-4">
                 <h1 className="text-4xl font-bold sm:text-5xl">
@@ -96,11 +96,11 @@ const Banner = () => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-center p-6 mt-8 lg:mt-0">
+              <div className="max-h-full">
                 <Image
                   src={banner2}
                   alt="Banner"
-                  className="h-full w-full object-cover"
+                  className="h-[250px] md:h-[400px] lg:h-[500px] w-full object-contain"
                   placeholder="blur" // optional, adds blur-up effect
                   quality={90}
                 />

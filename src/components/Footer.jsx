@@ -13,7 +13,7 @@ const Footer = () => {
             <Link href="/">RemoteNest</Link>
           </div>
           <p className="text-sm leading-relaxed">
-            Discover the world’s best cities for remote work and travel.
+            Discover the world's best cities for remote work and travel.
             Compare cost, internet speed, lifestyle, and community insights
             to find your next destination.
           </p>
@@ -48,17 +48,17 @@ const Footer = () => {
             Subscribe to get the latest updates on top cities and travel tips.
           </p>
           <div className="flex flex-row">
-            <input type="text" placeholder="example@email.com" className="w-3/5 p-3 rounded-l-sm border border-blue-500 focus:outline-none sm:w-2/3" />
-            <button type="button" className="w-2/5 p-3 font-semibold text-white cursor-pointer rounded-r-sm sm:w-1/3 bg-blue-500 hover:bg-blue-600">Subscribe</button>
+            <input type="text" placeholder="example@email.com" className="w-3/5 p-2 rounded-l-sm border border-blue-500 focus:outline-none sm:w-2/3" />
+            <button type="button" className="w-2/5 p-2 font-semibold text-white cursor-pointer rounded-r-sm sm:w-1/3 bg-blue-500 hover:bg-blue-600">Subscribe</button>
           </div>
 
 
           {/* Social Links */}
           <div className="flex space-x-4 mt-5 text-xl">
-            <a href="#" className="hover:text-emerald-400"><FaFacebook /></a>
-            <a href="#" className="hover:text-emerald-400"><FaTwitter /></a>
-            <a href="#" className="hover:text-emerald-400"><FaLinkedin /></a>
-            <a href="#" className="hover:text-emerald-400"><FaInstagram /></a>
+            <a href="#" className="hover:text-blue-500"><FaFacebook /></a>
+            <a href="#" className="hover:text-blue-500"><FaTwitter /></a>
+            <a href="#" className="hover:text-blue-500"><FaLinkedin /></a>
+            <a href="#" className="hover:text-blue-500"><FaInstagram /></a>
           </div>
         </div>
       </div>

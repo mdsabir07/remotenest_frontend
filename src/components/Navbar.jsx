@@ -156,7 +156,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden px-4 pt-2 pb-4 space-y-2 bg-white dark:bg-gray-900">
+        <div className="md:hidden px-4 pt-2 pb-4 space-y-2">
           {[...commonLinks, ...(session ? userLinks : [])]
             .filter((l) => !(l.guestOnly && session))
             .map((link) => {

@@ -2,6 +2,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Loading from "../loading";
 
 export default function BlogListPage() {
   const router = useRouter();
@@ -81,8 +82,8 @@ export default function BlogListPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto my-10">
-      <h1 className="text-2xl font-bold mb-4">Blog</h1>
+    <div className="max-w-7xl mx-auto my-10 px-5 lg:px-0">
+      <h1 className="text-3xl lg:text-5xl font-bold mb-4">Blog</h1>
 
       {/* Filters */}
       <div className="flex flex-wrap gap-4 mb-8">
@@ -119,7 +120,7 @@ export default function BlogListPage() {
           />
           <button
             type="submit"
-            className="bg-blue-600 cursor-pointer text-white px-3 py-2 ml-2 hover:bg-blue-700 transition"
+            className="bg-blue-500 cursor-pointer text-white px-3 py-2 ml-2 hover:bg-blue-600 transition"
           >
             Go
           </button>
@@ -128,7 +129,7 @@ export default function BlogListPage() {
 
       {/* Post List */}
       {loading ? (
-        <p>Loading...</p>
+        <Loading />
       ) : posts.length === 0 ? (
         <p>No posts found.</p>
       ) : (
@@ -139,13 +140,13 @@ export default function BlogListPage() {
                 <img
                   src={post.coverImage}
                   alt={post.title}
-                  className="w-full h-48 object-cover rounded mb-2 bg-no-repeat"
+                  className="w-full h-48 object-cover rounded-t mb-2 bg-no-repeat"
                 />
               )}
               <div className="p-3">
                 <Link
                   href={`/blog/${post.slug}`}
-                  className="text-xl font-semibold text-primary hover:underline"
+                  className="text-xl font-semibold text-blue-500 hover:text-blue-600"
                 >
                   {post.title}
                 </Link>
@@ -177,8 +178,8 @@ export default function BlogListPage() {
           {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map((p) => (
             <button
               key={p}
-              onClick={() => changeParam("page", String(p), false)} // ✅ don't reset page
-              className={`px-3 py-1 border cursor-pointer rounded ${p === pagination.page ? "bg-blue-600 text-white" : ""
+              onClick={() => changeParam("page", String(p), false)}
+              className={`px-3 py-1 border hover:bg-blue-600 hover:text-white cursor-pointer rounded ${p === pagination.page ? "bg-blue-500 hover:bg-blue-600 text-white" : ""
                 }`}
             >
               {p}

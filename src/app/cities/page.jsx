@@ -37,15 +37,12 @@ export default function CitiesPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-0">
       {/* Section Title */}
       <div className="text-center my-16">
-        <h1 className="text-3xl md:text-5xl font-bold text-gray-800 dark:text-white text-center">
-          🌍 Discover the <span className="text-blue-600">World’s Best Cities</span>
+        <h1 className="text-3xl md:text-5xl font-bold text-center">
+          🌍 Discover the <span className="text-blue-500">World's Best Cities</span>
         </h1>
-        <p className="mt-3 text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto text-center">
-          Explore vibrant destinations across the globe with detailed insights on living costs,
-          internet speed, and lifestyle — helping you find the perfect place for remote work and travel.
+        <p className="mt-3 text-lg max-w-3xl mx-auto text-center">
+          Explore vibrant destinations across the globe with detailed insights on living costs, internet speed, and lifestyle — helping you find the perfect place for remote work and travel.
         </p>
-
-
       </div>
 
       {/* Cities Grid */}

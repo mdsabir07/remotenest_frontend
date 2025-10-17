@@ -39,27 +39,29 @@ export default async function BlogDetailPage({ params }) {
                 : post.content?.markdown || JSON.stringify(post.content);
 
         return (
-            <div className="max-w-5xl mx-auto my-14">
+            <div className="max-w-5xl mx-auto my-5 lg:my-14 px-6 lg:px-0 rounded shadow-md">
                 {post.coverImage && (
-                    <img src={post.coverImage} alt="" className="w-full h-auto mb-4" />
+                    <img src={post.coverImage} alt={post.title} className="w-full h-60 lg:h-100 object-center object-cover" />
                 )}
-                <h1 className="text-3xl font-bold mb-2">{post.title}</h1>
+                <div className="p-0 lg:p-6">
+                    <h1 className="text-3xl lg:text-5xl font-bold pt-5 lg:pt-0 mb-5">{post.title}</h1>
 
-                <div className="text-sm text-gray-500 flex items-center gap-2 mb-4">
-                    <img
-                        src={post.author?.avatar || "/default-avatar.png"}
-                        alt={post.author?.name || "Author"}
-                        className="w-8 h-8 rounded-full"
-                    />
-                    <span>{post.author?.name || "Unknown"}</span>
-                    <span>• {post.createdAt ? new Date(post.createdAt).toLocaleDateString() : "Unknown date"}</span>
-                    <span>• {post.category}</span>
-                </div>
+                    <div className="text-sm text-gray-500 flex items-center gap-2 mb-4">
+                        <img
+                            src={post.author?.avatar || "/default-avatar.png"}
+                            alt={post.author?.name || "Author"}
+                            className="w-8 h-8 rounded-full"
+                        />
+                        <span>{post.author?.name || "Unknown"}</span>
+                        <span>• {post.createdAt ? new Date(post.createdAt).toLocaleDateString() : "Unknown date"}</span>
+                        <span>• {post.category}</span>
+                    </div>
 
-                <div className="prose max-w-none">
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                        {markdownContent}
-                    </ReactMarkdown>
+                    <div className="prose max-w-none pb-5 lg:pb-0">
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                            {markdownContent}
+                        </ReactMarkdown>
+                    </div>
                 </div>
             </div>
         );

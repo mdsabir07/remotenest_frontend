@@ -16,7 +16,7 @@ const SingleFeaturedCities = ({ singleData }) => {
     description, } = singleData;
   const fallbackImage = "https://i.ibb.co.com/5hrfsKQC/end-game-citi-9.jpg";
   return (
-    <div className="group bg-white rounded shadow-md overflow-hidden border border-gray-200 transition-all duration-500 hover:shadow-xl hover:-translate-y-3">
+    <div className="rounded shadow-md overflow-hidden transition-all duration-500 hover:shadow-xl hover:-translate-y-3">
       {/* Image Section */}
       <div className="relative h-48 w-full overflow-hidden">
         <Image
@@ -32,7 +32,7 @@ const SingleFeaturedCities = ({ singleData }) => {
           {tags?.slice(0, 3).map((tag, idx) => (
             <span
               key={idx}
-              className="bg-emerald-600/80 text-white text-xs px-2 py-1 rounded-full shadow-md"
+              className="bg-blue-500 text-white text-xs px-2 py-1 rounded-full shadow-md"
             >
               {tag}
             </span>
@@ -44,19 +44,19 @@ const SingleFeaturedCities = ({ singleData }) => {
       <div className="p-5 flex flex-col space-y-6 h-full">
         <div>
           <div className="flex items-start justify-between">
-            <h3 className="text-xl font-bold text-gray-900">{name}</h3>
+            <h3 className="text-xl font-bold">{name}</h3>
             <span className="text-sm bg-orange-100 text-orange-600 px-2 py-0.5 rounded-md">
               {country}
             </span>
           </div>
 
-          <p className="mt-3 text-sm text-gray-600 line-clamp-2">
+          <p className="mt-3 text-sm line-clamp-2">
             {description}
           </p>
 
 
 
-          <div className="mt-4 space-y-2 text-sm text-gray-700">
+          <div className="mt-4 space-y-2 text-sm">
             <div className="flex items-center">
               <span className="mr-2 text-orange-500">⭐</span>
               <span className="font-semibold">Average Rating:</span>&nbsp;
@@ -78,10 +78,10 @@ const SingleFeaturedCities = ({ singleData }) => {
         </div>
 
         {/* Button */}
-        <div className="mt-6">
+        <div className="mt-2">
           <Link
             href={`/cities/${_id}`}
-            className="block w-full text-center font-semibold px-4 py-2 bg-white text-emerald-700 border border-emerald-500 rounded-lg shadow-sm hover:bg-emerald-600 hover:text-white hover:shadow-md transition-all duration-300"
+            className="block w-full text-center font-semibold px-4 py-2 text-blue-500 border border-blue-500 rounded shadow-sm hover:bg-blue-600 hover:text-white hover:shadow-md transition-all duration-300"
           >
             Explore More
           </Link>

@@ -16,7 +16,7 @@ export default async function Home() {
       <FeaturedCities></FeaturedCities>
       <HowItWorks></HowItWorks>
       <Testimonial />
-      <section className="my-12 max-w-7xl mx-auto">
+      <section className="my-12 max-w-7xl mx-auto px-5 lg:px-0">
         <h2 className="text-3xl sm:text-5xl text-center font-bold mb-14">Latest <span className="text-blue-500">Blog</span> Posts</h2>
         <PostGrid posts={posts} limit={3} />
       </section>
