@@ -2,11 +2,9 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import clsx from 'clsx';
 import {
-    FiSun,
-    FiMoon,
     FiShield,
     FiUser,
     FiMapPin,
@@ -104,9 +102,9 @@ export default function DashboardSidebar({ sidebarOpen, setSidebarOpen }) {
                         key={item.path}
                         href={item.path}
                         className={clsx(
-                            'flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition',
+                            'flex items-center gap-3 px-4 py-2 rounded-md hover:text-blue-500 transition',
                             pathname === item.path
-                                ? 'bg-gray-200 dark:bg-gray-700 font-semibold'
+                                ? 'font-semibold'
                                 : ''
                         )}
                     >
@@ -118,14 +116,22 @@ export default function DashboardSidebar({ sidebarOpen, setSidebarOpen }) {
 
             <div className="mt-auto space-y-2">
                 {/* dashboard to home */}
-                <Link href="/" className='flex items-center justify-center gap-2 px-4 py-2 rounded border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition'>
+                <Link href="/" className='flex items-center justify-center gap-2 px-4 py-2 rounded border border-gray-300 hover:bg-blue-500 transition'>
                     Go to Home
                 </Link>
                 <button
                     onClick={toggleTheme}
-                    className="w-full px-3 py-2 cursor-pointer rounded border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    className="w-full px-3 py-2 cursor-pointer rounded border border-gray-300 hover:bg-blue-500"
                 >
                     {theme === "light" ? "🌙 Dark" : "☀️ Light"}
+                </button>
+                {/* Logout for logged-in users */}
+
+                <button
+                    onClick={() => signOut()}
+                    className="hover:text-red-500 px-3 py-2 w-full text-base font-medium cursor-pointer rounded border border-gray-300"
+                >
+                    Logout
                 </button>
 
                 {role && (

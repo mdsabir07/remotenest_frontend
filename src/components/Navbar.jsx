@@ -34,7 +34,7 @@ const Navbar = () => {
   // user links: top-level "User" and a "Dashboard" menu that contains Admin
   const userLinks = [
     { name: "Community", path: "/community" },
-    { name: "Dashboard", path: "/dashboard"},
+    { name: "Dashboard", path: "/dashboard" },
   ];
 
   // track open dropdown on desktop and expanded items on mobile
@@ -136,9 +136,13 @@ const Navbar = () => {
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="ml-4 px-3 py-2 text-sm rounded border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-blue-500 hover:text-white transition-colors"
+              className="p-1 text-lg cursor-pointer transition-colors"
             >
-              {theme === "light" ? "🌙 Dark" : "☀️ Light"}
+              {theme === "light" ? (
+                <span title="Switch to dark mode">🌙</span>
+              ) : (
+                <span title="Switch to light mode">☀️</span>
+              )}
             </button>
           </div>
 
@@ -160,7 +164,7 @@ const Navbar = () => {
           {[...commonLinks, ...(session ? userLinks : [])]
             .filter((l) => !(l.guestOnly && session))
             .map((link) => {
-                if (link.children) {
+              if (link.children) {
                 const expanded = !!expandedMobile[link.name];
                 return (
                   <div key={link.name}>
@@ -231,15 +235,20 @@ const Navbar = () => {
           {/* Theme toggle (mobile) */}
           <button
             onClick={toggleTheme}
-            className="w-full px-3 py-2 mt-2 border text-sm border-gray-300 dark:border-gray-600 rounded-md"
+            className="w-full p-3 mt-2 text-sm shadow-md"
           >
-            {theme === "light" ? "🌙 Dark" : "☀️ Light"}
+            {/* {theme === "light" ? "🌙" : "☀️"} */}
+            {theme === "light" ? (
+              <span title="Switch to dark mode">🌙</span>
+            ) : (
+              <span title="Switch to light mode">☀️</span>
+            )}
           </button>
         </div>
       )}
     </nav>
   );
- 
+
 };
 
 export default Navbar;

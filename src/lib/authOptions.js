@@ -108,6 +108,7 @@ export const authOptions = {
             email: user.email,
             role: user.role,
             isVerified: user.isVerified,
+            avatar: user.avatar || null,
           };
         } else if (user.otp || user.otpExpires) {
           // OTP expired or invalid, clear OTP fields for fresh OTP next time
@@ -182,6 +183,7 @@ export const authOptions = {
         token.email = dbUser?.email || user.email || token.email;
         token.name = dbUser?.name || user.name || token.name;
         token.isVerified = dbUser ? Boolean(dbUser.isVerified) : Boolean(user.isVerified) || Boolean(token.isVerified);
+        token.avatar = dbUser?.avatar || user.avatar || null;
         console.log('Token after sign-in (updated with DB):', token);
       }
       return token;
@@ -195,6 +197,7 @@ export const authOptions = {
       session.user.name = token.name;
       // Pass isVerified from token to session.user
       session.user.isVerified = Boolean(token.isVerified);
+      session.user.avatar = token.avatar;
       console.log('Session user:', session.user);
       return session;
     },

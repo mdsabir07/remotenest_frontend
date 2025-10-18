@@ -23,12 +23,21 @@ ChartJS.register(
 );
 
 const BarChart = () => {
-    // total cities
+  // total cities
   const { data: totalCities = 0, isLoading: citiesLoading } = useQuery({
     queryKey: ['totalCities'],
     queryFn: async () => {
       const res = await axios.get('/api/cities');
       return res.data?.cities?.length || 0;
+    }
+  });
+
+  // total blogs
+  const { data: totalBlogs = 0, isLoading: blogsLoading, error: blogsError } = useQuery({
+    queryKey: ['totalBlogs'],
+    queryFn: async () => {
+      const res = await axios.get('/api/blog/list');
+      return res.data?.posts?.length || 0;
     }
   });
 
@@ -41,14 +50,16 @@ const BarChart = () => {
     }
   });
 
+
+
   // chart data
   const chartData = {
-    labels: ['Total Users', 'Total Cities'],
+    labels: ['Total Users', 'Total Cities', 'Total Blogs'],
     datasets: [
       {
         label: 'Counts',
-        data: [totalUsers, totalCities],
-        backgroundColor: ['#4f46e5', '#10b981'],
+        data: [totalUsers, totalCities, totalBlogs],
+        backgroundColor: ['#4f46e5', '#10b981', '#2B7FFF'],
       },
     ],
   };
@@ -65,29 +76,33 @@ const BarChart = () => {
       },
     },
   };
-  if(usersLoading || citiesLoading) return <Loading></Loading>
+  if (usersLoading || citiesLoading || blogsLoading) return <Loading></Loading>
 
-  console.log(totalUsers, totalCities)
-    return (
-        <div className="space-y-6">
-            {/* Metrics */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="rounded-lg p-4 shadow">
-                      <h3 className="text-lg font-semibold text-indigo-700">Total Users</h3>
-                      <p className="text-3xl font-bold">{totalUsers}</p>
-                    </div>
-                    <div className="rounded-lg p-4 shadow">
-                      <h3 className="text-lg font-semibold text-green-700">Total Cities</h3>
-                      <p className="text-3xl font-bold">{totalCities}</p>
-                    </div>
-                  </div>
-            
-                  {/* Bar Chart */}
-                  <div className="bg-white rounded-lg p-6 shadow">
-                    <Bar data={chartData} options={chartOptions} />
-                  </div>
+  console.log(totalUsers, totalCities, totalBlogs)
+  return (
+    <div className="space-y-6">
+      {/* Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="rounded-lg p-4 shadow">
+          <h3 className="text-lg font-semibold text-indigo-700">Total Users</h3>
+          <p className="text-3xl font-bold">{totalUsers}</p>
         </div>
-    );
+        <div className="rounded-lg p-4 shadow">
+          <h3 className="text-lg font-semibold text-green-700">Total Cities</h3>
+          <p className="text-3xl font-bold">{totalCities}</p>
+        </div>
+        <div className="rounded-lg p-4 shadow">
+          <h3 className="text-lg font-semibold text-blue-500">Total Blogs</h3>
+          <p className="text-3xl font-bold">{totalBlogs}</p>
+        </div>
+      </div>
+
+      {/* Bar Chart */}
+      <div className="bg-gray-50 rounded-lg p-6 shadow-md">
+        <Bar data={chartData} options={chartOptions} />
+      </div>
+    </div>
+  );
 };
 
 export default BarChart;
