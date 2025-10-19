@@ -41,8 +41,8 @@ export default function VerifyEmailPage() {
 
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 px-4">
-            <div className="max-w-md w-full bg-white dark:bg-gray-800 p-8 rounded shadow text-center">
+        <div className="min-h-screen flex items-center justify-center px-4 lg:px-0">
+            <div className="max-w-md w-full p-8 rounded shadow text-center">
                 {loading ? <p>Verifying your email...</p> : <p>Please wait...</p>}
             </div>
         </div>

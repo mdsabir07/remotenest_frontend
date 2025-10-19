@@ -48,21 +48,21 @@ export default function AdminCityTable() {
   if (error) return <div className="p-4 text-red-600">Error: {String(error)}</div>;
 
   return (
-    <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-md shadow-sm">
-      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-        <thead className="bg-gray-50 dark:bg-gray-900">
+    <div className="overflow-x-auto rounded shadow-md">
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-50">
           <tr>
-            <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 dark:text-gray-200">Title</th>
-            <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 dark:text-gray-200">Location</th>
-            <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 dark:text-gray-200">Submitted By</th>
-            <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 dark:text-gray-200">Actions</th>
+            <th className="px-4 py-2 text-left text-sm font-medium">Title</th>
+            <th className="px-4 py-2 text-left text-sm font-medium">Location</th>
+            <th className="px-4 py-2 text-left text-sm font-medium">Submitted By</th>
+            <th className="px-4 py-2 text-left text-sm font-medium">Actions</th>
           </tr>
         </thead>
-        <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">
+        <tbody className="divide-y divide-gray-100">
           {cities.map(c => (
-            <tr key={c._id} className="hover:bg-gray-50 dark:hover:bg-gray-900">
-              <td className="px-4 py-3 text-sm text-gray-800 dark:text-gray-100">{c.title || c.name}</td>
-              <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+            <tr key={c._id} className="hover:bg-gray-50">
+              <td className="px-4 py-3 text-sm">{c.title || c.name}</td>
+              <td className="px-4 py-3 text-sm">
                 {(() => {
                   const loc = c.location;
                   if (!loc) return c.country || '-';
@@ -77,7 +77,7 @@ export default function AdminCityTable() {
                   return String(loc);
                 })()}
               </td>
-              <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">{c.createdBy?.name || c.createdBy?.email || '-'}</td>
+              <td className="px-4 py-3 text-sm">{c.createdBy?.name || c.createdBy?.email || '-'}</td>
               <td className="px-4 py-3 text-sm">
                 <button onClick={() => approveCity(c._id)} className="mr-2 cursor-pointer inline-flex items-center px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700">Approve</button>
                 <button onClick={() => deleteCity(c._id)} className="cursor-pointer inline-flex items-center px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">Delete</button>

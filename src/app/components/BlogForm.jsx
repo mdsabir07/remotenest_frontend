@@ -112,7 +112,7 @@ export default function BlogForm() {
                 value={form.title}
                 onChange={handleChange}
                 required
-                className="w-full border p-2 bg-white dark:bg-gray-800 dark:text-white"
+                className="w-full border p-2"
             />
 
             <div data-color-mode={theme} className="w-full">
@@ -141,14 +141,14 @@ export default function BlogForm() {
                 placeholder="Cover Image URL (optional)"
                 value={form.coverImage}
                 onChange={handleChange}
-                className="w-full border p-2 bg-white dark:bg-gray-800 dark:text-white"
+                className="w-full border p-2"
             />
 
             <select
                 name="category"
                 value={form.category}
                 onChange={handleChange}
-                className="w-full border p-2 bg-white dark:bg-gray-800 dark:text-white"
+                className="w-full border p-2"
             >
                 <option value="remote work">Remote Work</option>
                 <option value="tax/legal">Tax / Legal</option>
@@ -160,7 +160,7 @@ export default function BlogForm() {
             <button
                 type="submit"
                 disabled={loading || !isFormValid}
-                className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
+                className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
             >
                 {loading ? "Submitting..." : "Submit Post"}
             </button>

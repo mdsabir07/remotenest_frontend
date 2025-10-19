@@ -99,7 +99,7 @@ export default function CreateCityForm() {
     }
 
     return (
-        <div className="shadow-lg rounded-lg overflow-hidden">
+        <div className="shadow-lg rounded overflow-hidden">
             <form onSubmit={onSubmit} className="space-y-4">
                 {message && (
                     <div className={message.type === "error" ? "text-red-600" : "text-green-600"}>
@@ -114,7 +114,7 @@ export default function CreateCityForm() {
                         value={form.name}
                         onChange={onChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
                     />
                 </div>
 
@@ -125,7 +125,7 @@ export default function CreateCityForm() {
                         value={form.country}
                         onChange={onChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
                     />
                 </div>
 
@@ -135,7 +135,7 @@ export default function CreateCityForm() {
                         name="description"
                         value={form.description}
                         onChange={onChange}
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
                         rows={4}
                     />
                 </div>
@@ -146,7 +146,7 @@ export default function CreateCityForm() {
                         name="featuredImage"
                         value={form.featuredImage}
                         onChange={onChange}
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
                     />
                 </div>
 
@@ -157,55 +157,55 @@ export default function CreateCityForm() {
                         value={form.tags}
                         onChange={onChange}
                         placeholder="coastal, digital-nomad"
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
                     />
                 </div>
 
                 <div className="grid grid-cols-3 gap-4">
                     <div>
                         <label className="block mb-1 text-sm font-medium">Rent (USD)</label>
-                        <input name="rent" value={form.rent} onChange={onChange} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <input name="rent" value={form.rent} onChange={onChange} className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500" />
                     </div>
                     <div>
                         <label className="block mb-1 text-sm font-medium">Food (USD)</label>
-                        <input name="food" value={form.food} onChange={onChange} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <input name="food" value={form.food} onChange={onChange} className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500" />
                     </div>
                     <div>
                         <label className="block mb-1 text-sm font-medium">Transport (USD)</label>
-                        <input name="transport" value={form.transport} onChange={onChange} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <input name="transport" value={form.transport} onChange={onChange} className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500" />
                     </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                     <div>
                         <label className="block mb-1 text-sm font-medium">Avg download Mbps</label>
-                        <input name="avgDownloadMbps" value={form.avgDownloadMbps} onChange={onChange} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <input name="avgDownloadMbps" value={form.avgDownloadMbps} onChange={onChange} className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500" />
                     </div>
                     <div>
                         <label className="block mb-1 text-sm font-medium">Mobile coverage</label>
-                        <input name="mobileCoverage" value={form.mobileCoverage} onChange={onChange} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <input name="mobileCoverage" value={form.mobileCoverage} onChange={onChange} className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500" />
                     </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                     <div>
                         <label className="block mb-1 text-sm font-medium">Latitude</label>
-                        <input name="lat" value={form.lat} onChange={onChange} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <input name="lat" value={form.lat} onChange={onChange} className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500" />
                     </div>
                     <div>
                         <label className="block mb-1 text-sm font-medium">Longitude</label>
-                        <input name="lng" value={form.lng} onChange={onChange} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <input name="lng" value={form.lng} onChange={onChange} className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500" />
                     </div>
                 </div>
 
                 <div>
-                    <button type="submit" disabled={loading} className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-semibold transition duration-300">
+                    <button type="submit" disabled={loading} className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700 text-white py-2 rounded font-semibold transition duration-300">
                         {loading ? "Submitting..." : "Submit City"}
                     </button>
                 </div>
 
                 {createdCity && (
-                    <div className="mt-4 p-3 border rounded bg-gray-50 dark:bg-gray-900">
+                    <div className="mt-4 p-3 border rounded shadow">
                         <div><strong>Created:</strong> {createdCity.name} ({createdCity.status})</div>
                         <div className="text-sm">You will see this city on the public pages after an admin approves it.</div>
                     </div>

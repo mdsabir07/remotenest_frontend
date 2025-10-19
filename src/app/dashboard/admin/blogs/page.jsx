@@ -92,13 +92,13 @@ export default function AdminBlogModeration() {
                         <div className="flex gap-2">
                             <button
                                 onClick={() => moderate(post._id, "approve")}
-                                className="bg-green-600 text-white px-3 py-1 rounded"
+                                className="bg-green-600 cursor-pointer text-white px-3 py-1 rounded"
                             >
                                 Approve
                             </button>
                             <button
                                 onClick={() => moderate(post._id, "reject")}
-                                className="bg-red-600 text-white px-3 py-1 rounded"
+                                className="bg-red-600 cursor-pointer text-white px-3 py-1 rounded"
                             >
                                 Reject
                             </button>

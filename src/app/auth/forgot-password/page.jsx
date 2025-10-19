@@ -53,24 +53,24 @@ export default function ForgotPasswordPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 px-4">
-            <div className="w-full max-w-md bg-white dark:bg-gray-800 p-8 rounded shadow">
-                <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">Forgot Password</h2>
+        <div className="min-h-screen flex items-center justify-center px-4 lg:px-0">
+            <div className="w-full max-w-md p-8 rounded shadow-md">
+                <h2 className="text-2xl font-bold mb-6">Forgot Password</h2>
                 <form onSubmit={handleSubmit}>
-                    <label className="block mb-2 text-sm text-gray-700 dark:text-gray-300">Email address</label>
+                    <label className="block mb-2 text-sm">Email address</label>
                     <input
                         type="email"
                         placeholder="you@example.com"
                         required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full px-4 py-2 mb-4 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none"
+                        className="w-full px-4 py-2 mb-4 border border-gray-300 rounded focus:outline-none"
                     />
 
                     <button
                         type="submit"
                         disabled={submitting}
-                        className="cursor-pointer w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition duration-300"
+                        className="cursor-pointer w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-md transition duration-300"
                     >
                         {submitting ? 'Sending...' : 'Send Reset Link'}
                     </button>

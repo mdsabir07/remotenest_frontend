@@ -32,7 +32,7 @@ export default function CitiesDetails({ params }) {
   return (
     <div className="min-h-screen py-10 px-4 sm:px-0">
       {/* Content Section */}
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <div className="rounded shadow-lg overflow-hidden hover:shadow-xl transition">
           {/* Single Data Component */}
           {singleData ? (

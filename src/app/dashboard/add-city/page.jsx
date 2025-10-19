@@ -19,7 +19,7 @@ export default async function Page() {
     return (
         <main className="">
             <h1 className="text-2xl font-bold">Add City</h1>
-            <p className="text-sm text-gray-600 mt-1">Only signed-in users can submit cities; admin submissions auto-approve.</p>
+            <p className="text-sm mt-1">Only signed-in users can submit cities; admin submissions auto-approve.</p>
 
             <div className="mt-6">
                 <CreateCityForm />

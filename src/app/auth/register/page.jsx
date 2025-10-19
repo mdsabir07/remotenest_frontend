@@ -59,52 +59,52 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 px-4">
-            <div className="w-full max-w-5xl bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row">
+        <div className="min-h-screen flex items-center justify-center px-4 lg:px-0">
+            <div className="w-full max-w-5xl shadow-lg rounded overflow-hidden flex flex-col md:flex-row">
 
                 {/* Left: Form */}
                 <div className="w-full md:w-1/2 p-8">
-                    <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">Create Account</h2>
+                    <h2 className="text-3xl font-bold mb-6">Create Account</h2>
 
                     <form onSubmit={handleRegister} className="space-y-4">
                         <div>
-                            <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
+                            <label className="block mb-1 text-sm font-medium">Name</label>
                             <input
                                 type="text"
                                 placeholder="Your Name"
                                 value={form.name}
                                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                                 required
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
 
                         <div>
-                            <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+                            <label className="block mb-1 text-sm font-medium">Email</label>
                             <input
                                 type="email"
                                 placeholder="you@example.com"
                                 value={form.email}
                                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                                 required
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
 
                         <div>
-                            <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+                            <label className="block mb-1 text-sm font-medium">Password</label>
                             <input
                                 type="password"
                                 placeholder="********"
                                 value={form.password}
                                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                                 required
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
 
                         <div>
-                            <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Avatar (file or URL)</label>
+                            <label className="block mb-1 text-sm font-medium">Avatar (file or URL)</label>
                             <div className="flex items-center gap-2">
                                 <input
                                     type="file"
@@ -137,7 +137,7 @@ export default function RegisterPage() {
                                             setForm((f) => ({ ...f, avatar: '' }));
                                         }
                                     }}
-                                    className="block"
+                                    className="block cursor-pointer"
                                 />
 
                                 <input
@@ -145,7 +145,7 @@ export default function RegisterPage() {
                                     placeholder="Or paste image URL"
                                     value={form.avatar}
                                     onChange={(e) => setForm({ ...form, avatar: e.target.value })}
-                                    className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
                                 />
                             </div>
 
@@ -160,13 +160,13 @@ export default function RegisterPage() {
                         <button
                             type="submit"
                             disabled={uploading}
-                            className={`w-full cursor-pointer ${uploading ? 'bg-gray-400 hover:bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'} text-white py-2 rounded-md font-semibold transition duration-300`}
+                            className={`w-full cursor-pointer ${uploading ? 'bg-gray-400 hover:bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'} text-white py-2 rounded font-semibold transition duration-300`}
                         >
                             {uploading ? 'Uploading avatar...' : 'Register'}
                         </button>
 
-                        <p className="text-sm text-gray-600 dark:text-gray-400 text-center mt-4">
-                            Already have an account? <a href="/auth/login" className="text-blue-600 dark:text-blue-400 hover:underline">Login</a>
+                        <p className="text-sm text-center mt-4">
+                            Already have an account? <a href="/auth/login" className="text-blue-500 font-bold hover:underline">Login</a>
                         </p>
                     </form>
                 </div>
