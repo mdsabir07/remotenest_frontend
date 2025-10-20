@@ -6,7 +6,8 @@ import { connectToDB } from "@/lib/mongodb";
 import City from "@/models/City";
 import { User } from "@/models/User";
 
-export async function POST(req, { params }) {
+export async function POST(req, context) {
+    const { params } = await context;
     try {
         const session = await getServerSession(authOptions);
         console.log("🧠 SESSION IN POST API:", session);
@@ -43,10 +44,11 @@ export async function POST(req, { params }) {
         const newReview = {
             userId,
             userName: requestingUser.name,
+            userAvatar: requestingUser.avatar,
             rating,
             title,
             body,
-            createdAt: new Date(), // ✅ changed from helpful
+            createdAt: new Date(),
         };
 
         city.reviews.push(newReview);
@@ -61,12 +63,13 @@ export async function POST(req, { params }) {
     }
 }
 
-export async function GET(req, { params }) {
+export async function GET(req, context) {
+    const { params } = await context;
     try {
         await connectToDB();
 
         const cityId = params.id;
-        const city = await City.findById(cityId).populate("reviews.userId", "name image");
+        const city = await City.findById(cityId).populate("reviews.userId", "name avatar");
 
         if (!city) {
             return NextResponse.json({ error: "City not found" }, { status: 404 });
@@ -78,7 +81,7 @@ export async function GET(req, { params }) {
             title: rev.title,
             body: rev.body,
             userName: rev.userId?.name || rev.userName || "Anonymous",
-            avatarUrl: rev.userId?.image || "/default-avatar.png",
+            avatarUrl: rev.userId?.avatar || rev.userAvatar || "/default-avatar.png",
             createdAt: rev.createdAt,
         }));
 

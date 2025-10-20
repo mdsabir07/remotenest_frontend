@@ -177,7 +177,7 @@ export const authOptions = {
         await connectToDB();
         // Fetch latest user info by email
         const dbUser = await User.findOne({ email: user.email }).lean();
-        
+
         token.id = dbUser?._id?.toString() || token.id;
         token.role = dbUser?.role || user.role || token.role;
         token.email = dbUser?.email || user.email || token.email;
@@ -190,15 +190,14 @@ export const authOptions = {
     },
 
     async session({ session, token }) {
-      session.user = session.user || {};
-      session.user.id = token.id;
-      session.user.role = token.role;
-      session.user.email = token.email;
-      session.user.name = token.name;
-      // Pass isVerified from token to session.user
-      session.user.isVerified = Boolean(token.isVerified);
-      session.user.avatar = token.avatar;
-      console.log('Session user:', session.user);
+      session.user = {
+        id: token.id,
+        role: token.role,
+        email: token.email,
+        name: token.name,
+        isVerified: token.isVerified,
+        avatar: token.avatar, // ✅ do NOT run getSafeAvatar here
+      };
       return session;
     },
 

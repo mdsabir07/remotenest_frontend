@@ -127,7 +127,7 @@ const Navbar = () => {
             {session && (
               <button
                 onClick={() => signOut()}
-                className="text-gray-700 dark:text-gray-200 hover:text-red-500 dark:hover:text-red-400 px-3 py-2 rounded-md text-sm font-medium cursor-pointer"
+                className="hover:text-red-500 dark:hover:text-red-400 px-3 py-2 rounded-md text-sm font-medium cursor-pointer"
               >
                 Logout
               </button>

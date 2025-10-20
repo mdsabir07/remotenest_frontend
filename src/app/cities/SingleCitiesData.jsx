@@ -5,13 +5,13 @@ import { FaStar } from "react-icons/fa";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import BookingForm from "@/components/BookingForm";
 
 const SingleCitiesData = ({ singleData, }) => {
   const { data: session } = useSession();
   const user = session?.user?.name;
   const userId = session?.user?.id;
   const router = useRouter();
-  const [showForm, setShowForm] = useState(false);
   // const userEmail = data.user.email;
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(null);
@@ -58,27 +58,6 @@ const SingleCitiesData = ({ singleData, }) => {
     fetchReviews();
   }, [singleData._id]);
 
-  // Handle Booking form
-  const handleBooking = async (e) => {
-    e.preventDefault();
-
-    const res = await fetch('/api/bookings', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ cityId: city._id, dateFrom, dateTo }),
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
-      alert("Booking successful! Redirecting...");
-      router.push("/dashboard/bookings"); // Or a success page
-    } else {
-      alert(data.error || "Booking failed");
-    }
-  };
-
-
   // handleReviewSubmit
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
@@ -93,10 +72,12 @@ const SingleCitiesData = ({ singleData, }) => {
       return;
     }
 
+    const userAvatar = session?.user?.avatar;
     const payload = {
       rating,
       title: `Review by ${user}`,
       body: review,
+      avatar: userAvatar,
     };
 
     try {
@@ -117,6 +98,7 @@ const SingleCitiesData = ({ singleData, }) => {
         userName: user,
         rating,
         body: review,
+        avatar: userAvatar,
       }]);
 
       setReview("");
@@ -213,42 +195,11 @@ const SingleCitiesData = ({ singleData, }) => {
               Latitude: {location?.lat}, Longitude: {location?.lng}
             </p>
           </div>
-          {/* Book Now button next to location */}
-          <button
-            onClick={() => {
-              if (!session) {
-                router.push('/auth/login');
-              } else {
-                setShowForm(true);
-              }
-            }}
-            className="cursor-pointer bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 transition"
-          >
-            Book Now
-          </button>
+          {/* Booking form */}
+          <BookingForm cityId={_id} rent={cost?.rent || 300} session={session} />
+
         </div>
-        {/* Booking form */}
-        {showForm && (
-          <form
-            onSubmit={handleBooking}
-            className="mt-4 bg-gray-50 p-4 rounded shadow"
-          >
-            <div className="mb-2">
-              <label className="block">From:</label>
-              <input type="date" required className="border px-2 py-1 w-full" />
-            </div>
-            <div className="mb-2">
-              <label className="block">To:</label>
-              <input type="date" required className="border px-2 py-1 w-full" />
-            </div>
-            <button
-              type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-            >
-              Confirm Booking
-            </button>
-          </form>
-        )}
+
 
         {/* Meta Info */}
         <div className="flex flex-wrap items-center justify-between mt-6 text-sm">
@@ -262,7 +213,7 @@ const SingleCitiesData = ({ singleData, }) => {
           <h3 className="text-xl font-bold mb-4">💬 User Reviews</h3>
 
           {/* Review Form */}
-          <form onSubmit={handleReviewSubmit} className="bg-gray-50 p-4 rounded-lg shadow-sm">
+          <form onSubmit={handleReviewSubmit} className="p-4 rounded shadow-md">
             <p className="text-sm mb-2">Leave a review</p>
             <div className="flex items-center gap-1 mb-3">
               {[1, 2, 3, 4, 5].map((star) => (

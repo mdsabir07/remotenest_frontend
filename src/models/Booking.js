@@ -11,6 +11,12 @@ const bookingSchema = new mongoose.Schema({
         enum: ["pending", "completed", "failed"], 
         default: "pending" 
     },
+    adminStatus: {
+        type: String,
+        enum: ["pending", "approved", "rejected", "cancelled"],
+        default: "pending",
+    },
     createdAt: { type: Date, default: Date.now },
 });
+
 export const Booking = mongoose.models.Booking || mongoose.model("Booking", bookingSchema);
