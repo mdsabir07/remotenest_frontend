@@ -6,6 +6,7 @@ import { FiMenu, FiSun, FiMoon } from 'react-icons/fi';
 import DashboardSidebar from '@/components/DashboardSidebar';
 import { useTheme } from '@/components/ThemeContext';
 import Loading from '../loading';
+import NotificationsBell from '@/components/dashboard/NotificationsBell';
 
 export default function DashboardLayout({ children }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -29,13 +30,21 @@ export default function DashboardLayout({ children }) {
                         <FiMenu className="h-6 w-6" />
                     </button>
                     <h1 className="text-lg font-semibold">Dashboard</h1>
-                    {/* Theme Toggle */}
-                    <button
-                        onClick={toggleTheme}
-                        className="ml-4 px-3 py-2 text-sm rounded border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800"
-                    >
-                        {theme === "light" ? "🌙 Dark" : "☀️ Light"}
-                    </button>
+                    <div className="flex gap-2 items-center">
+                        <NotificationsBell />
+
+                        {/* Theme Toggle */}
+                        <button
+                            onClick={toggleTheme}
+                            className="text-base cursor-pointer"
+                        >
+                            {theme === "light" ? (
+                                <span title="Switch to dark mode">🌙</span>
+                            ) : (
+                                <span title="Switch to light mode">☀️</span>
+                            )}
+                        </button>
+                    </div>
                 </header>
 
                 {/* Scrollable Content */}
