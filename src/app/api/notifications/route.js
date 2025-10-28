@@ -1,4 +1,5 @@
 import { connectToDB } from "@/lib/mongodb";
+import Notification from "@/models/Notification";
 import { getServerSession } from "next-auth";
 
 export async function GET(req) {

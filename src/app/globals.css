@@ -12,9 +12,10 @@
 .dark {
   --background: #0a0a0a;
   --foreground: #ededed;
-  --color-primary: #1E3A8A; 
+  --color-primary: #1E3A8A;
 }
 
+/* Remove the prefers-color-scheme media query, using class-based dark mode instead */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -22,29 +23,24 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  /* background: var(--background);
-  color: var(--foreground); */
-  @apply bg-white text-black;
+  background: var(--background);
+  color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
-/* Tailwind utility fallbacks */
+/* Apply Tailwind classes in dark mode */
 .dark body {
-  @apply bg-gray-900 text-white;
+  background: var(--background);
+  color: var(--foreground);
 }
 
+/* Tailwind utility fallbacks */
 @keyframes marquee {
   0% {
     transform: translateX(0%);
   }
+
   100% {
     transform: translateX(-10%);
   }
@@ -65,15 +61,15 @@ body {
   animation-play-state: paused;
 }
 
+/* Custom Swiper Styles */
 @layer components {
   .myTestimonialSwiper .swiper-pagination {
-    bottom: -30px; /* or whatever spacing you prefer */
+    bottom: -30px;
+    /* or whatever spacing you prefer */
   }
 }
 
 .swiper.myTestimonialSwiper {
-  padding-bottom: 70px; /* Adjust this value as needed */
+  padding-bottom: 70px;
+  /* Adjust this value as needed */
 }
-
-
-

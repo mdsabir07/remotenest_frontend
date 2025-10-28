@@ -51,36 +51,36 @@ export default function NotificationBell() {
             </button>
 
             {open && (
-                <div className="absolute right-0 mt-2 w-80 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg z-50">
+                <div className="absolute right-0 mt-2 w-80 border border-gray-200 dark:border-gray-700 rounded shadow-lg z-50 bg-white dark:bg-gray-900">
                     <div className="p-3 border-b dark:border-gray-700 flex justify-between items-center">
                         <h3 className="font-semibold text-gray-800 dark:text-gray-100">Notifications</h3>
                         <button
                             onClick={markAllAsRead}
-                            className="text-sm text-blue-600 hover:underline"
+                            className="text-sm text-blue-600 hover:underline dark:text-blue-400"
                         >
                             Mark all as read
                         </button>
                     </div>
 
                     <div className="max-h-64 overflow-y-auto">
-                        {isLoading && <p className="p-3 text-sm text-gray-500 text-center">Loading...</p>}
-                        {error && <p className="p-3 text-sm text-red-500 text-center">Error loading notifications</p>}
+                        {isLoading && <p className="p-3 text-sm text-gray-500 text-center dark:text-gray-400">Loading...</p>}
+                        {error && <p className="p-3 text-sm text-red-500 text-center dark:text-red-400">Error loading notifications</p>}
                         {!isLoading && notifications?.length === 0 && (
-                            <p className="p-3 text-sm text-gray-500 text-center">No notifications</p>
+                            <p className="p-3 text-sm text-gray-500 text-center dark:text-gray-400">No notifications</p>
                         )}
                         {notifications?.map((n) => (
                             <div
                                 key={n._id}
-                                className={`p-3 border-b dark:border-gray-700 ${!n.isRead ? "bg-blue-50 dark:bg-gray-700/50" : ""
-                                    }`}
+                                className={`p-3 border-b dark:border-gray-700 ${!n.isRead ? "bg-blue-50 dark:bg-gray-700/50" : ""}`}
                             >
                                 <p className="font-medium text-gray-800 dark:text-gray-100">{n.title}</p>
                                 <p className="text-sm text-gray-600 dark:text-gray-400">{n.message}</p>
-                                <p className="text-xs text-gray-400">{new Date(n.createdAt).toLocaleString()}</p>
+                                <p className="text-xs text-gray-400 dark:text-gray-500">{new Date(n.createdAt).toLocaleString()}</p>
                             </div>
                         ))}
                     </div>
                 </div>
+
             )}
         </div>
     );
