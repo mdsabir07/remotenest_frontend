@@ -51,7 +51,7 @@ export default function NotificationBell() {
             </button>
 
             {open && (
-                <div className="absolute right-0 mt-2 w-80 border border-gray-200 dark:border-gray-700 rounded shadow-lg z-50 bg-white dark:bg-gray-900">
+                <div className="absolute right-0 lg:right-auto mt-2 w-80 border border-gray-200 dark:border-gray-700 rounded shadow-lg z-50 bg-white dark:bg-gray-900">
                     <div className="p-3 border-b dark:border-gray-700 flex justify-between items-center">
                         <h3 className="font-semibold text-gray-800 dark:text-gray-100">Notifications</h3>
                         <button
@@ -80,7 +80,6 @@ export default function NotificationBell() {
                         ))}
                     </div>
                 </div>
-
             )}
         </div>
     );

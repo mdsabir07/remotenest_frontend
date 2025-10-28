@@ -3,6 +3,7 @@ import { authOptions } from "@/lib/authOptions";
 import { connectToDB } from "@/lib/mongodb";
 import BlogPost from "@/models/BlogPost";
 import slugify from "slugify";
+import { sendNotification } from "@/lib/sendNotification";
 
 export async function POST(req) {
     const session = await getServerSession(authOptions); // ← won't work correctly without req/res in App Router
@@ -66,6 +67,24 @@ export async function POST(req) {
         });
 
         await newPost.save();
+
+        // Notify all admins
+        await sendNotification({
+            toRole: "admin",
+            toSenderId: session.user.id,
+            title: "New Blog submitted",
+            message: `A new blog "${title}" was submitted by ${session.user.name || "a user"}.`,
+            type: "info",
+        });
+
+        // Notify the author
+        await sendNotification({
+            toUser: session.user.id,
+            toSenderId: session.user.id,
+            title: "Blog Submission Received",
+            message: `Your blog "${title}" has been received and is pending review.`,
+            type: "success",
+        });
 
         return new Response(
             JSON.stringify({ message: "Created for review", post: newPost }),

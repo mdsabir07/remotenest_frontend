@@ -34,6 +34,15 @@ export async function PATCH(req, { params }) {
         const updated = await City.findByIdAndUpdate(id, update, { new: true });
         if (!updated) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
+        // ✅ Notify the city creator about approval/rejection
+        await sendNotification({
+            toUser: updated.createdBy,
+            toSenderId: user._id,
+            title: `City ${status === "approved" ? "Approved" : status === "rejected" ? "Rejected" : "Updated"}`,
+            message: `Your city "${updated.name}" has been marked as ${status}.`,
+            type: status === "approved" ? "success" : status === "rejected" ? "error" : "info",
+        });
+
         return NextResponse.json(updated, { status: 200 });
     } catch (err) {
         console.error("PATCH /api/cities/[id] error:", err);

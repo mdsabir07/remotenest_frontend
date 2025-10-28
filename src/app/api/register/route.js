@@ -3,6 +3,7 @@ import { User } from "@/models/User";
 import { hash } from "bcryptjs";
 import crypto from "crypto";
 import { sendVerificationEmail } from "@/lib/email"; // ✅ import central function
+import { sendNotification } from "@/lib/sendNotification";
 
 export async function POST(req) {
   try {
@@ -33,8 +34,20 @@ export async function POST(req) {
       emailVerificationToken,
       emailVerificationExpires,
     });
-
     console.log("✅ New user created:", newUser.email);
+
+    // send admin notification about new user registration
+    try {
+      await sendNotification({
+        toRole: "admin",
+        senderId: newUser._id,
+        title: "New user registered",
+        message: `${newUser.name} (${newUser.email}) joined RemoteNest.`,
+        type: "general",
+      });
+    } catch (notifyError) {
+      console.error("❌ Failed to send admin notification:", notifyError);
+    }
 
     // ✅ Send verification email
     try {

@@ -1,5 +1,6 @@
 import { authOptions } from "@/lib/authOptions";
 import { connectToDB } from "@/lib/mongodb";
+import { sendNotification } from "@/lib/sendNotification";
 import City from "@/models/City";
 import { User } from "@/models/User";
 import { getServerSession } from "next-auth";
@@ -95,6 +96,27 @@ export async function POST(req) {
 
         // 8) Create and return
         const created = await City.create(doc);
+
+        // ✅ Notify all admins if a regular user created a city
+        if (requestingUser.role !== "admin") {
+            await sendNotification({
+                toRole: "admin",
+                toSenderId: requestingUser._id,
+                title: "New City Submission",
+                message: `A new city "${name}" was submitted by ${requestingUser.name || "a user"}.`,
+                type: "info",
+            });
+        }
+
+        // ✅ Notify the creator about their own submission
+        await sendNotification({
+            toUser: requestingUser._id,
+            toSenderId: requestingUser._id,
+            title: "City Submitted",
+            message: `Your city "${name}" has been submitted and is pending approval.`,
+            type: "success",
+        });
+
         return NextResponse.json(created, { status: 201 });
     } catch (err) {
         // server-side error

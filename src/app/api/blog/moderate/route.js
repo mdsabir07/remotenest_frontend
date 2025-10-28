@@ -54,6 +54,18 @@ export async function POST(req) {
         if (!updatedPost) {
             return new Response(JSON.stringify({ message: "Post not found" }), { status: 404 });
         }
+
+        // Notify the blog author about approval/rejection
+        await sendNotification({
+            toUser: updatedPost.author,
+            toSenderId: token.id,
+            title: `Blog Post ${action === "approve" ? "Approved" : "Rejected"}`,
+            message:
+                action === "approve"
+                    ? `Your blog "${updatedPost.title}" has been approved and is now live.`
+                    : `Your blog "${updatedPost.title}" was rejected by the admin.`,
+            type: action === "approve" ? "success" : "error",
+        });
         return new Response(JSON.stringify({ message: `Post ${action}d`, post: updatedPost }), { status: 200 });
     } catch (err) {
         console.error("Moderation error:", err);

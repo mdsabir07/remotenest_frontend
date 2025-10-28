@@ -1,67 +1,126 @@
-import { buffer } from 'micro';  // Middleware for parsing raw body
-import Stripe from 'stripe';  // Stripe Node.js library
-import { NextApiRequest, NextApiResponse } from 'next';
+// app/api/stripe/webhook/route.js
+import { buffer } from "micro";
+import Stripe from "stripe";
+import { connectToDB } from "@/lib/mongodb";
+import { Booking } from "@/models/Booking";
+import { sendNotification } from "@/lib/sendNotification";
 
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY);  // Initialize Stripe with secret key
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-// Disable body parsing for the webhook request
 export const config = {
-    api: {
-        bodyParser: false,  // We need to parse the raw body for signature validation
-    },
+    api: { bodyParser: false }, // Required for Stripe signature verification
 };
 
-// Webhook handler
-const webhook = async (req, res) => {
-    const buf = await buffer(req);  // Parse raw request body
-    const sig = req.headers['stripe-signature'];  // Stripe signature from the request header
+export default async function handler(req, res) {
+    if (req.method !== "POST") {
+        return res.status(405).send("Method Not Allowed");
+    }
+
+    const buf = await buffer(req);
+    const sig = req.headers["stripe-signature"];
+
+    let event;
+    try {
+        event = stripe.webhooks.constructEvent(buf, sig, process.env.STRIPE_WEBHOOK_SECRET);
+    } catch (err) {
+        console.error("❌ Stripe webhook signature verification failed:", err.message);
+        return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
 
     try {
-        // Verify the webhook signature with Stripe's secret
-        const event = stripe.webhooks.constructEvent(buf, sig, process.env.STRIPE_WEBHOOK_SECRET);
+        await connectToDB();
 
-        // Log the entire event object to see it
-        console.log('Received event: ', event);
-
-        // Handle the event
         switch (event.type) {
-            case 'payment_intent.succeeded':
+            // ✅ Payment succeeded
+            case "payment_intent.succeeded": {
                 const paymentIntent = event.data.object;
-                console.log('PaymentIntent was successful!', paymentIntent);
-                // Handle successful payment here
-                break;
+                const bookingId = paymentIntent.metadata?.bookingId;
 
-            case 'payment_intent.payment_failed':
-                const paymentFailed = event.data.object;
-                console.log('PaymentIntent failed:', paymentFailed);
-                // Handle failed payment here
-                break;
+                if (!bookingId) {
+                    console.warn("⚠️ Missing bookingId in metadata for successful payment");
+                    break;
+                }
 
-            case 'checkout.session.completed':
-                const session = event.data.object;
-                console.log('Checkout session completed:', session);
-                // Handle post-checkout actions like saving order information
-                break;
+                const booking = await Booking.findByIdAndUpdate(
+                    bookingId,
+                    { paymentStatus: "paid" },
+                    { new: true }
+                ).populate("city user", "name email");
 
-            // Handle the 'charge.updated' event type
-            case 'charge.updated':
+                if (!booking) {
+                    console.warn(`⚠️ Booking ${bookingId} not found`);
+                    break;
+                }
+
+                // 🛎️ Send notifications
+                try {
+                    // Notify user
+                    await sendNotification({
+                        toUser: booking.user._id,
+                        toSenderId: null,
+                        title: "Payment Successful",
+                        message: `Your payment for ${booking.city.name} was successful.`,
+                        type: "payment",
+                    });
+
+                    // Notify admin(s)
+                    await sendNotification({
+                        toRole: "admin",
+                        toSenderId: booking.user._id,
+                        title: "New Booking Paid",
+                        message: `A new booking for ${booking.city.name} has been paid.`,
+                        type: "payment",
+                    });
+                } catch (notifyErr) {
+                    console.error("⚠️ Notification error:", notifyErr);
+                }
+
+                break;
+            }
+
+            // ⚠️ Payment failed
+            case "payment_intent.payment_failed": {
+                const paymentIntent = event.data.object;
+                const bookingId = paymentIntent.metadata?.bookingId;
+                if (!bookingId) break;
+
+                await Booking.findByIdAndUpdate(bookingId, { paymentStatus: "failed" });
+
+                // Notify user about failure
+                await sendNotification({
+                    toUser: booking.user?._id,
+                    title: "Payment Failed",
+                    message: "Your payment attempt was unsuccessful. Please try again.",
+                    type: "payment",
+                });
+
+                break;
+            }
+
+            case "charge.refunded": {
                 const charge = event.data.object;
-                console.log('Charge was updated!', charge);
-                // You can handle charge updates here (e.g., if the payment status changes)
-                break;
+                const bookingId = charge.metadata?.bookingId;
+                if (!bookingId) break;
 
-            // Handle more event types as necessary
+                await Booking.findByIdAndUpdate(bookingId, { paymentStatus: "refunded" });
+
+                await sendNotification({
+                    toUser: booking.user?._id,
+                    title: "Refund Processed",
+                    message: "Your payment has been refunded successfully.",
+                    type: "payment",
+                });
+
+                break;
+            }
+
             default:
                 console.log(`Unhandled event type: ${event.type}`);
         }
 
-        // Respond with a success status
-        res.status(200).send('Event received');
+        res.status(200).send("✅ Event received");
     } catch (err) {
-        // If an error occurs, respond with an error status
-        console.error('Error handling webhook:', err.message);
-        res.status(400).send(`Webhook Error: ${err.message}`);
+        console.error("❌ Error handling webhook:", err);
+        res.status(500).send("Internal Server Error");
     }
-};
-
-export default webhook;
+}

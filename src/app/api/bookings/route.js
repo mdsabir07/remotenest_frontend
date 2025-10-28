@@ -1,11 +1,12 @@
-// app/api/bookings/route.js
 import { connectToDB } from "@/lib/mongodb";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { Booking } from "@/models/Booking";
 import { City } from "@/models/City";
 import { NextResponse } from "next/server";
+import { sendNotification } from "@/lib/sendNotification"; // ✅ import notification helper
 
+// ✅ Create Booking (User)
 export async function POST(req) {
   await connectToDB();
 
@@ -34,8 +35,8 @@ export async function POST(req) {
     return NextResponse.json({ error: "Invalid date range" }, { status: 400 });
   }
 
-  const dailyRent = city.cost?.rent ? city.cost.rent / 30 : 50; // fallback
-  const totalPrice = Math.round(nights * dailyRent); // rounded for Stripe
+  const dailyRent = city.cost?.rent ? city.cost.rent / 30 : 50;
+  const totalPrice = Math.round(nights * dailyRent);
 
   const booking = await Booking.create({
     user: session.user.id,
@@ -46,23 +47,42 @@ export async function POST(req) {
     paymentStatus: "pending",
   });
 
-  return NextResponse.json({ success: true, bookingId: booking._id, adminStatus: booking.adminStatus });
+  // ✅ Notify Admins that a new booking was made
+  try {
+    await sendNotification({
+      toRole: "admin",
+      senderId: session.user.id, // ✅ fixed
+      title: "New Booking Request",
+      message: `${session.user.name || "A user"} has created a new booking request for ${city.name}.`,
+      type: "booking",
+    });
+  } catch (err) {
+    console.error("⚠️ Notification send failed:", err);
+  }
+
+  return NextResponse.json({
+    success: true,
+    bookingId: booking._id,
+    adminStatus: booking.adminStatus,
+    message: "Booking created successfully and pending admin review",
+  });
 }
 
+// ✅ Fetch Bookings
 export async function GET(req) {
-    await connectToDB();
-    const session = await getServerSession(authOptions);
+  await connectToDB();
+  const session = await getServerSession(authOptions);
 
-    if (!session?.user) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+  if (!session?.user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
-    const isAdmin = session.user.role === "admin";
-    const query = isAdmin ? {} : { user: session.user.id };
+  const isAdmin = session.user.role === "admin";
+  const query = isAdmin ? {} : { user: session.user.id };
 
-    const bookings = await Booking.find(query)
-        .populate("city", "name location pricePerNight") // optional populate
-        .sort({ createdAt: -1 });
+  const bookings = await Booking.find(query)
+    .populate("city", "name location pricePerNight")
+    .sort({ createdAt: -1 });
 
-    return NextResponse.json({ bookings });
+  return NextResponse.json({ bookings });
 }

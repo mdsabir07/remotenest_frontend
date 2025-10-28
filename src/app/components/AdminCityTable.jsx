@@ -50,7 +50,7 @@ export default function AdminCityTable() {
   return (
     <div className="overflow-x-auto rounded shadow-md">
       <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
+        <thead className="">
           <tr>
             <th className="px-4 py-2 text-left text-sm font-medium">Title</th>
             <th className="px-4 py-2 text-left text-sm font-medium">Location</th>
