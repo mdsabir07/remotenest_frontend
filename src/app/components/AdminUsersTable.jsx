@@ -50,7 +50,7 @@ export default function AdminUsersTable() {
   return (
     <div className="overflow-x-auto rounded shadow-md">
       <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
+        <thead className="">
           <tr>
             <th className="px-4 py-2 text-left text-sm font-medium">Name</th>
             <th className="px-4 py-2 text-left text-sm font-medium">Email</th>
@@ -59,7 +59,7 @@ export default function AdminUsersTable() {
             <th className="px-4 py-2 text-left text-sm font-medium">Actions</th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-100">
+        <tbody className="divide-y">
           {users.map(u => (
             <tr key={u._id} className="hover:bg-gray-50 dark:hover:bg-gray-900">
               <td className="px-4 py-3 text-sm">{u.name}</td>

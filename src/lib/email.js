@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
 
 // ✅ Send email verification
 export async function sendVerificationEmail(to, token) {
-    const verificationUrl = `${process.env.NEXTAUTH_URL}/auth/verify-email?token=${token}`;
+    const verificationUrl = `${process.env.AUTH_URL}/auth/verify-email?token=${token}`;
 
     const mailOptions = {
         from: `"Remotenest" <${process.env.SMTP_USER}>`,
@@ -31,7 +31,7 @@ export async function sendVerificationEmail(to, token) {
 export async function sendResetPasswordEmail(to, token, name = 'User') {
     name = name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-    const resetUrl = `${process.env.NEXTAUTH_URL}/auth/reset-password?token=${token}`;
+    const resetUrl = `${process.env.AUTH_URL}/auth/reset-password?token=${token}`;
 
     const mailOptions = {
         from: `"Remotenest" <${process.env.SMTP_USER}>`,

@@ -90,8 +90,8 @@ export default function DashboardSidebar({ sidebarOpen, setSidebarOpen }) {
             )}
         >
             <div className="flex items-center justify-between md:justify-start md:space-x-2">
-                <div className="flex items-center justify-between gap-4">
-                    <div className='flex flex-1 items-center gap-2'>
+                <div className="flex items-center gap-4">
+                    <div className='flex items-center gap-2'>
                         <FiHome className="w-6 h-6" />
                         <h2 className="text-xl font-bold">Dashboard</h2>
                     </div>
@@ -100,6 +100,7 @@ export default function DashboardSidebar({ sidebarOpen, setSidebarOpen }) {
                     </div>
                 </div>
 
+                {/* Button to close sidebar */}
                 <button className="md:hidden cursor-pointer" onClick={() => setSidebarOpen(false)}>
                     <FiX className="h-6 w-6" />
                 </button>
