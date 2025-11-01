@@ -50,7 +50,7 @@ It combines the power of **Next.js (App Router)**, **NextAuth**, and **MongoDB**
 
 ## 🧠 Highlights
 
-✅ Built on **Next.js 14 App Router** for optimized routing  
+✅ Built on **Next.js 15 App Router** for optimized routing  
 ✅ Secure **NextAuth.js** authentication with JWT  
 ✅ **Role-based access control (RBAC)** for users and admins  
 ✅ Modular and reusable **API architecture**  
@@ -127,7 +127,7 @@ Licensed under the **MIT License** — you’re free to use and modify this proj
 
 ## 👨‍💻 Author
 
-**Md Sabirul Islam**  
+**Sabirul Islam**  
 Full-Stack Developer | WordPress & Next.js Specialist  
 
 💼 [Portfolio](https://sabir-portfolio-2a4b1.web.app/)   
