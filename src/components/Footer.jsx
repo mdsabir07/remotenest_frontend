@@ -1,6 +1,6 @@
 "use client"
 import Link from "next/link";
-import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaStackOverflow, FaWordpress } from "react-icons/fa6";
 
 const Footer = () => {
   return (
@@ -23,11 +23,11 @@ const Footer = () => {
         <div>
           <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
           <ul className="space-y-2">
-            <li><Link href="/" className="hover:text-blue-500"> Home</Link></li>
-            <li><Link href="#" className="hover:text-blue-500"> Cities</Link></li>
-            <li><Link href="#" className="hover:text-blue-500"> Blog</Link></li>
-            <li><Link href="#" className="hover:text-blue-500">About</Link></li>
-            <li><Link href="#" className="hover:text-blue-500"> Contact</Link></li>
+            <li><Link href="/" className="hover:text-blue-600"> Home</Link></li>
+            <li><Link href="/cities" className="hover:text-blue-600"> Cities</Link></li>
+            <li><Link href="/blog" className="hover:text-blue-600"> Blog</Link></li>
+            <li><Link href="/about" className="hover:text-blue-600">About</Link></li>
+            <li><Link href="/contact" className="hover:text-blue-600"> Contact</Link></li>
           </ul>
         </div>
 
@@ -35,9 +35,9 @@ const Footer = () => {
         <div>
           <h3 className="text-lg font-semibold mb-4">Resources</h3>
           <ul className="space-y-2">
-            <li><Link href="#" className="hover:text-blue-500"> FAQs</Link></li>
-            <li><Link href="#" className="hover:text-blue-500"> Privacy Policy</Link></li>
-            <li><Link href="#" className="hover:text-blue-500"> Terms & Conditions</Link></li>
+            <li><Link href="/faq" className="hover:text-blue-600"> FAQs</Link></li>
+            <li><Link href="/" className="hover:text-blue-600"> Privacy Policy</Link></li>
+            <li><Link href="/" className="hover:text-blue-600"> Terms & Conditions</Link></li>
           </ul>
         </div>
 
@@ -55,10 +55,10 @@ const Footer = () => {
 
           {/* Social Links */}
           <div className="flex space-x-4 mt-5 text-xl">
-            <a href="#" className="hover:text-blue-500"><FaFacebook /></a>
-            <a href="#" className="hover:text-blue-500"><FaTwitter /></a>
-            <a href="#" className="hover:text-blue-500"><FaLinkedin /></a>
-            <a href="#" className="hover:text-blue-500"><FaInstagram /></a>
+            <a href="https://github.com/mdsabir07" target="_blank" className="hover:text-blue-600"><FaGithub /></a>
+            <a href="https://stackoverflow.com/users/8124426/sabir" target="_blank" className="hover:text-blue-600"><FaStackOverflow /></a>
+            <a href="https://linkedin.com/in/sabir07" target="_blank" className="hover:text-blue-600"><FaLinkedin /></a>
+            <a href="https://profiles.wordpress.org/mdsabir07" target="_blank" className="hover:text-blue-600"><FaWordpress /></a>
           </div>
         </div>
       </div>

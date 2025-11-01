@@ -1,5 +1,6 @@
 import React from 'react';
-import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaFacebook, FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaStackOverflow, FaWordpress } from 'react-icons/fa6';
 
 const NavContact = () => {
     return (
@@ -9,7 +10,7 @@ const NavContact = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-10">
                 {/* Left Side */}
-                 <div data-aos="zoom-out-down" className="p-6 rounded shadow-lg transition-colors duration-300">
+                <div data-aos="zoom-out-down" className="p-6 rounded shadow-lg transition-colors duration-300">
                     <form className="space-y-4">
                         <div>
                             <label className="block mb-1">Full name</label>
@@ -45,7 +46,7 @@ const NavContact = () => {
                 </div>
 
                 {/* Right Side */}
-               <div data-aos="zoom-out-right" className='w-full'>
+                <div data-aos="zoom-out-right" className='w-full'>
                     <h2 className="text-2xl md:text-4xl font-bold mb-5">Find Your Perfect Remote Work Destination</h2>
                     <p className="mb-6">
                         Discover the best places around the world to work remotely. Get in touch to learn more about destinations, living costs, and opportunities that fit your lifestyle.
@@ -67,9 +68,10 @@ const NavContact = () => {
                     </div>
 
                     <div className="flex flex-wrap space-x-4 mt-6 text-xl">
-                        <a target='_blank' href="https://www.facebook.com/YourProfile/" className="hover:text-blue-500"><FaFacebook /></a>
-                        <a target='_blank' href="https://github.com/mdsabir07" className="hover:text-blue-500"><FaGithub /></a>
-                        <a target='_blank' href="https://www.linkedin.com/in/mdsabir07/" className="hover:text-blue-500"><FaLinkedin /></a>
+                        <a href="https://github.com/mdsabir07" target="_blank" className="hover:text-blue-600"><FaGithub /></a>
+                        <a href="https://stackoverflow.com/users/8124426/sabir" target="_blank" className="hover:text-blue-600"><FaStackOverflow /></a>
+                        <a href="https://linkedin.com/in/sabir07" target="_blank" className="hover:text-blue-600"><FaLinkedin /></a>
+                        <a href="https://profiles.wordpress.org/mdsabir07" target="_blank" className="hover:text-blue-600"><FaWordpress /></a>
                     </div>
                 </div>
 
