@@ -4,7 +4,6 @@ import Image from "next/image";
 import React from "react";
 import aboutImg from "@/assets/hello.png"; 
 import TeamCards from "../components/TeamCards";
-import NewsletterSignup from "../components/NewsletterSignup";
 
 
 
