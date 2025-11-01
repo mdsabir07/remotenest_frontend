@@ -8,7 +8,7 @@
 
 > **A Full-Stack Next.js platform for digital nomads** to discover, book, and manage remote-friendly stays worldwide.
 
-[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=nextdotjs)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=nextdotjs)](https://nextjs.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-6.x-brightgreen?style=flat-square&logo=mongodb)](https://www.mongodb.com/)
 [![NextAuth.js](https://img.shields.io/badge/Auth-NextAuth.js-blue?style=flat-square&logo=auth0)](https://next-auth.js.org/)
 [![TailwindCSS](https://img.shields.io/badge/Style-TailwindCSS-38B2AC?style=flat-square&logo=tailwindcss)](https://tailwindcss.com/)
